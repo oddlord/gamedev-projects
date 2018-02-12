@@ -14,6 +14,8 @@ public class LoginMenu : MonoBehaviour {
     private GameObject registerParent;
     [SerializeField]
     private GameObject loadingParent;
+    [SerializeField]
+    private GameObject exitGameParent;
 
     // These are all the InputFields which we need in order to get the entered usernames, passwords, etc
     [SerializeField]
@@ -67,10 +69,11 @@ public class LoginMenu : MonoBehaviour {
 
     void showLoginOrRegister(GameObject parentToDisable, GameObject parentToEnable, bool reset, InputField inputToFocus) {
         if (parentToDisable != null) {
-            parentToDisable.gameObject.SetActive(false);
+            parentToDisable.SetActive(false);
         }
 
-        parentToEnable.gameObject.SetActive(true);
+        parentToEnable.SetActive(true);
+        exitGameParent.SetActive(true);
 
         if (reset) {
             ResetAllUIElements();
@@ -87,8 +90,9 @@ public class LoginMenu : MonoBehaviour {
     }
 
     void ShowLoading(GameObject parentToDisable) {
-        parentToDisable.gameObject.SetActive(false);
-        loadingParent.gameObject.SetActive(true);
+        parentToDisable.SetActive(false);
+        exitGameParent.SetActive(false);
+        loadingParent.SetActive(true);
     }
 
     // Called by Button Pressed Methods to Reset UI Fields
