@@ -1,0 +1,4 @@
+## Ignore Blender auxiliary files
+
+# Blender backup
+*.blend1
