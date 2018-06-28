@@ -1,3 +1,3 @@
-# Unity Tutorials
+# Unity - projects
 
-Tutorials projects done with Unity from [Catlike Coding](http://catlikecoding.com/) and [Brackeys](http://brackeys.com/).
+Game Development projects in Unity from tutorials/courses
