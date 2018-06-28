@@ -1,2 +1,2 @@
-# blender-projects
-Projects in Blender from tutorials/courses.
+# Blender - projects
+3D modelling & animation projects in Blender from tutorials/courses.
