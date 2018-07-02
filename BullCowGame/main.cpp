@@ -1,10 +1,18 @@
+/* This is the console executable, that makes use of BullCow class
+This acts as the view in a MVC pattern, and is responsible for all
+user interaction. For game logic see the BullCowGame class.
+*/
+
 #include <iostream>
 #include <string>
 #include "FBullCowGame.h"
 
+using FText = std::string;
+using int32 = int;
+
 void PrintIntro();
 void PlayGame();
-std::string GetGuess();
+FText GetGuess();
 bool AskToPlayAgain();
 
 FBullCowGame BCGame; // instantiate a new game
@@ -25,7 +33,7 @@ int main()
 void PrintIntro()
 {
 	// introduce the game
-	constexpr int WORD_LENGTH = 9;
+	constexpr int32 WORD_LENGTH = 9;
 	std::cout << "Welcome to Bulls and Cows, a fun word game.\n";
 	std::cout << "Can you guess the " << WORD_LENGTH << " letter isogram I'm thinking of?\n";
 	std::cout << std::endl;
@@ -35,13 +43,13 @@ void PrintIntro()
 void PlayGame()
 {
 	BCGame.Reset();
-	int MaxTries = BCGame.GetMaxTries();
+	int32 MaxTries = BCGame.GetMaxTries();
 
 	// loop for the number of turns asking for guesses
 	// TODO change from FOR to WHILE loop once we are validating tries 
-	for (int count = 1; count <= MaxTries; count++)
+	for (int32 count = 1; count <= MaxTries; count++)
 	{
-		std::string Guess = GetGuess();	// TODO make loop check valid
+		FText Guess = GetGuess();	// TODO make loop check valid
 
 		// submit valid guess to the game
 		// print number of bulls and cows
@@ -53,12 +61,12 @@ void PlayGame()
 	// TODO add a game summary
 }
 
-std::string GetGuess() {
-	int CurrentTry = BCGame.GetCurrentTry();
+FText GetGuess() {
+	int32 CurrentTry = BCGame.GetCurrentTry();
 
 	// get a guess from the player
 	std::cout << "Try " << CurrentTry << ". Enter your guess: ";
-	std::string Guess = "";
+	FText Guess = "";
 	std::getline(std::cin, Guess);
 	return Guess;
 }
@@ -66,7 +74,7 @@ std::string GetGuess() {
 bool AskToPlayAgain()
 {
 	std::cout << "Do you want to play again (y/n)? ";
-	std::string Response = "";
+	FText Response = "";
 	std::getline(std::cin, Response);
 	std::cout << std::endl;
 	return (Response[0] == 'y') || (Response[0] == 'Y');
