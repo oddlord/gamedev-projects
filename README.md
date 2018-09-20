@@ -1,4 +1,2 @@
-# Unreal Engine 4 - projects
-Game Development projects in Unreal Engine 4 from tutorials/courses.
-
-* [Escape](https://github.com/oddlord/ue4-projects/tree/master/Escape) by [Ben Tristem, Sam Pattuzzi and GameDev.tv on Udemy](https://www.udemy.com/unrealcourse/).
+# Unreal Engine 4 - Escape
+A 3D puzzle game in Unreal Engine 4, where the player has to solve puzzles to escape.
