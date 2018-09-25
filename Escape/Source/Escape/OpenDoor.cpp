@@ -25,13 +25,14 @@ void UOpenDoor::BeginPlay()
 
 	if (!PressurePlate)
 	{
-		UE_LOG(LogTemp, Error, TEXT("No pressure plate set up!"));
+		UE_LOG(LogTemp, Error, TEXT("%s: no pressure plate set up!"), *(Owner->GetName()));
 	}
 }
 
 void UOpenDoor::OpenDoor()
 {
-	Owner->SetActorRotation(FRotator(0.f, OpenAngle, 0.f));
+	/// Owner->SetActorRotation(FRotator(0.f, OpenAngle, 0.f));
+	OnOpenRequest.Broadcast();
 }
 
 void UOpenDoor::CloseDoor()
