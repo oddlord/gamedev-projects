@@ -8,10 +8,13 @@ Game Development projects I made from tutorials and courses.
 
 * C++
    * [Snake](https://github.com/oddlord/gamedev-projects/tree/master/cpp/Snake) by [NVitanovic](https://www.youtube.com/channel/UCqXrJmvJAvFnGyLGSBnk45g);
-   * [Bull Cow Game](https://github.com/oddlord/gamedev-projects/tree/master/cpp/BullCowGame) by [Ben Tristem, Sam Pattuzzi and GameDev.tv on Udemy](https://www.udemy.com/unrealcourse/).
+   * [Bull Cow Game](https://github.com/oddlord/gamedev-projects/tree/master/cpp/BullCowGame) by [Ben Tristem](https://www.udemy.com/user/bentristem/) and [Sam Pattuzzi](https://www.udemy.com/user/samuel-pattuzzi/).
 
 * HTML5/Javascript
    * [Tetris](https://github.com/oddlord/gamedev-projects/tree/master/html5-js/tetris) by [Meth Meth Method](https://www.youtube.com/channel/UC8A0M0eDttdB11MHxX58vXQ).
+
+* OpenGL
+   * [OpenGLCourseApp](https://github.com/oddlord/gamedev-projects/tree/master/opengl/OpenGLCourseApp) by [Ben Cook](https://www.udemy.com/user/ben-cook-19/);
 
 * Unity
    * [Clock](https://github.com/oddlord/gamedev-projects/tree/master/unity/Clock) and [Graph](https://github.com/oddlord/unity-projects/tree/master/Graph) by [Catlike Coding](https://catlikecoding.com/);
