@@ -18,6 +18,8 @@
 const GLint WIDTH = 800;
 const GLint HEIGHT = 600;
 
+const float toRadians = 3.14159265f / 180.f;
+
 GLuint VAO;
 GLuint VBO;
 GLuint shaderProgram;
@@ -25,8 +27,17 @@ GLuint uniformModel;
 
 bool direction = true;
 float triOffset = 0.f;
-float triMaxOffset = 0.5f;
-float triIncrement = 0.0005f;
+const float triMaxOffset = 0.7f;
+const float triIncrement = 0.001f;
+
+float curAngle = 0.f;
+const float angleIncrement = 0.01f;
+
+bool sizeDirection = true;
+float curSize = 0.4f;
+const float maxSize = 0.8f;
+const float minSize = 0.1f;
+const float sizeIncrement = 0.0001f;
 
 enum InfoLogType { SHADER, PROGRAM };
 
@@ -40,7 +51,7 @@ uniform mat4 model;														\n\
 																		\n\
 void main()																\n\
 {																		\n\
-	gl_Position = model * vec4(0.4 * pos.x, 0.4 * pos.y, pos.z, 1.0);	\n\
+	gl_Position = model * vec4(pos, 1.0);								\n\
 }";
 
 // Fragment shader
@@ -238,14 +249,36 @@ int main()
 			direction = !direction;
 		}
 
+		curAngle += angleIncrement;
+		if (curAngle >= 360)
+		{
+			curAngle -= 360;
+		}
+
+		if (sizeDirection)
+		{
+			curSize += sizeIncrement;
+		}
+		else
+		{
+			curSize -= sizeIncrement;
+		}
+
+		if (curSize >= maxSize || curSize <= minSize)
+		{
+			sizeDirection = !sizeDirection;
+		}
+
 		// Clear window
 		glClearColor(0.f, 0.f, 0.f, 1.f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		glUseProgram(shaderProgram);
 		{
-			glm::mat4 model(1.0);
+			glm::mat4 model(1.f);
+			model = glm::rotate(model, curAngle * toRadians, glm::vec3(0.f, 0.f, 1.f));
 			model = glm::translate(model, glm::vec3(triOffset, 0.f, 0.f));
+			model = glm::scale(model, glm::vec3(curSize, curSize, 1.f));
 
 			//std::cout << glm::to_string(model) << std::endl;
 			//std::cin.ignore();
