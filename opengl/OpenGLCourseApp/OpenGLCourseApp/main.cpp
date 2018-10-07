@@ -7,6 +7,13 @@
 #include <GLEW/glew.h>
 #include <GLFW/glfw3.h>
 
+#include <GLM/glm.hpp>
+#include <GLM/gtc/matrix_transform.hpp>
+#include <GLM/gtc/type_ptr.hpp>
+
+// #define GLM_ENABLE_EXPERIMENTAL
+// #include <GLM/gtx/string_cast.hpp>
+
 // Window dimensions
 const GLint WIDTH = 800;
 const GLint HEIGHT = 600;
@@ -14,7 +21,7 @@ const GLint HEIGHT = 600;
 GLuint VAO;
 GLuint VBO;
 GLuint shaderProgram;
-GLuint uniformXMove;
+GLuint uniformModel;
 
 bool direction = true;
 float triOffset = 0.f;
@@ -29,11 +36,11 @@ static const char* vShader = "											\n\
 																		\n\
 layout (location = 0) in vec3 pos;										\n\
 																		\n\
-uniform float xMove;													\n\
+uniform mat4 model;														\n\
 																		\n\
 void main()																\n\
 {																		\n\
-	gl_Position = vec4(0.4 * pos.x + xMove, 0.4 * pos.y, pos.z, 1.0);	\n\
+	gl_Position = model * vec4(0.4 * pos.x, 0.4 * pos.y, pos.z, 1.0);	\n\
 }";
 
 // Fragment shader
@@ -153,7 +160,7 @@ void CompileShaders()
 		return;
 	}
 
-	uniformXMove = glGetUniformLocation(shaderProgram, "xMove");
+	uniformModel = glGetUniformLocation(shaderProgram, "model");
 }
 
 int main()
@@ -237,7 +244,14 @@ int main()
 
 		glUseProgram(shaderProgram);
 		{
-			glUniform1f(uniformXMove, triOffset);
+			glm::mat4 model(1.0);
+			model = glm::translate(model, glm::vec3(triOffset, 0.f, 0.f));
+
+			//std::cout << glm::to_string(model) << std::endl;
+			//std::cin.ignore();
+
+			glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+
 			glBindVertexArray(VAO);
 			{
 				glDrawArrays(GL_TRIANGLES, 0, 3);
