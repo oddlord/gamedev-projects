@@ -27,6 +27,8 @@ GLuint shaderProgram;
 GLuint uniformModel;
 GLuint uniformProjection;
 
+unsigned int indicesCount = 0;
+
 bool direction = true;
 float triOffset = 0.f;
 const float triMaxOffset = 0.7f;
@@ -76,16 +78,30 @@ void main()																\n\
 void CreateTriangle()
 {
 	unsigned int indices[] = {
-		0, 3, 1,
-		1, 3, 2,
-		2, 3, 0,
-		0, 1, 2
+		0, 1, 4,
+		1, 2, 4,
+		2, 3, 4, 
+		3, 0, 4,
+		0, 1, 2,
+		0, 2, 3
 	};
+
+	/*unsigned int indices[] = {
+		0, 1, 6,
+		1, 5, 6,
+		5, 0, 6,
+		0, 1, 5
+	};*/
+
+	indicesCount = sizeof(indices);
 
 	GLfloat vertices[] = {
 		-1.f, -1.f, 0.f,
-		0.f, -1.f, 1.f,
 		1.f, -1.f, 0.f,
+		1.f, -1.f, 1.f,
+		-1.f, -1.f, 1.f,
+		0.f, 1.f, 0.5f,
+		0.f, -1.f, 1.f,
 		0.f, 1.f, 0.f
 	};
 
@@ -299,8 +315,8 @@ int main()
 		glUseProgram(shaderProgram);
 
 		glm::mat4 model(1.f);
-		model = glm::translate(model, glm::vec3(triOffset, 0.f, -2.5f));
-		// model = glm::rotate(model, curAngle * toRadians, glm::vec3(0.f, 1.f, 0.f));
+		model = glm::translate(model, glm::vec3(0.f, triOffset, -2.5f));
+		model = glm::rotate(model, curAngle * toRadians, glm::vec3(0.f, 1.f, 0.f));
 		model = glm::scale(model, glm::vec3(0.4f, 0.4f, 1.f));
 
 		// std::cout << glm::to_string(model) << std::endl;
@@ -312,7 +328,7 @@ int main()
 		glBindVertexArray(VAO);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
 			
-		glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, indicesCount, GL_UNSIGNED_INT, 0);
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 		glBindVertexArray(0);
