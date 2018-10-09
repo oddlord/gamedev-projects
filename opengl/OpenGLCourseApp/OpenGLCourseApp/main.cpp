@@ -3,6 +3,7 @@
 #include <cmath>
 #include <iostream>
 #include <string>
+#include <vector>
 
 #include <GLEW/glew.h>
 #include <GLFW/glfw3.h>
@@ -11,6 +12,8 @@
 #include <GLM/gtc/matrix_transform.hpp>
 #include <GLM/gtc/type_ptr.hpp>
 
+#include "Mesh.h"
+
 // #define GLM_ENABLE_EXPERIMENTAL
 // #include <GLM/gtx/string_cast.hpp>
 
@@ -18,16 +21,17 @@
 const GLint WIDTH = 800;
 const GLint HEIGHT = 600;
 
+GLuint _VAO; // Vertex Array Object
+GLuint _VBO; // Vertex Buffer Object
+GLuint _IBO; // Index Buffer Object
+
+std::vector<Mesh*> meshList;
+
 const float toRadians = 3.14159265f / 180.f;
 
-GLuint VAO; // Vertex Array Object
-GLuint VBO; // Vertex Buffer Object
-GLuint IBO; // Index Buffer Object
 GLuint shaderProgram;
 GLuint uniformModel;
 GLuint uniformProjection;
-
-unsigned int indicesCount = 0;
 
 bool direction = true;
 float triOffset = 0.f;
@@ -75,26 +79,8 @@ void main()																\n\
 	colour = vCol;														\n\
 }";
 
-void CreateTriangle()
+void CreatePyramid()
 {
-	unsigned int indices[] = {
-		0, 1, 4,
-		1, 2, 4,
-		2, 3, 4, 
-		3, 0, 4,
-		0, 1, 2,
-		0, 2, 3
-	};
-
-	/*unsigned int indices[] = {
-		0, 1, 6,
-		1, 5, 6,
-		5, 0, 6,
-		0, 1, 5
-	};*/
-
-	indicesCount = sizeof(indices);
-
 	GLfloat vertices[] = {
 		-1.f, -1.f, 0.f,
 		1.f, -1.f, 0.f,
@@ -105,26 +91,29 @@ void CreateTriangle()
 		0.f, 1.f, 0.f
 	};
 
-	glGenVertexArrays(1, &VAO);
-	glBindVertexArray(VAO); // bind VAO
+	/*unsigned int indices[] = {
+		0, 1, 6,
+		1, 5, 6,
+		5, 0, 6,
+		0, 1, 5
+	};*/
 
-	glGenBuffers(1, &IBO);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO); // bind IBO
+	unsigned int indices[] = {
+		0, 1, 4,
+		1, 2, 4,
+		2, 3, 4, 
+		3, 0, 4,
+		0, 1, 2,
+		0, 2, 3
+	};
 
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+	Mesh* pyramid = new Mesh();
+	pyramid->CreateMesh(sizeof(vertices) / sizeof(vertices[0]), vertices, sizeof(indices) / sizeof(indices[0]), indices);
+	meshList.push_back(pyramid);
 
-	glGenBuffers(1, &VBO);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO); // bind VBO
-
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-	// first attribute: layout location index in the vertex shader
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
-	glEnableVertexAttribArray(0);
-
-	glBindBuffer(GL_ARRAY_BUFFER, 0); // unbind VBO
-	glBindVertexArray(0); // unbind VAO
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); // unbind IBO
+	Mesh* pyramid2 = new Mesh();
+	pyramid2->CreateMesh(sizeof(vertices) / sizeof(vertices[0]), vertices, sizeof(indices) / sizeof(indices[0]), indices);
+	meshList.push_back(pyramid2);
 }
 
 void PrintNL(std::string message)
@@ -263,7 +252,7 @@ int main()
 	// buffer width/height represent the ACTUAL width/height of the window
 	glViewport(0, 0, bufferWidth, bufferHeight);
 
-	CreateTriangle();
+	CreatePyramid();
 	CompileShaders();
 
 	glm::mat4 projection = glm::perspective(glm::radians(60.0f), (GLfloat)bufferWidth / (GLfloat)bufferHeight, 0.1f, 100.f);
@@ -312,28 +301,23 @@ int main()
 		glClearColor(0.f, 0.f, 0.f, 1.f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		glUseProgram(shaderProgram);
+		glUseProgram(shaderProgram); // bind shader program
 
 		glm::mat4 model(1.f);
-		model = glm::translate(model, glm::vec3(0.f, triOffset, -2.5f));
-		model = glm::rotate(model, curAngle * toRadians, glm::vec3(0.f, 1.f, 0.f));
+		model = glm::translate(model, glm::vec3(triOffset, -0.3f, -2.5f));
+		// model = glm::rotate(model, curAngle * toRadians, glm::vec3(0.f, 1.f, 0.f));
 		model = glm::scale(model, glm::vec3(0.4f, 0.4f, 1.f));
-
-		// std::cout << glm::to_string(model) << std::endl;
-		// std::cin.ignore();
-
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		glUniformMatrix4fv(uniformProjection, 1, GL_FALSE, glm::value_ptr(projection));
+		meshList[0]->RenderMesh();
 
-		glBindVertexArray(VAO);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
-			
-		glDrawElements(GL_TRIANGLES, indicesCount, GL_UNSIGNED_INT, 0);
+		model = glm::mat4(1.f);
+		model = glm::translate(model, glm::vec3(-triOffset, 0.7f, -2.5f));
+		model = glm::scale(model, glm::vec3(0.4f, 0.4f, 1.f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		meshList[1]->RenderMesh();
 
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-		glBindVertexArray(0);
-
-		glUseProgram(0);
+		glUseProgram(0); // unbind shader program
 
 		glfwSwapBuffers(mainWindow);
 	}
