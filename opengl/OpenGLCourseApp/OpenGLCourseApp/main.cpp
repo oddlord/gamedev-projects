@@ -18,9 +18,6 @@
 #include <GLM/gtc/matrix_transform.hpp>
 #include <GLM/gtc/type_ptr.hpp>
 
-// #define GLM_ENABLE_EXPERIMENTAL
-// #include <GLM/gtx/string_cast.hpp>
-
 // Log enabled/disabled
 bool logEnabled = true;
 
@@ -33,21 +30,7 @@ Window mainWindow;
 std::vector<Mesh*> meshList;
 std::vector<ShaderProgram*> shaderProgramList;
 
-/*const float toRadians = 3.14159265f / 180.f;
-
-bool direction = true;
-float triOffset = 0.f;
-const float triMaxOffset = 0.7f;
-const float triIncrement = 0.001f;
-
-float curAngle = 0.f;
-const float angleIncrement = 0.1f;
-
-bool sizeDirection = true;
-float curSize = 0.4f;
-const float maxSize = 0.8f;
-const float minSize = 0.1f;
-const float sizeIncrement = 0.0001f;*/
+const float toRadians = 3.14159265f / 180.f;
 
 // Shaders
 static const std::string shaderFolder = "Shaders/";
@@ -69,13 +52,6 @@ void CreatePyramid()
 		0.f, -1.f, 1.f,
 		0.f, 1.f, 0.f
 	};
-
-	/*unsigned int indices[] = {
-		0, 1, 6,
-		1, 5, 6,
-		5, 0, 6,
-		0, 1, 5
-	};*/
 
 	unsigned int indices[] = {
 		0, 1, 4,
@@ -130,40 +106,6 @@ int main()
 		// Get and handle user input events
 		glfwPollEvents();
 
-		/*if (direction)
-		{
-			triOffset += triIncrement;
-		}
-		else
-		{
-			triOffset -= triIncrement;
-		}
-
-		if (abs(triOffset) >= triMaxOffset)
-		{
-			direction = !direction;
-		}
-
-		curAngle += angleIncrement;
-		if (curAngle >= 360)
-		{
-			curAngle -= 360;
-		}
-
-		if (sizeDirection)
-		{
-			curSize += sizeIncrement;
-		}
-		else
-		{
-			curSize -= sizeIncrement;
-		}
-
-		if (curSize >= maxSize || curSize <= minSize)
-		{
-			sizeDirection = !sizeDirection;
-		}*/
-
 		// Clear window
 		LOG("Clearing window");
 		glClearColor(0.f, 0.f, 0.f, 1.f);
@@ -173,7 +115,6 @@ int main()
 
 		glm::mat4 model(1.f);
 		model = glm::translate(model, glm::vec3(0.f, -0.3f, -2.5f));
-		// model = glm::rotate(model, curAngle * toRadians, glm::vec3(0.f, 1.f, 0.f));
 		model = glm::scale(model, glm::vec3(0.4f, 0.4f, 1.f));
 		glUniformMatrix4fv(uniformModelID, 1, GL_FALSE, glm::value_ptr(model));
 		glUniformMatrix4fv(uniformProjectionID, 1, GL_FALSE, glm::value_ptr(projection));
@@ -186,7 +127,7 @@ int main()
 		meshList[1]->RenderMesh();
 
 		LOG("Unbinding shader program");
-		glUseProgram(0); // unbind shader program
+		ShaderProgram::UnbindShaderProgram(); // unbind shader program
 
 		mainWindow.swapBuffers();
 

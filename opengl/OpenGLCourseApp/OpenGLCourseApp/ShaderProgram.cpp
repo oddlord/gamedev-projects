@@ -42,6 +42,11 @@ void ShaderProgram::UseShaderProgram()
 	glUseProgram(shaderProgramID);
 }
 
+void ShaderProgram::UnbindShaderProgram()
+{
+	glUseProgram(0);
+}
+
 void ShaderProgram::ClearShaderProgram()
 {
 	if (shaderProgramID != 0)

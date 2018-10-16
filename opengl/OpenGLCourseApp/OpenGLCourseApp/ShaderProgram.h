@@ -17,6 +17,7 @@ public:
 	GLuint GetProjectionLocation();
 
 	void UseShaderProgram();
+	static void UnbindShaderProgram();
 	void ClearShaderProgram();
 
 	~ShaderProgram();
