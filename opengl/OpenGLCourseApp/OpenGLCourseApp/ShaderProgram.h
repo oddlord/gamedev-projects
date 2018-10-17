@@ -15,6 +15,7 @@ public:
 
 	GLuint GetModelLocation();
 	GLuint GetProjectionLocation();
+	GLuint GetViewLocation();
 
 	void UseShaderProgram();
 	static void UnbindShaderProgram();
@@ -26,6 +27,7 @@ private:
 	GLuint shaderProgramID;
 	GLuint uniformModelID;
 	GLuint uniformProjectionID;
+	GLuint uniformViewID;
 
 	void CompileShaders(std::string vertexCode, std::string fragmentCode);
 	void AddShader(std::string shaderCode, GLenum shaderType);

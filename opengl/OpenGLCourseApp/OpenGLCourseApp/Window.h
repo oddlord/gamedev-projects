@@ -39,7 +39,7 @@ private:
 	GLfloat lastY;
 	GLfloat xChange;
 	GLfloat yChange;
-	bool mouseFirstMoved;
+	bool mouseMoved;
 	
 	void createCallbacks();
 	static void handleKeys(GLFWwindow* glfwWindow, int key, int code, int action, int mode);

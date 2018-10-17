@@ -5,25 +5,32 @@
 
 Window::Window()
 {
-	width = 800;
-	height = 600;
-
-	for (size_t i = 0; i < 1024; i++)
-	{
-		keys[i] = false;
-	}
+	Window(800, 600);
 }
 
 Window::Window(GLint windowWidth, GLint windowHeight)
 {
 	width = windowWidth;
 	height = windowHeight;
+
+	for (size_t i = 0; i < 1024; i++)
+	{
+		keys[i] = false;
+	}
+
+	bufferWidth = 0;
+	bufferHeight = 0;
+
+	lastX = 0.f;
+	lastY = 0.f;
+	xChange = 0.f;
+	yChange = 0.f;
+	mouseMoved = false;
 }
 
 int Window::Initialise()
 {
 	// Initialise GLFW
-	LOG("Initialising GLFW");
 	if (!glfwInit())
 	{
 		LOGERROR("GLFW initialisation failed!");
@@ -32,7 +39,6 @@ int Window::Initialise()
 	}
 
 	// Setup GLFW window properties
-	LOG("Setting up GLFW window properties");
 	// OpenGL version 3.3
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3); // version 3.x
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3); // version x.3
@@ -41,7 +47,6 @@ int Window::Initialise()
 	// Allow forward compatibility
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLU_TRUE);
 
-	LOG("Creating GLFW window");
 	mainWindow = glfwCreateWindow(width, height, "Test Window", NULL, NULL);
 	if (!mainWindow)
 	{
@@ -51,11 +56,9 @@ int Window::Initialise()
 	}
 
 	// Get the buffer size information
-	LOG("Getting buffer dimensions");
 	glfwGetFramebufferSize(mainWindow, &bufferWidth, &bufferHeight);
 
 	// Set context for GLEW to use
-	LOG("Setting up window context");
 	glfwMakeContextCurrent(mainWindow);
 
 	// Handle Key & Mouse Input
@@ -63,11 +66,9 @@ int Window::Initialise()
 	glfwSetInputMode(mainWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 	// Allow modern extension features
-	LOG("Allowing experimental features");
 	glewExperimental = GL_TRUE;
 
 	// Initialise GLEW
-	LOG("Initialising GLEW");
 	if (glewInit() != GLEW_OK)
 	{
 		LOGERROR("GLEW initialisation failed!");
@@ -76,11 +77,9 @@ int Window::Initialise()
 		return 1;
 	}
 
-	LOG("Enabling depth");
 	glEnable(GL_DEPTH_TEST);
 
 	// Setup viewport size
-	LOG("Setting viewport size");
 	// Viewport = the part of the window where we can draw
 	// buffer width/height represent the ACTUAL width/height of the window
 	glViewport(0, 0, bufferWidth, bufferHeight);
@@ -117,7 +116,6 @@ GLfloat Window::getYChange()
 }
 
 void Window::swapBuffers() { 
-	LOG("Swapping buffers");
 	glfwSwapBuffers(mainWindow);
 }
 
@@ -161,11 +159,11 @@ void Window::handleMouse(GLFWwindow * glfwWindow, double xPos, double yPos)
 	// Retrieving the Window object
 	Window* window = static_cast<Window*>(glfwGetWindowUserPointer(glfwWindow));
 
-	if (window->mouseFirstMoved)
+	if (!window->mouseMoved)
 	{
 		window->lastX = xPos;
 		window->lastY = yPos;
-		window->mouseFirstMoved = false;
+		window->mouseMoved = true;
 	}
 
 	window->xChange = xPos - window->lastX;

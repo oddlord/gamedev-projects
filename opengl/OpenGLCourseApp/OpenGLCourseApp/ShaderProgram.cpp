@@ -36,9 +36,13 @@ GLuint ShaderProgram::GetProjectionLocation()
 	return uniformProjectionID;
 }
 
+GLuint ShaderProgram::GetViewLocation()
+{
+	return uniformViewID;
+}
+
 void ShaderProgram::UseShaderProgram()
 {
-	LOG("Binding shader program " << shaderProgramID);
 	glUseProgram(shaderProgramID);
 }
 
@@ -54,8 +58,10 @@ void ShaderProgram::ClearShaderProgram()
 		glDeleteProgram(shaderProgramID);
 		shaderProgramID = 0;
 	}
-	uniformProjectionID = 0;
+
 	uniformModelID = 0;
+	uniformProjectionID = 0;
+	uniformViewID = 0;
 }
 
 
@@ -66,11 +72,7 @@ ShaderProgram::~ShaderProgram()
 
 void ShaderProgram::CompileShaders(std::string vertexCode, std::string fragmentCode)
 {
-	LOG("Compiling shaders");
-
-	LOG("Creating shader program");
 	shaderProgramID = glCreateProgram();
-	LOG("Created shader program " << shaderProgramID);
 
 	if (!shaderProgramID)
 	{
@@ -85,7 +87,6 @@ void ShaderProgram::CompileShaders(std::string vertexCode, std::string fragmentC
 	GLchar eLog[1024] = { 0 };
 
 	// Linking the shader program
-	LOG("Linking shader program");
 	glLinkProgram(shaderProgramID);
 	if (!Utils::CheckErrors(shaderProgramID, GL_LINK_STATUS, InfoLogType::PROGRAM, "Error linking program"))
 	{
@@ -93,7 +94,6 @@ void ShaderProgram::CompileShaders(std::string vertexCode, std::string fragmentC
 	}
 
 	// Validating the shader program
-	LOG("Validating shader program");
 	glValidateProgram(shaderProgramID);
 	if (!Utils::CheckErrors(shaderProgramID, GL_VALIDATE_STATUS, InfoLogType::PROGRAM, "Error validating program"))
 	{
@@ -101,16 +101,13 @@ void ShaderProgram::CompileShaders(std::string vertexCode, std::string fragmentC
 	}
 
 	uniformModelID = glGetUniformLocation(shaderProgramID, "model");
-	LOG("Model uniform ID: " << uniformModelID);
 	uniformProjectionID = glGetUniformLocation(shaderProgramID, "projection");
-	LOG("Projection uniform ID: " << uniformProjectionID);
+	uniformViewID = glGetUniformLocation(shaderProgramID, "view");
 }
 
 void ShaderProgram::AddShader(std::string shaderCode, GLenum shaderType)
 {
-	LOG("Creating shader");
 	GLuint shaderID = glCreateShader(shaderType);
-	LOG("Created shader " << shaderID);
 
 	const char* shaderCodeCStr = shaderCode.c_str();
 
@@ -120,13 +117,10 @@ void ShaderProgram::AddShader(std::string shaderCode, GLenum shaderType)
 	GLint codeLength[1];
 	codeLength[0] = strlen(shaderCodeCStr);
 
-	LOG("Attaching shader source code");
 	glShaderSource(shaderID, 1, code, codeLength);
-	LOG("Compiling shader code");
 	glCompileShader(shaderID);
 
 	Utils::CheckErrors(shaderID, GL_COMPILE_STATUS, InfoLogType::SHADER, "Error compiling the shader");
 
-	LOG("Attaching shader " << shaderID << " to shader program " << shaderProgramID);
 	glAttachShader(shaderProgramID, shaderID);
 }
