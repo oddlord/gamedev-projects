@@ -1,9 +1,6 @@
 #include "stdafx.h"
 #include "Camera.h"
 
-#include <iostream>
-#include <string>
-
 Camera::Camera()
 {
 }
@@ -74,8 +71,6 @@ void Camera::mouseControl(GLfloat xChange, GLfloat yChange)
 	{
 		pitch = -89.f;
 	}
-
-	std::cout << "yaw: " << yaw << "; pitch: " << pitch << std::endl;
 
 	update();
 }
