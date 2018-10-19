@@ -29,8 +29,13 @@ void Mesh::CreateMesh(unsigned int numOfVertices, GLfloat vertices[], unsigned i
 	glBufferData(GL_ARRAY_BUFFER, numOfVertices * sizeof(vertices[0]), vertices, GL_STATIC_DRAW);
 
 	// first attribute: layout location index in the vertex shader
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+	// Setting vertices x/y/z coordinates
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(vertices[0]) * 5, 0);
 	glEnableVertexAttribArray(0);
+
+	// Setting texture u/v coordinates
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(vertices[0]) * 5, (void*)(sizeof(vertices[0]) * 3));
+	glEnableVertexAttribArray(1);
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0); // unbind VBO
 	glBindVertexArray(0); // unbind VAO
