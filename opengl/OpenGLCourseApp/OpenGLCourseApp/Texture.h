@@ -1,14 +1,18 @@
 #pragma once
 
+#include <filesystem>
+
 #include <GLEW/glew.h>
 
 #include <stb_image.h>
+
+namespace fs = std::experimental::filesystem;
 
 class Texture
 {
 public:
 	Texture();
-	Texture(const char* fileLoc);
+	Texture(fs::path fileLoc);
 
 	void LoadTexture();
 	void UseTexture();
@@ -22,6 +26,6 @@ private:
 	int height;
 	int bitDepth;
 
-	const char* fileLocation;
+	fs::path fileLocation;
 };
 

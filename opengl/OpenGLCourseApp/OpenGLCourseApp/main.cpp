@@ -1,15 +1,17 @@
-#define STB_IMAGE_IMPLEMENTATION
-
 #include "stdafx.h"
+
+#define STB_IMAGE_IMPLEMENTATION
 
 #include "Camera.h"
 #include "common.h"
 #include "Mesh.h"
 #include "ShaderProgram.h"
+#include "Texture.h"
 #include "Utils.h"
 #include "Window.h"
 
 #include <cmath>
+#include <filesystem>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -20,6 +22,8 @@
 #include <GLM/glm.hpp>
 #include <GLM/gtc/matrix_transform.hpp>
 #include <GLM/gtc/type_ptr.hpp>
+
+namespace fs = std::experimental::filesystem;
 
 // Log enabled/disabled
 bool logEnabled = true;
@@ -40,22 +44,38 @@ GLfloat lastTime = 0.f;
 const float toRadians = 3.14159265f / 180.f;
 
 // Shaders
-static const std::string shaderFolder = "Shaders/";
+fs::path shadersFolder("Shaders");
 // Vertex shader
-static const std::string vShader = shaderFolder + "shader.vert";
+fs::path vShaderFile("shader.vert");
+fs::path vShaderPath = shadersFolder / vShaderFile;
 // Fragment shader
-static const std::string fShader = shaderFolder + "shader.frag";
+fs::path fShaderFile("shader.frag");
+fs::path fShaderPath = shadersFolder / fShaderFile;
+
+// Textures
+fs::path texturesFolder("Textures");
+// Brick texture
+fs::path brickTextureFile("brick_red_4104_5283_Small.jpg");
+fs::path brickTexturePath = texturesFolder / brickTextureFile;
+Texture brickTexture(brickTexturePath);
+// Dirt texture
+fs::path dirtTextureFile("ground_dirt_3299_9359_Small.jpg");
+fs::path dirtTexturePath = texturesFolder / dirtTextureFile;
+Texture dirtTexture(dirtTexturePath);
+// Wood texture
+fs::path woodTextureFile("wood_plain_210_251_Small.jpg");
+fs::path woodTexturePath = texturesFolder / woodTextureFile;
+Texture woodTexture(woodTexturePath);
 
 void CreatePyramid()
 {
 	GLfloat vertices[] = {
-		-1.f, -1.f, 0.f,
-		1.f, -1.f, 0.f,
-		1.f, -1.f, 1.f,
-		-1.f, -1.f, 1.f,
-		0.f, 1.f, 0.5f,
-		0.f, -1.f, 1.f,
-		0.f, 1.f, 0.f
+	//	x		y		z		u		v
+		-1.f,	-1.f,	0.f,	0.f,	0.f,
+		1.f,	-1.f,	0.f,	1.f,	0.f,
+		1.f,	-1.f,	1.f,	1.f,	1.f,
+		-1.f,	-1.f,	1.f,	0.f,	1.f,
+		0.f,	1.f,	0.5f,	0.5f,	0.5f
 	};
 
 	unsigned int indices[] = {
@@ -67,23 +87,26 @@ void CreatePyramid()
 		0, 2, 3
 	};
 
+	const int numOfVertices = sizeof(vertices) / sizeof(vertices[0]);
+	const int numOfIndices = sizeof(indices) / sizeof(indices[0]);
+
 	Mesh* pyramid = new Mesh();
-	pyramid->CreateMesh(sizeof(vertices) / sizeof(vertices[0]), vertices, sizeof(indices) / sizeof(indices[0]), indices);
+	pyramid->CreateMesh(numOfVertices, vertices, numOfIndices, indices);
 	meshList.push_back(pyramid);
 
 	Mesh* pyramid2 = new Mesh();
-	pyramid2->CreateMesh(sizeof(vertices) / sizeof(vertices[0]), vertices, sizeof(indices) / sizeof(indices[0]), indices);
+	pyramid2->CreateMesh(numOfVertices, vertices, numOfIndices, indices);
 	meshList.push_back(pyramid2);
 
 	Mesh* pyramid3 = new Mesh();
-	pyramid3->CreateMesh(sizeof(vertices) / sizeof(vertices[0]), vertices, sizeof(indices) / sizeof(indices[0]), indices);
+	pyramid3->CreateMesh(numOfVertices, vertices, numOfIndices, indices);
 	meshList.push_back(pyramid3);
 }
 
 void CreateShaderProgram()
 {
 	ShaderProgram* shaderProgram = new ShaderProgram();
-	shaderProgram->CreateFromFiles(vShader, fShader);
+	shaderProgram->CreateFromFiles(vShaderPath, fShaderPath);
 	shaderProgramList.push_back(shaderProgram);
 }
 
@@ -96,6 +119,10 @@ int main()
 	CreateShaderProgram();
 
 	camera = Camera(glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 1.f, 0.f), -90.f, 0.f, 5.f, 0.5f);
+
+	brickTexture.LoadTexture();
+	dirtTexture.LoadTexture();
+	woodTexture.LoadTexture();
 
 	ShaderProgram* shaderProgram = shaderProgramList[0];
 	GLuint uniformModelID = shaderProgram->GetModelLocation();
@@ -145,12 +172,15 @@ int main()
 		glUniformMatrix4fv(uniformViewID, 1, GL_FALSE, glm::value_ptr(view));
 
 		glUniformMatrix4fv(uniformModelID, 1, GL_FALSE, glm::value_ptr(model1));
+		dirtTexture.UseTexture();
 		meshList[0]->RenderMesh();
 
 		glUniformMatrix4fv(uniformModelID, 1, GL_FALSE, glm::value_ptr(model2));
+		brickTexture.UseTexture();
 		meshList[1]->RenderMesh();
 
 		glUniformMatrix4fv(uniformModelID, 1, GL_FALSE, glm::value_ptr(model3));
+		woodTexture.UseTexture();
 		meshList[2]->RenderMesh();
 
 		ShaderProgram::UnbindShaderProgram(); // unbind shader program

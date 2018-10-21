@@ -15,10 +15,10 @@ void ShaderProgram::CreateFromString(std::string vertexCode, std::string fragmen
 	CompileShaders(vertexCode, fragmentCode);
 }
 
-void ShaderProgram::CreateFromFiles(std::string vertexLocation, std::string fragmentLocation)
+void ShaderProgram::CreateFromFiles(fs::path vertexShaderPath, fs::path fragmentShaderPath)
 {
-	std::string vertexString = Utils::ReadFile(vertexLocation);
-	std::string fragmentString = Utils::ReadFile(fragmentLocation);
+	std::string vertexString = Utils::ReadFile(vertexShaderPath);
+	std::string fragmentString = Utils::ReadFile(fragmentShaderPath);
 
 	const char* vertexCode = vertexString.c_str();
 	const char* fragmentCode = fragmentString.c_str();

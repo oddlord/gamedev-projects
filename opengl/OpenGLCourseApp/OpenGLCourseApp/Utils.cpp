@@ -33,14 +33,14 @@ bool Utils::CheckErrors(const GLuint target, const GLenum status, const InfoLogT
 	return true;
 }
 
-std::string Utils::ReadFile(std::string fileLocation)
+std::string Utils::ReadFile(fs::path filePath)
 {
 	std::string content;
-	std::ifstream fileStream(fileLocation, std::ios::in);
+	std::ifstream fileStream(filePath, std::ios::in);
 
 	if (!fileStream.is_open())
 	{
-		LOGERROR("Failed to read " << fileLocation << "! File doesn't exist.");
+		LOGERROR("Failed to read " << filePath << "! File doesn't exist.");
 		return "";
 	}
 

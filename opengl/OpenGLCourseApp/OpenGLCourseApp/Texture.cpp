@@ -9,7 +9,7 @@ Texture::Texture()
 	Texture("");
 }
 
-Texture::Texture(const char* fileLoc)
+Texture::Texture(fs::path fileLoc)
 {
 	textureID = 0;
 	width = 0;
@@ -21,7 +21,7 @@ Texture::Texture(const char* fileLoc)
 void Texture::LoadTexture()
 {
 	// unsigned char because we want an array of bytes
-	unsigned char* texData = stbi_load(fileLocation, &width, &height, &bitDepth, 0);
+	unsigned char* texData = stbi_load(fileLocation.string().c_str(), &width, &height, &bitDepth, 0);
 	if (!texData)
 	{
 		std::cout << "Failed to find: " << fileLocation << std::endl;
@@ -40,7 +40,8 @@ void Texture::LoadTexture()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, texData);
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, texData);
 	glGenerateMipmap(GL_TEXTURE_2D);
 
 	// Unbinding Texture ID

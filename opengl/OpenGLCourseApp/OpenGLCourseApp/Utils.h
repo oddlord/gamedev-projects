@@ -2,10 +2,13 @@
 
 #include "common.h"
 
+#include <filesystem>
 #include <iostream>
 #include <string>
 
 #include <GLEW/glew.h>
+
+namespace fs = std::experimental::filesystem;
 
 #define PATH_SEPARATOR '\\'
 
@@ -26,7 +29,7 @@ public:
 
 	static bool CheckErrors(const GLuint target, const GLenum status, const InfoLogType infoLogType, std::string message);
 
-	static std::string ReadFile(std::string fileLocation);
+	static std::string ReadFile(fs::path filePath);
 
 	~Utils();
 };
