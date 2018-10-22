@@ -11,7 +11,7 @@ namespace fs = std::experimental::filesystem;
 class Texture
 {
 public:
-	Texture();
+	Texture() : Texture("") {};
 	Texture(fs::path fileLoc);
 
 	void LoadTexture();

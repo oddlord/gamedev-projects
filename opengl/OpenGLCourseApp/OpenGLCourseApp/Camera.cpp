@@ -1,10 +1,6 @@
 #include "stdafx.h"
 #include "Camera.h"
 
-Camera::Camera()
-{
-}
-
 Camera::Camera(glm::vec3 startPosition, glm::vec3 startWorldUp, GLfloat startYaw, GLfloat startPitch, GLfloat startMoveSpeed, GLfloat startTurnSpeed)
 {
 	position = startPosition;

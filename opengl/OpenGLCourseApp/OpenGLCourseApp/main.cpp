@@ -4,6 +4,7 @@
 
 #include "Camera.h"
 #include "common.h"
+#include "Light.h"
 #include "Mesh.h"
 #include "ShaderProgram.h"
 #include "Texture.h"
@@ -67,6 +68,8 @@ fs::path woodTextureFile("wood_plain_210_251_Small.jpg");
 fs::path woodTexturePath = texturesFolder / woodTextureFile;
 Texture woodTexture(woodTexturePath);
 
+Light mainLight;
+
 void CreatePyramid()
 {
 	GLfloat vertices[] = {
@@ -124,10 +127,14 @@ int main()
 	dirtTexture.LoadTexture();
 	woodTexture.LoadTexture();
 
+	mainLight = Light(1.f, 1.f, 1.f, 1.f);
+
 	ShaderProgram* shaderProgram = shaderProgramList[0];
 	GLuint uniformModelID = shaderProgram->GetModelLocation();
 	GLuint uniformProjectionID = shaderProgram->GetProjectionLocation();
 	GLuint uniformViewID = shaderProgram->GetViewLocation();
+	GLuint uniformAmbientColourID = shaderProgram->GetAmbientColourLocation();
+	GLuint uniformAmbientIntensityID = shaderProgram->GetAmbientIntensityLocation();
 
 	glm::mat4 projection = glm::perspective(glm::radians(60.0f), mainWindow.getBufferWidth() / mainWindow.getBufferHeight(), 0.1f, 100.f);
 
@@ -165,6 +172,8 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		shaderProgram->UseShaderProgram(); // bind shader program
+
+		mainLight.UseLight(uniformAmbientColourID, uniformAmbientIntensityID);
 
 		glm::mat4 view = camera.calculateViewMatrix();
 

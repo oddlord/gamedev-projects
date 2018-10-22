@@ -8,6 +8,8 @@ ShaderProgram::ShaderProgram()
 	shaderProgramID = 0;
 	uniformProjectionID = 0;
 	uniformModelID = 0;
+	uniformAmbientColourID = 0;
+	uniformAmbientIntensityID = 0;
 }
 
 void ShaderProgram::CreateFromString(std::string vertexCode, std::string fragmentCode)
@@ -41,6 +43,16 @@ GLuint ShaderProgram::GetViewLocation()
 	return uniformViewID;
 }
 
+GLuint ShaderProgram::GetAmbientColourLocation()
+{
+	return uniformAmbientColourID;
+}
+
+GLuint ShaderProgram::GetAmbientIntensityLocation()
+{
+	return uniformAmbientIntensityID;
+}
+
 void ShaderProgram::UseShaderProgram()
 {
 	glUseProgram(shaderProgramID);
@@ -62,6 +74,8 @@ void ShaderProgram::ClearShaderProgram()
 	uniformModelID = 0;
 	uniformProjectionID = 0;
 	uniformViewID = 0;
+	uniformAmbientColourID = 0;
+	uniformAmbientIntensityID = 0;
 }
 
 
@@ -103,6 +117,8 @@ void ShaderProgram::CompileShaders(std::string vertexCode, std::string fragmentC
 	uniformModelID = glGetUniformLocation(shaderProgramID, "model");
 	uniformProjectionID = glGetUniformLocation(shaderProgramID, "projection");
 	uniformViewID = glGetUniformLocation(shaderProgramID, "view");
+	uniformAmbientColourID = glGetUniformLocation(shaderProgramID, "directionalLight.colour");
+	uniformAmbientIntensityID = glGetUniformLocation(shaderProgramID, "directionalLight.ambientIntensity");
 }
 
 void ShaderProgram::AddShader(std::string shaderCode, GLenum shaderType)

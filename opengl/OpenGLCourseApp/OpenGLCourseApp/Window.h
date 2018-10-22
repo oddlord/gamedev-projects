@@ -6,7 +6,7 @@
 class Window
 {
 public:
-	Window();
+	Window() : Window(800, 600) {};
 	Window(GLint windowWidth, GLint windowHeight);
 
 	int Initialise();
