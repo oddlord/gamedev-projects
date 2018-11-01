@@ -73,12 +73,12 @@ Light mainLight;
 void CreatePyramid()
 {
 	GLfloat vertices[] = {
-	//	x		y		z		u		v
-		-1.f,	-1.f,	0.f,	0.f,	0.f,
-		1.f,	-1.f,	0.f,	1.f,	0.f,
-		1.f,	-1.f,	1.f,	1.f,	1.f,
-		-1.f,	-1.f,	1.f,	0.f,	1.f,
-		0.f,	1.f,	0.5f,	0.5f,	0.5f
+	//	x		y		z			u		v			nx		ny		nz
+		-1.f,	-1.f,	0.f,		0.f,	0.f,		0.f,	0.f,	0.f,
+		1.f,	-1.f,	0.f,		1.f,	0.f,		0.f,	0.f,	0.f,
+		1.f,	-1.f,	1.f,		1.f,	1.f,		0.f,	0.f,	0.f,
+		-1.f,	-1.f,	1.f,		0.f,	1.f,		0.f,	0.f,	0.f,
+		0.f,	1.f,	0.5f,		0.5f,	0.5f,		0.f,	0.f,	0.f
 	};
 
 	unsigned int indices[] = {
@@ -90,19 +90,24 @@ void CreatePyramid()
 		0, 2, 3
 	};
 
-	const int numOfVertices = sizeof(vertices) / sizeof(vertices[0]);
-	const int numOfIndices = sizeof(indices) / sizeof(indices[0]);
+	const unsigned int numOfVertices = sizeof(vertices) / sizeof(vertices[0]);
+	const unsigned int numOfIndices = sizeof(indices) / sizeof(indices[0]);
+	const unsigned int vLength = 8;
+	const unsigned int uvOffset = 3;
+	const unsigned int normalOffset = 5;
+
+	Utils::calcAverageNormals(vertices, numOfVertices, indices, numOfIndices, vLength, normalOffset);
 
 	Mesh* pyramid = new Mesh();
-	pyramid->CreateMesh(numOfVertices, vertices, numOfIndices, indices);
+	pyramid->CreateMesh(numOfVertices, vertices, numOfIndices, indices, vLength, uvOffset, normalOffset);
 	meshList.push_back(pyramid);
 
 	Mesh* pyramid2 = new Mesh();
-	pyramid2->CreateMesh(numOfVertices, vertices, numOfIndices, indices);
+	pyramid2->CreateMesh(numOfVertices, vertices, numOfIndices, indices, vLength, uvOffset, normalOffset);
 	meshList.push_back(pyramid2);
 
 	Mesh* pyramid3 = new Mesh();
-	pyramid3->CreateMesh(numOfVertices, vertices, numOfIndices, indices);
+	pyramid3->CreateMesh(numOfVertices, vertices, numOfIndices, indices, vLength, uvOffset, normalOffset);
 	meshList.push_back(pyramid3);
 }
 
@@ -127,7 +132,8 @@ int main()
 	dirtTexture.LoadTexture();
 	woodTexture.LoadTexture();
 
-	mainLight = Light(1.f, 1.f, 1.f, 1.f);
+	mainLight = Light(1.f, 1.f, 1.f, 0.2f,		// ambient lighting
+					  1.f, 0.f, 0.f, 2.f);		// diffuse lighting
 
 	ShaderProgram* shaderProgram = shaderProgramList[0];
 	GLuint uniformModelID = shaderProgram->GetModelLocation();
@@ -135,6 +141,8 @@ int main()
 	GLuint uniformViewID = shaderProgram->GetViewLocation();
 	GLuint uniformAmbientColourID = shaderProgram->GetAmbientColourLocation();
 	GLuint uniformAmbientIntensityID = shaderProgram->GetAmbientIntensityLocation();
+	GLuint uniformDirectionID = shaderProgram->GetDirectionLocation();
+	GLuint uniformDiffuseIntensityID = shaderProgram->GetDiffuseIntensityLocation();
 
 	glm::mat4 projection = glm::perspective(glm::radians(60.0f), mainWindow.getBufferWidth() / mainWindow.getBufferHeight(), 0.1f, 100.f);
 
@@ -173,7 +181,7 @@ int main()
 
 		shaderProgram->UseShaderProgram(); // bind shader program
 
-		mainLight.UseLight(uniformAmbientColourID, uniformAmbientIntensityID);
+		mainLight.UseLight(uniformAmbientColourID, uniformAmbientIntensityID, uniformDiffuseIntensityID, uniformDirectionID);
 
 		glm::mat4 view = camera.calculateViewMatrix();
 

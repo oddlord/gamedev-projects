@@ -31,6 +31,9 @@ public:
 
 	static std::string ReadFile(fs::path filePath);
 
+	static void calcAverageNormals(GLfloat* vertices, unsigned int verticesCount, unsigned int* indices, unsigned int indicesCount,
+								   unsigned int vLength, unsigned int normalOffset);
+
 	~Utils();
 };
 

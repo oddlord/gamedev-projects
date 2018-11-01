@@ -11,7 +11,8 @@ Mesh::Mesh()
 	_indexCount = 0;
 }
 
-void Mesh::CreateMesh(unsigned int numOfVertices, GLfloat vertices[], unsigned int numOfIndices, unsigned int indices[])
+void Mesh::CreateMesh(unsigned int numOfVertices, GLfloat vertices[], unsigned int numOfIndices, unsigned int indices[],
+					  unsigned int vLength, unsigned int uvOffset, unsigned int normalOffset)
 {
 	_indexCount = numOfIndices;
 
@@ -30,12 +31,16 @@ void Mesh::CreateMesh(unsigned int numOfVertices, GLfloat vertices[], unsigned i
 
 	// first attribute: layout location index in the vertex shader
 	// Setting vertices x/y/z coordinates
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(vertices[0]) * 5, 0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(vertices[0]) * vLength, 0);
 	glEnableVertexAttribArray(0);
 
 	// Setting texture u/v coordinates
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(vertices[0]) * 5, (void*)(sizeof(vertices[0]) * 3));
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(vertices[0]) * vLength, (void*)(sizeof(vertices[0]) * uvOffset));
 	glEnableVertexAttribArray(1);
+
+	// Setting normal direction
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(vertices[0]) * vLength, (void*)(sizeof(vertices[0]) * normalOffset));
+	glEnableVertexAttribArray(2);
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0); // unbind VBO
 	glBindVertexArray(0); // unbind VAO

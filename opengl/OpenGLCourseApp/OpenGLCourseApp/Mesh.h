@@ -7,7 +7,8 @@ class Mesh
 public:
 	Mesh();
 
-	void CreateMesh(unsigned int numOfVertices, GLfloat vertices[], unsigned int numOfIndices, unsigned int indices[]);
+	void CreateMesh(unsigned int numOfVertices, GLfloat vertices[], unsigned int numOfIndices, unsigned int indices[],
+					unsigned int vLength, unsigned int uvOffset, unsigned int normalOffset);
 	void RenderMesh();
 	void ClearMesh();
 
