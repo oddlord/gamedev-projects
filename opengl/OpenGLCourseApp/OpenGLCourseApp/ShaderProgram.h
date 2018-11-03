@@ -16,13 +16,16 @@ public:
 	void CreateFromString(std::string vertexCode, std::string fragmentCode);
 	void CreateFromFiles(fs::path vertexShaderPath, fs::path fragmentShaderPath);
 
-	GLuint GetModelLocation();
-	GLuint GetProjectionLocation();
-	GLuint GetViewLocation();
-	GLuint GetAmbientColourLocation();
-	GLuint GetAmbientIntensityLocation();
-	GLuint GetDiffuseIntensityLocation();
-	GLuint GetDirectionLocation();
+	GLuint GetModelUnifLoc();
+	GLuint GetProjectionUnifLoc();
+	GLuint GetViewUnifLoc();
+	GLuint GetEyePositionUnifLoc();
+	GLuint GetAmbientColourUnifLoc();
+	GLuint GetAmbientIntensityUnifLoc();
+	GLuint GetDiffuseIntensityUnifLoc();
+	GLuint GetDirectionUnifLoc();
+	GLuint GetSpecularIntensityUnifLoc();
+	GLuint GetShininessUnifLoc();
 
 	void UseShaderProgram();
 	static void UnbindShaderProgram();
@@ -32,13 +35,16 @@ public:
 
 private:
 	GLuint shaderProgramID;
-	GLuint uniformModelID;
-	GLuint uniformProjectionID;
-	GLuint uniformViewID;
-	GLuint uniformAmbientColourID;
-	GLuint uniformAmbientIntensityID;
-	GLuint uniformDiffuseIntensityID;
-	GLuint uniformDirectionID;
+	GLuint modelUnifLoc;
+	GLuint projectionUnifLoc;
+	GLuint viewUnifLoc;
+	GLuint eyePositionUnifLoc;
+	GLuint ambientColourUnifLoc;
+	GLuint ambientIntensityUnifLoc;
+	GLuint diffuseIntensityUnifLoc;
+	GLuint directionUnifLoc;
+	GLuint specularIntensityUnifLoc;
+	GLuint shininessUnifLoc;
 
 	void CompileShaders(std::string vertexCode, std::string fragmentCode);
 	void AddShader(std::string shaderCode, GLenum shaderType);

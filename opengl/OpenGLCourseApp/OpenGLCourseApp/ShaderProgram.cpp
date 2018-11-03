@@ -6,10 +6,10 @@
 ShaderProgram::ShaderProgram()
 {
 	shaderProgramID = 0;
-	uniformProjectionID = 0;
-	uniformModelID = 0;
-	uniformAmbientColourID = 0;
-	uniformAmbientIntensityID = 0;
+	projectionUnifLoc = 0;
+	modelUnifLoc = 0;
+	ambientColourUnifLoc = 0;
+	ambientIntensityUnifLoc = 0;
 }
 
 void ShaderProgram::CreateFromString(std::string vertexCode, std::string fragmentCode)
@@ -28,39 +28,54 @@ void ShaderProgram::CreateFromFiles(fs::path vertexShaderPath, fs::path fragment
 	CreateFromString(vertexCode, fragmentCode);
 }
 
-GLuint ShaderProgram::GetModelLocation()
+GLuint ShaderProgram::GetModelUnifLoc()
 {
-	return uniformModelID;
+	return modelUnifLoc;
 }
 
-GLuint ShaderProgram::GetProjectionLocation()
+GLuint ShaderProgram::GetProjectionUnifLoc()
 {
-	return uniformProjectionID;
+	return projectionUnifLoc;
 }
 
-GLuint ShaderProgram::GetViewLocation()
+GLuint ShaderProgram::GetViewUnifLoc()
 {
-	return uniformViewID;
+	return viewUnifLoc;
 }
 
-GLuint ShaderProgram::GetAmbientColourLocation()
+GLuint ShaderProgram::GetEyePositionUnifLoc()
 {
-	return uniformAmbientColourID;
+	return eyePositionUnifLoc;
 }
 
-GLuint ShaderProgram::GetAmbientIntensityLocation()
+GLuint ShaderProgram::GetAmbientColourUnifLoc()
 {
-	return uniformAmbientIntensityID;
+	return ambientColourUnifLoc;
 }
 
-GLuint ShaderProgram::GetDiffuseIntensityLocation()
+GLuint ShaderProgram::GetAmbientIntensityUnifLoc()
 {
-	return uniformDiffuseIntensityID;
+	return ambientIntensityUnifLoc;
 }
 
-GLuint ShaderProgram::GetDirectionLocation()
+GLuint ShaderProgram::GetDiffuseIntensityUnifLoc()
 {
-	return uniformDirectionID;
+	return diffuseIntensityUnifLoc;
+}
+
+GLuint ShaderProgram::GetDirectionUnifLoc()
+{
+	return directionUnifLoc;
+}
+
+GLuint ShaderProgram::GetSpecularIntensityUnifLoc()
+{
+	return specularIntensityUnifLoc;
+}
+
+GLuint ShaderProgram::GetShininessUnifLoc()
+{
+	return shininessUnifLoc;
 }
 
 void ShaderProgram::UseShaderProgram()
@@ -81,11 +96,11 @@ void ShaderProgram::ClearShaderProgram()
 		shaderProgramID = 0;
 	}
 
-	uniformModelID = 0;
-	uniformProjectionID = 0;
-	uniformViewID = 0;
-	uniformAmbientColourID = 0;
-	uniformAmbientIntensityID = 0;
+	modelUnifLoc = 0;
+	projectionUnifLoc = 0;
+	viewUnifLoc = 0;
+	ambientColourUnifLoc = 0;
+	ambientIntensityUnifLoc = 0;
 }
 
 
@@ -124,13 +139,16 @@ void ShaderProgram::CompileShaders(std::string vertexCode, std::string fragmentC
 		return;
 	}
 
-	uniformModelID = glGetUniformLocation(shaderProgramID, "model");
-	uniformProjectionID = glGetUniformLocation(shaderProgramID, "projection");
-	uniformViewID = glGetUniformLocation(shaderProgramID, "view");
-	uniformAmbientColourID = glGetUniformLocation(shaderProgramID, "directionalLight.colour");
-	uniformAmbientIntensityID = glGetUniformLocation(shaderProgramID, "directionalLight.ambientIntensity");
-	uniformDirectionID = glGetUniformLocation(shaderProgramID, "directionalLight.direction");
-	uniformDiffuseIntensityID = glGetUniformLocation(shaderProgramID, "directionalLight.diffuseIntensity");
+	modelUnifLoc = glGetUniformLocation(shaderProgramID, "model");
+	projectionUnifLoc = glGetUniformLocation(shaderProgramID, "projection");
+	viewUnifLoc = glGetUniformLocation(shaderProgramID, "view");
+	eyePositionUnifLoc = glGetUniformLocation(shaderProgramID, "eyePosition");
+	ambientColourUnifLoc = glGetUniformLocation(shaderProgramID, "directionalLight.colour");
+	ambientIntensityUnifLoc = glGetUniformLocation(shaderProgramID, "directionalLight.ambientIntensity");
+	directionUnifLoc = glGetUniformLocation(shaderProgramID, "directionalLight.direction");
+	diffuseIntensityUnifLoc = glGetUniformLocation(shaderProgramID, "directionalLight.diffuseIntensity");
+	specularIntensityUnifLoc = glGetUniformLocation(shaderProgramID, "material.specularIntensity");
+	shininessUnifLoc = glGetUniformLocation(shaderProgramID, "material.shininess");
 }
 
 void ShaderProgram::AddShader(std::string shaderCode, GLenum shaderType)

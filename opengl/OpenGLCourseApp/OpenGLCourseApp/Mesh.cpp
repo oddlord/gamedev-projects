@@ -5,27 +5,27 @@
 
 Mesh::Mesh()
 {
-	_VAO = 0;
-	_VBO = 0;
-	_IBO = 0;
-	_indexCount = 0;
+	vao = 0;
+	vbo = 0;
+	ibo = 0;
+	indexCount = 0;
 }
 
 void Mesh::CreateMesh(unsigned int numOfVertices, GLfloat vertices[], unsigned int numOfIndices, unsigned int indices[],
-					  unsigned int vLength, unsigned int uvOffset, unsigned int normalOffset)
+	unsigned int vLength, unsigned int uvOffset, unsigned int normalOffset)
 {
-	_indexCount = numOfIndices;
+	indexCount = numOfIndices;
 
-	glGenVertexArrays(1, &_VAO);
-	glBindVertexArray(_VAO); // bind VAO
+	glGenVertexArrays(1, &vao);
+	glBindVertexArray(vao); // bind VAO
 
-	glGenBuffers(1, &_IBO);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _IBO); // bind IBO
+	glGenBuffers(1, &ibo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo); // bind IBO
 
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, numOfIndices * sizeof(indices[0]), indices, GL_STATIC_DRAW);
 
-	glGenBuffers(1, &_VBO);
-	glBindBuffer(GL_ARRAY_BUFFER, _VBO); // bind VBO
+	glGenBuffers(1, &vbo);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo); // bind VBO
 
 	glBufferData(GL_ARRAY_BUFFER, numOfVertices * sizeof(vertices[0]), vertices, GL_STATIC_DRAW);
 
@@ -49,32 +49,32 @@ void Mesh::CreateMesh(unsigned int numOfVertices, GLfloat vertices[], unsigned i
 
 void Mesh::RenderMesh()
 {
-	glBindVertexArray(_VAO); // bind VAO
-	glDrawElements(GL_TRIANGLES, _indexCount, GL_UNSIGNED_INT, 0);
+	glBindVertexArray(vao); // bind VAO
+	glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0); // unbind VAO
 }
 
 void Mesh::ClearMesh()
 {
-	if (_IBO != 0)
+	if (ibo != 0)
 	{
-		glDeleteBuffers(1, &_IBO);
-		_IBO = 0;
+		glDeleteBuffers(1, &ibo);
+		ibo = 0;
 	}
 
-	if (_VBO != 0)
+	if (vbo != 0)
 	{
-		glDeleteBuffers(1, &_VBO);
-		_VBO = 0;
+		glDeleteBuffers(1, &vbo);
+		vbo = 0;
 	}
 
-	if (_VAO != 0)
+	if (vao != 0)
 	{
-		glDeleteVertexArrays(1, &_VAO);
-		_VAO = 0;
+		glDeleteVertexArrays(1, &vao);
+		vao = 0;
 	}
 
-	_indexCount = 0;
+	indexCount = 0;
 }
 
 Mesh::~Mesh()

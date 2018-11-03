@@ -8,16 +8,16 @@ public:
 	Mesh();
 
 	void CreateMesh(unsigned int numOfVertices, GLfloat vertices[], unsigned int numOfIndices, unsigned int indices[],
-					unsigned int vLength, unsigned int uvOffset, unsigned int normalOffset);
+		unsigned int vLength, unsigned int uvOffset, unsigned int normalOffset);
 	void RenderMesh();
 	void ClearMesh();
 
 	~Mesh();
 
 private:
-	GLuint _VAO; // Vertex Array Object
-	GLuint _VBO; // Vertex Buffer Object
-	GLuint _IBO; // Index Buffer Object
-	GLsizei _indexCount;
+	GLuint vao; // Vertex Array Object
+	GLuint vbo; // Vertex Buffer Object
+	GLuint ibo; // Index Buffer Object
+	GLsizei indexCount;
 };
 
