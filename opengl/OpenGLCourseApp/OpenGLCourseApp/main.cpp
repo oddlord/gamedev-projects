@@ -9,6 +9,7 @@
 #include "Mesh.h"
 #include "PointLight.h"
 #include "ShaderProgram.h"
+#include "SpotLight.h"
 #include "Texture.h"
 #include "Utils.h"
 #include "Window.h"
@@ -76,6 +77,8 @@ Texture plainTexture(plainTexturePath);
 
 DirectionalLight mainLight;
 PointLight pointLights[MAX_POINT_LIGHTS];
+SpotLight spotLights[MAX_SPOT_LIGHTS];
+
 Material shinyMaterial;
 Material dullMaterial;
 
@@ -186,10 +189,26 @@ int main()
 		0.3f, 0.2f, 0.1f);
 	pointLightCount++;
 	pointLights[1] = PointLight(0.f, 1.f, 0.f,
-		0.1f, 1.f,
+		0.1f, 0.8f,
 		-4.f, 2.f, 0.f,
 		0.3f, 0.1f, 0.1f);
 	pointLightCount++;
+
+	unsigned int spotLightCount = 0;
+	spotLights[0] = SpotLight(1.f, 1.f, 1.f,
+		0.1f, 2.f,
+		4.f, 2.f, -5.f,
+		0.3f, 0.1f, 0.1f,
+		0.f, -1.f, 0.f,
+		20.f);
+	spotLightCount++;
+	spotLights[1] = SpotLight(1.f, 0.f, 0.f,
+		0.1f, 1.f,
+		4.f, 0.f, -5.f,
+		1.f, 0.f, 0.f,
+		0.f, -1.f, -100.f,
+		20.f);
+	spotLightCount++;
 
 	shinyMaterial = Material(4.f, 256.f);
 	dullMaterial = Material(0.3f, 4);
@@ -237,8 +256,13 @@ int main()
 
 		shaderProgram->UseShaderProgram(); // bind shader program
 
+		glm::vec3 lowerFlashPos = camera.getCameraPosition();
+		lowerFlashPos.y -= 0.3f;
+		spotLights[0].SetFlash(lowerFlashPos, camera.getCameraDirection());
+
 		shaderProgram->SetDirectionalLight(&mainLight);
 		shaderProgram->SetPointLights(pointLights, pointLightCount);
+		shaderProgram->SetSpotLights(spotLights, spotLightCount);
 
 		glm::mat4 view = camera.calculateViewMatrix();
 
@@ -262,7 +286,7 @@ int main()
 		pyramidMesh3->RenderMesh();
 
 		glUniformMatrix4fv(modelUnifLoc, 1, GL_FALSE, glm::value_ptr(floorModel));
-		plainTexture.UseTexture();
+		dirtTexture.UseTexture();
 		shinyMaterial.UseMaterial(specularIntensityUnifLoc, shininessUnifLoc);
 		floorMesh->RenderMesh();
 

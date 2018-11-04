@@ -1,5 +1,8 @@
 #pragma once
+
 #include "Light.h"
+
+#include <GLM/gtc/type_ptr.hpp>
 
 class PointLight :
 	public Light
@@ -11,13 +14,12 @@ public:
 		GLfloat xPos, GLfloat yPos, GLfloat zPos,
 		GLfloat con, GLfloat lin, GLfloat exp);
 
-	void UseLight(GLuint ambientColourUnifLoc, GLuint ambientIntensityUnifLoc,
-		GLuint diffuseIntensityUnifLoc, GLuint positionUnifLoc,
-		GLuint constantUnifLoc, GLuint linearUnifLoc, GLuint exponentUnifLoc);
+	void UseLight(GLuint ambientColourUnifLoc, GLuint ambientIntensityUnifLoc, GLuint diffuseIntensityUnifLoc,
+		GLuint positionUnifLoc, GLuint constantUnifLoc, GLuint linearUnifLoc, GLuint exponentUnifLoc);
 
 	~PointLight();
 
-private:
+protected:
 	static constexpr GLfloat DEFAULT_X_POS = 0.f;
 	static constexpr GLfloat DEFAULT_Y_POS = 0.f;
 	static constexpr GLfloat DEFAULT_Z_POS = 0.f;

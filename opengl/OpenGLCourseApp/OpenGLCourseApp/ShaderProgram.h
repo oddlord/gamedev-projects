@@ -9,6 +9,7 @@
 #include "common.h"
 #include "DirectionalLight.h"
 #include "PointLight.h"
+#include "SpotLight.h"
 
 namespace fs = std::experimental::filesystem;
 
@@ -33,6 +34,7 @@ public:
 
 	void SetDirectionalLight(DirectionalLight* dLight);
 	void SetPointLights(PointLight* pLights, unsigned int lightCount);
+	void SetSpotLights(SpotLight* sLights, unsigned int lightCount);
 
 	void UseShaderProgram();
 	static void UnbindShaderProgram();
@@ -42,6 +44,7 @@ public:
 
 private:
 	unsigned int pointLightCount;
+	unsigned int spotLightCount;
 
 	GLuint shaderProgramID;
 	GLuint modelUnifLoc;
@@ -73,6 +76,23 @@ private:
 		GLuint linearUnifLoc;
 		GLuint exponentUnifLoc;
 	} pointLightUnifLocs[MAX_POINT_LIGHTS];
+
+	GLuint spotLightCountUnifLoc;
+
+	struct
+	{
+		GLuint colourUnifLoc;
+		GLuint ambientIntensityUnifLoc;
+		GLuint diffuseIntensityUnifLoc;
+
+		GLuint positionUnifLoc;
+		GLuint constantUnifLoc;
+		GLuint linearUnifLoc;
+		GLuint exponentUnifLoc;
+
+		GLuint directionUnifLoc;
+		GLuint edgeUnifLoc;
+	} spotLightUnifLocs[MAX_SPOT_LIGHTS];
 
 	void CompileShaders(std::string vertexCode, std::string fragmentCode);
 	void AddShader(std::string shaderCode, GLenum shaderType);
