@@ -6,20 +6,21 @@
 class Light
 {
 public:
-	Light() : Light(1.f, 1.f, 1.f, 1.f, 0.f, -1.f, 0.f, 0.f) {};
-	Light(GLfloat red, GLfloat green, GLfloat blue, GLfloat intensity,
-		GLfloat xDir, GLfloat yDir, GLfloat zDir, GLfloat dIntensity);
-
-	void UseLight(GLuint ambientColourUnifLoc, GLuint ambientIntensityUnifLoc,
-		GLuint diffuseIntensityUnifLoc, GLuint directionUnifLoc);
+	Light();
+	Light(GLfloat red, GLfloat green, GLfloat blue,
+		GLfloat intensity, GLfloat dIntensity);
 
 	~Light();
 
-private:
+protected:
+	static constexpr GLfloat DEFAULT_RED = 1.f;
+	static constexpr GLfloat DEFAULT_GREEN = 1.f;
+	static constexpr GLfloat DEFAULT_BLUE = 1.f;
+	static constexpr GLfloat DEFAULT_INTENSITY = 0.5f;
+	static constexpr GLfloat DEFAULT_D_INTENSITY = 0.5f;
+
 	glm::vec3 colour;
 	GLfloat ambientIntensity;
-
-	glm::vec3 direction;
 	GLfloat diffuseIntensity;
 };
 

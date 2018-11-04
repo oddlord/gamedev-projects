@@ -4,9 +4,10 @@
 
 #include "Camera.h"
 #include "common.h"
-#include "Light.h"
+#include "DirectionalLight.h"
 #include "Material.h"
 #include "Mesh.h"
+#include "PointLight.h"
 #include "ShaderProgram.h"
 #include "Texture.h"
 #include "Utils.h"
@@ -36,8 +37,8 @@ const GLint HEIGHT = 768;
 
 Window mainWindow;
 
-std::vector<Mesh*> meshList;
 std::vector<ShaderProgram*> shaderProgramList;
+
 Camera camera;
 
 GLfloat deltaTime = 0.f;
@@ -68,25 +69,61 @@ Texture dirtTexture(dirtTexturePath);
 fs::path woodTextureFile("wood_plain_210_251_Small.jpg");
 fs::path woodTexturePath = texturesFolder / woodTextureFile;
 Texture woodTexture(woodTexturePath);
+// White texture
+fs::path plainTextureFile("plain.jpg");
+fs::path plainTexturePath = texturesFolder / plainTextureFile;
+Texture plainTexture(plainTexturePath);
 
-Light mainLight;
+DirectionalLight mainLight;
+PointLight pointLights[MAX_POINT_LIGHTS];
 Material shinyMaterial;
 Material dullMaterial;
 
-void CreatePyramid()
+Mesh* createFloor()
 {
 	GLfloat vertices[] = {
-	//	x		y		z			u		v			nx		ny		nz
-		-1.f,	-1.f,	0.f,		0.f,	0.f,		0.f,	0.f,	0.f,
-		1.f,	-1.f,	0.f,		1.f,	0.f,		0.f,	0.f,	0.f,
-		1.f,	-1.f,	2.f,		1.f,	1.f,		0.f,	0.f,	0.f,
-		-1.f,	-1.f,	2.f,		0.f,	1.f,		0.f,	0.f,	0.f,
-		0.f,	1.f,	1.f,		0.5f,	0.5f,		0.f,	0.f,	0.f
+		//x		y		z			u		v			nx		ny		nz
+		-10.f,	0.f,	10.f,		10.f,	10.f,		0.f,	0.f,	0.f,
+		10.f,	0.f,	10.f,		0.f,	10.f,		0.f,	0.f,	0.f,
+		10.f,	0.f,	-10.f,		0.f,	0.f,		0.f,	0.f,	0.f,
+		-10.f,	0.f,	-10.f,		10.f,	0.f,		0.f,	0.f,	0.f
+	};
+
+	unsigned int indices[] = {
+		1, 2, 0,
+		3, 0, 2
+	};
+
+	const unsigned int numOfVertices = sizeof(vertices) / sizeof(vertices[0]);
+	const unsigned int numOfIndices = sizeof(indices) / sizeof(indices[0]);
+	const unsigned int vLength = 8;
+	const unsigned int uvOffset = 3;
+	const unsigned int normalOffset = 5;
+
+	Utils::calcAverageNormals(vertices, numOfVertices, indices, numOfIndices, vLength, normalOffset);
+
+	Utils::printMatrix(vertices, 4, vLength);
+
+	Mesh* floorMesh = new Mesh();
+	floorMesh->CreateMesh(numOfVertices, vertices, numOfIndices, indices, vLength, uvOffset, normalOffset);
+
+	return floorMesh;
+}
+
+Mesh* CreatePyramid()
+{
+	GLfloat vertices[] = {
+		//x		y		z			u		v			nx		ny		nz
+		-1.f,	-1.f,	1.f,		0.f,	0.f,		0.f,	0.f,	0.f,
+		1.f,	-1.f,	1.f,		1.f,	0.f,		0.f,	0.f,	0.f,
+		1.f,	-1.f,	-1.f,		1.f,	1.f,		0.f,	0.f,	0.f,
+		-1.f,	-1.f,	-1.f,		0.f,	1.f,		0.f,	0.f,	0.f,
+		0.f,	0.8f,	0.f,		0.5f,	0.5f,		0.f,	0.f,	0.f
 	};
 
 	// NOTE: the order of each indices triplet counts!
 	// glm::cross implements the right-hand rule
-	// so we have to choose the order correctly, in order to have the right normal
+	// so we have to choose the order correctly, in order to have the correct normal orientation
 	// check Utils::calcAverageNormals for the use of glm::cross
 	// https://en.wikipedia.org/wiki/Right-hand_rule
 	unsigned int indices[] = {
@@ -106,17 +143,10 @@ void CreatePyramid()
 
 	Utils::calcAverageNormals(vertices, numOfVertices, indices, numOfIndices, vLength, normalOffset);
 
-	Mesh* pyramid = new Mesh();
-	pyramid->CreateMesh(numOfVertices, vertices, numOfIndices, indices, vLength, uvOffset, normalOffset);
-	meshList.push_back(pyramid);
+	Mesh* pyramidMesh = new Mesh();
+	pyramidMesh->CreateMesh(numOfVertices, vertices, numOfIndices, indices, vLength, uvOffset, normalOffset);
 
-	Mesh* pyramid2 = new Mesh();
-	pyramid2->CreateMesh(numOfVertices, vertices, numOfIndices, indices, vLength, uvOffset, normalOffset);
-	meshList.push_back(pyramid2);
-
-	Mesh* pyramid3 = new Mesh();
-	pyramid3->CreateMesh(numOfVertices, vertices, numOfIndices, indices, vLength, uvOffset, normalOffset);
-	meshList.push_back(pyramid3);
+	return pyramidMesh;
 }
 
 void CreateShaderProgram()
@@ -131,7 +161,11 @@ int main()
 	mainWindow = Window(WIDTH, HEIGHT);
 	mainWindow.Initialise();
 
-	CreatePyramid();
+	Mesh* pyramidMesh1 = CreatePyramid();
+	Mesh* pyramidMesh2 = CreatePyramid();
+	Mesh* pyramidMesh3 = CreatePyramid();
+	Mesh* floorMesh = createFloor();
+
 	CreateShaderProgram();
 
 	camera = Camera(glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 1.f, 0.f), -90.f, 0.f, 8.f, 0.5f);
@@ -139,10 +173,25 @@ int main()
 	brickTexture.LoadTexture();
 	dirtTexture.LoadTexture();
 	woodTexture.LoadTexture();
+	plainTexture.LoadTexture();
 
-	mainLight = Light(1.f, 1.f, 1.f, 0.2f,		// ambient lighting
-					  2.f, -1.f, -2.f, 0.5f);	// diffuse lighting
-	shinyMaterial = Material(1.f, 32.f);
+	mainLight = DirectionalLight(1.f, 1.f, 1.f, // color light
+		0.2f, 0.5f,								// ambient/diffuse intensity
+		2.f, -1.f, -2.f);						// direction
+
+	unsigned int pointLightCount = 0;
+	pointLights[0] = PointLight(0.f, 0.f, 1.f,
+		0.1f, 0.4f,
+		4.f, 0.f, 0.f,
+		0.3f, 0.2f, 0.1f);
+	pointLightCount++;
+	pointLights[1] = PointLight(0.f, 1.f, 0.f,
+		0.1f, 1.f,
+		-4.f, 2.f, 0.f,
+		0.3f, 0.1f, 0.1f);
+	pointLightCount++;
+
+	shinyMaterial = Material(4.f, 256.f);
 	dullMaterial = Material(0.3f, 4);
 
 	ShaderProgram* shaderProgram = shaderProgramList[0];
@@ -150,23 +199,22 @@ int main()
 	GLuint projectionUnifLoc = shaderProgram->GetProjectionUnifLoc();
 	GLuint viewUnifLoc = shaderProgram->GetViewUnifLoc();
 	GLuint eyePosUnifLoc = shaderProgram->GetEyePositionUnifLoc();
-	GLuint ambientColourUnifLoc = shaderProgram->GetAmbientColourUnifLoc();
-	GLuint ambientIntensityUnifLoc = shaderProgram->GetAmbientIntensityUnifLoc();
-	GLuint directionUnifLoc = shaderProgram->GetDirectionUnifLoc();
-	GLuint diffuseIntensityUnifLoc = shaderProgram->GetDiffuseIntensityUnifLoc();
 	GLuint specularIntensityUnifLoc = shaderProgram->GetSpecularIntensityUnifLoc();
 	GLuint shininessUnifLoc = shaderProgram->GetShininessUnifLoc();
 
 	glm::mat4 projection = glm::perspective(glm::radians(60.0f), mainWindow.getBufferWidth() / mainWindow.getBufferHeight(), 0.1f, 100.f);
 
-	glm::mat4 model1(1.f);
-	model1 = glm::translate(model1, glm::vec3(0.f, -0.3f, -5.f));
+	glm::mat4 pyramidModel1(1.f);
+	pyramidModel1 = glm::translate(pyramidModel1, glm::vec3(0.f, -0.3f, -5.f));
 
-	glm::mat4 model2(1.f);
-	model2 = glm::translate(model2, glm::vec3(0.f, 2.f, -5.f));
+	glm::mat4 pyramidModel2(1.f);
+	pyramidModel2 = glm::translate(pyramidModel2, glm::vec3(0.f, 2.f, -5.f));
 
-	glm::mat4 model3(1.f);
-	model3 = glm::translate(model3, glm::vec3(0.f, -0.3f, -8.f));
+	glm::mat4 pyramidModel3(1.f);
+	pyramidModel3 = glm::translate(pyramidModel3, glm::vec3(0.f, -0.3f, -8.f));
+
+	glm::mat4 floorModel(1.f);
+	floorModel = glm::translate(floorModel, glm::vec3(0.f, -2.f, -5.f));
 
 	// Loop until window close
 	while (!mainWindow.getShouldClose())
@@ -189,7 +237,8 @@ int main()
 
 		shaderProgram->UseShaderProgram(); // bind shader program
 
-		mainLight.UseLight(ambientColourUnifLoc, ambientIntensityUnifLoc, diffuseIntensityUnifLoc, directionUnifLoc);
+		shaderProgram->SetDirectionalLight(&mainLight);
+		shaderProgram->SetPointLights(pointLights, pointLightCount);
 
 		glm::mat4 view = camera.calculateViewMatrix();
 
@@ -197,20 +246,25 @@ int main()
 		glUniformMatrix4fv(viewUnifLoc, 1, GL_FALSE, glm::value_ptr(view));
 		glUniform3fv(eyePosUnifLoc, 1, glm::value_ptr(camera.getCameraPosition()));
 
-		glUniformMatrix4fv(modelUnifLoc, 1, GL_FALSE, glm::value_ptr(model1));
+		glUniformMatrix4fv(modelUnifLoc, 1, GL_FALSE, glm::value_ptr(pyramidModel1));
 		dirtTexture.UseTexture();
 		dullMaterial.UseMaterial(specularIntensityUnifLoc, shininessUnifLoc);
-		meshList[0]->RenderMesh();
+		pyramidMesh1->RenderMesh();
 
-		glUniformMatrix4fv(modelUnifLoc, 1, GL_FALSE, glm::value_ptr(model2));
+		glUniformMatrix4fv(modelUnifLoc, 1, GL_FALSE, glm::value_ptr(pyramidModel2));
 		brickTexture.UseTexture();
-		shinyMaterial.UseMaterial(specularIntensityUnifLoc, shininessUnifLoc);
-		meshList[1]->RenderMesh();
+		dullMaterial.UseMaterial(specularIntensityUnifLoc, shininessUnifLoc);
+		pyramidMesh2->RenderMesh();
 
-		glUniformMatrix4fv(modelUnifLoc, 1, GL_FALSE, glm::value_ptr(model3));
+		glUniformMatrix4fv(modelUnifLoc, 1, GL_FALSE, glm::value_ptr(pyramidModel3));
 		woodTexture.UseTexture();
 		shinyMaterial.UseMaterial(specularIntensityUnifLoc, shininessUnifLoc);
-		meshList[2]->RenderMesh();
+		pyramidMesh3->RenderMesh();
+
+		glUniformMatrix4fv(modelUnifLoc, 1, GL_FALSE, glm::value_ptr(floorModel));
+		plainTexture.UseTexture();
+		shinyMaterial.UseMaterial(specularIntensityUnifLoc, shininessUnifLoc);
+		floorMesh->RenderMesh();
 
 		ShaderProgram::UnbindShaderProgram(); // unbind shader program
 

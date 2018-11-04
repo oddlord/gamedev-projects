@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 
+Texture::Texture() : Texture("") {}
 Texture::Texture(fs::path fileLoc)
 {
 	textureID = 0;

@@ -8,8 +8,8 @@ ShaderProgram::ShaderProgram()
 	shaderProgramID = 0;
 	projectionUnifLoc = 0;
 	modelUnifLoc = 0;
-	ambientColourUnifLoc = 0;
-	ambientIntensityUnifLoc = 0;
+
+	pointLightCount = 0;
 }
 
 void ShaderProgram::CreateFromString(std::string vertexCode, std::string fragmentCode)
@@ -50,22 +50,22 @@ GLuint ShaderProgram::GetEyePositionUnifLoc()
 
 GLuint ShaderProgram::GetAmbientColourUnifLoc()
 {
-	return ambientColourUnifLoc;
+	return directionalLightUnifLocs.colourUnifLoc;
 }
 
 GLuint ShaderProgram::GetAmbientIntensityUnifLoc()
 {
-	return ambientIntensityUnifLoc;
+	return directionalLightUnifLocs.ambientIntensityUnifLoc;
 }
 
 GLuint ShaderProgram::GetDiffuseIntensityUnifLoc()
 {
-	return diffuseIntensityUnifLoc;
+	return directionalLightUnifLocs.diffuseIntensityUnifLoc;
 }
 
 GLuint ShaderProgram::GetDirectionUnifLoc()
 {
-	return directionUnifLoc;
+	return directionalLightUnifLocs.directionUnifLoc;
 }
 
 GLuint ShaderProgram::GetSpecularIntensityUnifLoc()
@@ -76,6 +76,28 @@ GLuint ShaderProgram::GetSpecularIntensityUnifLoc()
 GLuint ShaderProgram::GetShininessUnifLoc()
 {
 	return shininessUnifLoc;
+}
+
+void ShaderProgram::SetDirectionalLight(DirectionalLight * dLight)
+{
+	dLight->UseLight(directionalLightUnifLocs.colourUnifLoc, directionalLightUnifLocs.ambientIntensityUnifLoc,
+		directionalLightUnifLocs.diffuseIntensityUnifLoc, directionalLightUnifLocs.directionUnifLoc);
+}
+
+void ShaderProgram::SetPointLights(PointLight * pLights, unsigned int lightCount)
+{
+	if (lightCount > MAX_POINT_LIGHTS)
+	{
+		lightCount = MAX_POINT_LIGHTS;
+	}
+
+	glUniform1i(pointLightCountUnifLoc, lightCount);
+
+	for (size_t i = 0; i < lightCount; i++)
+	{
+		pLights[i].UseLight(pointLightUnifLocs[i].colourUnifLoc, pointLightUnifLocs[i].ambientIntensityUnifLoc, pointLightUnifLocs[i].diffuseIntensityUnifLoc,
+			pointLightUnifLocs[i].positionUnifLoc, pointLightUnifLocs[i].constantUnifLoc, pointLightUnifLocs[i].linearUnifLoc, pointLightUnifLocs[i].exponentUnifLoc);
+	}
 }
 
 void ShaderProgram::UseShaderProgram()
@@ -99,8 +121,6 @@ void ShaderProgram::ClearShaderProgram()
 	modelUnifLoc = 0;
 	projectionUnifLoc = 0;
 	viewUnifLoc = 0;
-	ambientColourUnifLoc = 0;
-	ambientIntensityUnifLoc = 0;
 }
 
 
@@ -143,12 +163,40 @@ void ShaderProgram::CompileShaders(std::string vertexCode, std::string fragmentC
 	projectionUnifLoc = glGetUniformLocation(shaderProgramID, "projection");
 	viewUnifLoc = glGetUniformLocation(shaderProgramID, "view");
 	eyePositionUnifLoc = glGetUniformLocation(shaderProgramID, "eyePosition");
-	ambientColourUnifLoc = glGetUniformLocation(shaderProgramID, "directionalLight.colour");
-	ambientIntensityUnifLoc = glGetUniformLocation(shaderProgramID, "directionalLight.ambientIntensity");
-	directionUnifLoc = glGetUniformLocation(shaderProgramID, "directionalLight.direction");
-	diffuseIntensityUnifLoc = glGetUniformLocation(shaderProgramID, "directionalLight.diffuseIntensity");
+	directionalLightUnifLocs.colourUnifLoc = glGetUniformLocation(shaderProgramID, "directionalLight.base.colour");
+	directionalLightUnifLocs.ambientIntensityUnifLoc = glGetUniformLocation(shaderProgramID, "directionalLight.base.ambientIntensity");
+	directionalLightUnifLocs.diffuseIntensityUnifLoc = glGetUniformLocation(shaderProgramID, "directionalLight.base.diffuseIntensity");
+	directionalLightUnifLocs.directionUnifLoc = glGetUniformLocation(shaderProgramID, "directionalLight.direction");
 	specularIntensityUnifLoc = glGetUniformLocation(shaderProgramID, "material.specularIntensity");
 	shininessUnifLoc = glGetUniformLocation(shaderProgramID, "material.shininess");
+
+	pointLightCountUnifLoc = glGetUniformLocation(shaderProgramID, "pointLightCount");
+
+	for (size_t i = 0; i < MAX_POINT_LIGHTS; i++)
+	{
+		char locBuff[100] = { '\0' };
+
+		snprintf(locBuff, sizeof(locBuff), "pointLights[%d].base.colour", i);
+		pointLightUnifLocs[i].colourUnifLoc = glGetUniformLocation(shaderProgramID, locBuff);
+
+		snprintf(locBuff, sizeof(locBuff), "pointLights[%d].base.ambientIntensity", i);
+		pointLightUnifLocs[i].ambientIntensityUnifLoc = glGetUniformLocation(shaderProgramID, locBuff);
+
+		snprintf(locBuff, sizeof(locBuff), "pointLights[%d].base.diffuseIntensity", i);
+		pointLightUnifLocs[i].diffuseIntensityUnifLoc = glGetUniformLocation(shaderProgramID, locBuff);
+
+		snprintf(locBuff, sizeof(locBuff), "pointLights[%d].position", i);
+		pointLightUnifLocs[i].positionUnifLoc = glGetUniformLocation(shaderProgramID, locBuff);
+
+		snprintf(locBuff, sizeof(locBuff), "pointLights[%d].constant", i);
+		pointLightUnifLocs[i].constantUnifLoc = glGetUniformLocation(shaderProgramID, locBuff);
+
+		snprintf(locBuff, sizeof(locBuff), "pointLights[%d].linear", i);
+		pointLightUnifLocs[i].linearUnifLoc = glGetUniformLocation(shaderProgramID, locBuff);
+
+		snprintf(locBuff, sizeof(locBuff), "pointLights[%d].exponent", i);
+		pointLightUnifLocs[i].exponentUnifLoc = glGetUniformLocation(shaderProgramID, locBuff);
+	}
 }
 
 void ShaderProgram::AddShader(std::string shaderCode, GLenum shaderType)

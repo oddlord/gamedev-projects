@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Material.h"
 
+Material::Material() : Material(0.f, 0.f) {}
 Material::Material(GLfloat sIntensity, GLfloat shine)
 {
 	specularIntensity = sIntensity;
@@ -15,6 +16,4 @@ void Material::UseMaterial(GLuint specularIntensityUnifLoc, GLuint shininessUnif
 }
 
 
-Material::~Material()
-{
-}
+Material::~Material() {}

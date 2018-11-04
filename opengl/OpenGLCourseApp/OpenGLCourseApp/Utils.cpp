@@ -6,9 +6,7 @@
 
 #include <GLM\glm.hpp>
 
-Utils::Utils()
-{
-}
+Utils::Utils() {}
 
 bool Utils::CheckErrors(const GLuint target, const GLenum status, const InfoLogType infoLogType, std::string message)
 {
@@ -121,6 +119,4 @@ void Utils::printMatrix(GLfloat* matrix, unsigned int rows, unsigned int cols)
 }
 
 
-Utils::~Utils()
-{
-}
+Utils::~Utils() {}
