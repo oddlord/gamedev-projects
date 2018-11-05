@@ -7,6 +7,7 @@
 #include "DirectionalLight.h"
 #include "Material.h"
 #include "Mesh.h"
+#include "Model.h"
 #include "PointLight.h"
 #include "ShaderProgram.h"
 #include "SpotLight.h"
@@ -61,19 +62,19 @@ fs::path texturesFolder("Textures");
 // Brick texture
 fs::path brickTextureFile("brick_red_4104_5283_Small.jpg");
 fs::path brickTexturePath = texturesFolder / brickTextureFile;
-Texture brickTexture(brickTexturePath);
+Texture brickTexture(brickTexturePath, false);
 // Dirt texture
 fs::path dirtTextureFile("ground_dirt_3299_9359_Small.jpg");
 fs::path dirtTexturePath = texturesFolder / dirtTextureFile;
-Texture dirtTexture(dirtTexturePath);
+Texture dirtTexture(dirtTexturePath, false);
 // Wood texture
 fs::path woodTextureFile("wood_plain_210_251_Small.jpg");
 fs::path woodTexturePath = texturesFolder / woodTextureFile;
-Texture woodTexture(woodTexturePath);
+Texture woodTexture(woodTexturePath, false);
 // White texture
 fs::path plainTextureFile("plain.jpg");
 fs::path plainTexturePath = texturesFolder / plainTextureFile;
-Texture plainTexture(plainTexturePath);
+Texture plainTexture(plainTexturePath, false);
 
 DirectionalLight mainLight;
 PointLight pointLights[MAX_POINT_LIGHTS];
@@ -81,6 +82,9 @@ SpotLight spotLights[MAX_SPOT_LIGHTS];
 
 Material shinyMaterial;
 Material dullMaterial;
+
+Model xwing;
+Model blackhawk;
 
 Mesh* createFloor()
 {
@@ -104,8 +108,6 @@ Mesh* createFloor()
 	const unsigned int normalOffset = 5;
 
 	Utils::calcAverageNormals(vertices, numOfVertices, indices, numOfIndices, vLength, normalOffset);
-
-	Utils::printMatrix(vertices, 4, vLength);
 
 	Mesh* floorMesh = new Mesh();
 	floorMesh->CreateMesh(numOfVertices, vertices, numOfIndices, indices, vLength, uvOffset, normalOffset);
@@ -178,8 +180,17 @@ int main()
 	woodTexture.LoadTexture();
 	plainTexture.LoadTexture();
 
+	shinyMaterial = Material(4.f, 256.f);
+	dullMaterial = Material(0.3f, 4);
+
+	xwing = Model();
+	xwing.LoadModel("Models/x-wing.obj");
+
+	blackhawk = Model();
+	blackhawk.LoadModel("Models/uh60.obj");
+
 	mainLight = DirectionalLight(1.f, 1.f, 1.f, // color light
-		0.2f, 0.5f,								// ambient/diffuse intensity
+		0.3f, 0.6f,								// ambient/diffuse intensity
 		2.f, -1.f, -2.f);						// direction
 
 	unsigned int pointLightCount = 0;
@@ -210,9 +221,6 @@ int main()
 		20.f);
 	spotLightCount++;
 
-	shinyMaterial = Material(4.f, 256.f);
-	dullMaterial = Material(0.3f, 4);
-
 	ShaderProgram* shaderProgram = shaderProgramList[0];
 	GLuint modelUnifLoc = shaderProgram->GetModelUnifLoc();
 	GLuint projectionUnifLoc = shaderProgram->GetProjectionUnifLoc();
@@ -234,6 +242,15 @@ int main()
 
 	glm::mat4 floorModel(1.f);
 	floorModel = glm::translate(floorModel, glm::vec3(0.f, -2.f, -5.f));
+
+	glm::mat4 xwingModel(1.f);
+	xwingModel = glm::translate(xwingModel, glm::vec3(-7.f, 0.f, 10.f));
+	xwingModel = glm::scale(xwingModel, glm::vec3(0.006f, 0.006f, 0.006f));
+
+	glm::mat4 blackhawkModel(1.f);
+	blackhawkModel = glm::translate(blackhawkModel, glm::vec3(-3.f, 2.f, -5.f));
+	blackhawkModel = glm::rotate(blackhawkModel, -90.f * toRadians, glm::vec3(1.f, 0.f, 0.f));
+	blackhawkModel = glm::scale(blackhawkModel, glm::vec3(0.4f, 0.4f, 0.4f));
 
 	// Loop until window close
 	while (!mainWindow.getShouldClose())
@@ -258,7 +275,7 @@ int main()
 
 		glm::vec3 lowerFlashPos = camera.getCameraPosition();
 		lowerFlashPos.y -= 0.3f;
-		spotLights[0].SetFlash(lowerFlashPos, camera.getCameraDirection());
+		// spotLights[0].SetFlash(lowerFlashPos, camera.getCameraDirection());
 
 		shaderProgram->SetDirectionalLight(&mainLight);
 		shaderProgram->SetPointLights(pointLights, pointLightCount);
@@ -289,6 +306,14 @@ int main()
 		dirtTexture.UseTexture();
 		shinyMaterial.UseMaterial(specularIntensityUnifLoc, shininessUnifLoc);
 		floorMesh->RenderMesh();
+
+		glUniformMatrix4fv(modelUnifLoc, 1, GL_FALSE, glm::value_ptr(xwingModel));
+		shinyMaterial.UseMaterial(specularIntensityUnifLoc, shininessUnifLoc);
+		xwing.RenderModel();
+
+		glUniformMatrix4fv(modelUnifLoc, 1, GL_FALSE, glm::value_ptr(blackhawkModel));
+		shinyMaterial.UseMaterial(specularIntensityUnifLoc, shininessUnifLoc);
+		blackhawk.RenderModel();
 
 		ShaderProgram::UnbindShaderProgram(); // unbind shader program
 

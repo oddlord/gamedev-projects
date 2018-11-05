@@ -63,12 +63,6 @@ uniform vec3 eyePosition;
 
 vec4 CalcLightByDirection(Light light, vec3 direction)
 {
-	// when computing the dot product between a direction and a normal
-	// the normal has to be inverted
-	// otherwise they would be facing different directions
-	// i.e. the light comes towards the mesh
-	// but the normal is pointing away from it
-
 	vec4 debugColour = DEBUG_BLUE;
 
 	vec4 ambientColour = vec4(light.colour, 1.f) * light.ambientIntensity;
@@ -78,7 +72,13 @@ vec4 CalcLightByDirection(Light light, vec3 direction)
 	// parallel = angle 0 degrees = cos 1
 	// perpendicular = angle 90 degrees = cos 0
 	// normalise so that the dot product is = to the cos of the angle
-	float diffuseFactor = max(0.f, dot(normalize(-normal), normalize(direction)));
+
+	// when computing the dot product between a direction and a normal
+	// the normal (or the direction, either of the two) has to be inverted
+	// otherwise they would be facing different directions
+	// i.e. the light comes towards the mesh
+	// but the normal is pointing away from it
+	float diffuseFactor = max(0.f, dot(normalize(normal), -normalize(direction)));
 	vec4 diffuseColour = vec4(light.colour, 1.f) * light.diffuseIntensity * diffuseFactor;
 
 	vec4 specularColor = vec4(0.f, 0.f, 0.f, 1.f);
@@ -87,7 +87,7 @@ vec4 CalcLightByDirection(Light light, vec3 direction)
 	{
 		debugColour += DEBUG_RED;
 		vec3 fragToEye = normalize(eyePosition - fragPos);
-		vec3 reflectedVertex = normalize(reflect(direction, normalize(-normal)));
+		vec3 reflectedVertex = normalize(reflect(direction, normalize(normal)));
 
 		float specularFactor = dot(fragToEye, reflectedVertex);
 		if (specularFactor > 0.f)

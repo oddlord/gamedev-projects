@@ -12,9 +12,9 @@ class Texture
 {
 public:
 	Texture();
-	Texture(fs::path fileLoc);
+	Texture(fs::path fileLoc, bool alpha);
 
-	void LoadTexture();
+	bool LoadTexture();
 	void UseTexture();
 	void ClearTexture();
 
@@ -22,6 +22,7 @@ public:
 
 private:
 	GLuint textureID;
+	bool hasAlpha;
 	int width;
 	int height;
 	int bitDepth;

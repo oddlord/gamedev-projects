@@ -4,24 +4,25 @@
 #include <iostream>
 #include <string>
 
-Texture::Texture() : Texture("") {}
-Texture::Texture(fs::path fileLoc)
+Texture::Texture() : Texture("", false) {}
+Texture::Texture(fs::path fileLoc, bool alpha)
 {
 	textureID = 0;
+	hasAlpha = alpha;
 	width = 0;
 	height = 0;
 	bitDepth = 0;
 	fileLocation = fileLoc;
 }
 
-void Texture::LoadTexture()
+bool Texture::LoadTexture()
 {
 	// unsigned char because we want an array of bytes
 	unsigned char* texData = stbi_load(fileLocation.string().c_str(), &width, &height, &bitDepth, 0);
 	if (!texData)
 	{
 		std::cout << "Failed to find: " << fileLocation << std::endl;
-		return;
+		return false;
 	}
 
 	// Generating a Texture ID
@@ -37,7 +38,9 @@ void Texture::LoadTexture()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, texData);
+
+	GLenum format = hasAlpha ? GL_RGBA : GL_RGB;
+	glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, texData);
 	glGenerateMipmap(GL_TEXTURE_2D);
 
 	// Unbinding Texture ID
@@ -45,6 +48,8 @@ void Texture::LoadTexture()
 
 	// Raw image data in texData no longer needed
 	stbi_image_free(texData);
+
+	return true;
 }
 
 void Texture::UseTexture()
