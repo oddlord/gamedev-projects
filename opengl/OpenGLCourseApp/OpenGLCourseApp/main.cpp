@@ -105,8 +105,6 @@ Mesh* createFloor()
 
 	Utils::calcAverageNormals(vertices, numOfVertices, indices, numOfIndices, vLength, normalOffset);
 
-	Utils::printMatrix(vertices, 4, vLength);
-
 	Mesh* floorMesh = new Mesh();
 	floorMesh->CreateMesh(numOfVertices, vertices, numOfIndices, indices, vLength, uvOffset, normalOffset);
 
