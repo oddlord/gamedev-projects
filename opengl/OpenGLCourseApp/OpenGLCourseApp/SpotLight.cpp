@@ -2,19 +2,22 @@
 #include "SpotLight.h"
 
 
-SpotLight::SpotLight() : SpotLight(DEFAULT_RED, DEFAULT_GREEN, DEFAULT_BLUE,
+SpotLight::SpotLight() : SpotLight(DEFAULT_SHADOW_WIDTH, DEFAULT_SHADOW_HEIGHT,
+	DEFAULT_RED, DEFAULT_GREEN, DEFAULT_BLUE,
 	DEFAULT_INTENSITY, DEFAULT_D_INTENSITY,
 	DEFAULT_X_POS, DEFAULT_Y_POS, DEFAULT_Z_POS,
 	DEFAULT_CONSTANT, DEFAULT_LINEAR, DEFAULT_EXPONENT,
 	DEFAULT_X_DIR, DEFAULT_Y_DIR, DEFAULT_Z_DIR,
 	DEFAULT_EDGE) {}
 
-SpotLight::SpotLight(GLfloat red, GLfloat green, GLfloat blue,
+SpotLight::SpotLight(GLfloat shadowWidth, GLfloat shadowHeight,
+	GLfloat red, GLfloat green, GLfloat blue,
 	GLfloat intensity, GLfloat dIntensity,
 	GLfloat xPos, GLfloat yPos, GLfloat zPos,
 	GLfloat con, GLfloat lin, GLfloat exp,
 	GLfloat xDir, GLfloat yDir, GLfloat zDir,
-	GLfloat edg) : PointLight(red, green, blue,
+	GLfloat edg) : PointLight(shadowWidth, shadowHeight,
+		red, green, blue,
 		intensity, dIntensity,
 		xPos, yPos, zPos,
 		con, lin, exp)

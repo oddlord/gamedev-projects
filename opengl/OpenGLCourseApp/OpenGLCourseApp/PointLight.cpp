@@ -1,15 +1,18 @@
 #include "stdafx.h"
 #include "PointLight.h"
 
-PointLight::PointLight() : PointLight(DEFAULT_RED, DEFAULT_GREEN, DEFAULT_BLUE,
+PointLight::PointLight() : PointLight(DEFAULT_SHADOW_WIDTH, DEFAULT_SHADOW_HEIGHT,
+	DEFAULT_RED, DEFAULT_GREEN, DEFAULT_BLUE,
 	DEFAULT_INTENSITY, DEFAULT_D_INTENSITY,
 	DEFAULT_X_POS, DEFAULT_Y_POS, DEFAULT_Z_POS,
 	DEFAULT_CONSTANT, DEFAULT_LINEAR, DEFAULT_EXPONENT) {}
 
-PointLight::PointLight(GLfloat red, GLfloat green, GLfloat blue,
+PointLight::PointLight(GLfloat shadowWidth, GLfloat shadowHeight,
+	GLfloat red, GLfloat green, GLfloat blue,
 	GLfloat intensity, GLfloat dIntensity,
 	GLfloat xPos, GLfloat yPos, GLfloat zPos,
-	GLfloat con, GLfloat lin, GLfloat exp) : Light(red, green, blue,
+	GLfloat con, GLfloat lin, GLfloat exp) : Light(shadowWidth, shadowHeight,
+		red, green, blue,
 		intensity, dIntensity)
 {
 	position = glm::vec3(xPos, yPos, zPos);

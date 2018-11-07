@@ -35,6 +35,9 @@ public:
 	void SetDirectionalLight(DirectionalLight* dLight);
 	void SetPointLights(PointLight* pLights, unsigned int lightCount);
 	void SetSpotLights(SpotLight* sLights, unsigned int lightCount);
+	void SetTexture(GLuint textureUnit);
+	void SetDirectionalShadowMap(GLuint textureUnit);
+	void SetDirectionalLightTransform(glm::mat4* lTransform);
 
 	void UseShaderProgram();
 	static void UnbindShaderProgram();
@@ -53,6 +56,9 @@ private:
 	GLuint eyePositionUnifLoc;
 	GLuint specularIntensityUnifLoc;
 	GLuint shininessUnifLoc;
+	GLuint textureUnifLoc;
+	GLuint directionalLightTransformUnifLoc;
+	GLuint directionalShadowMapUnifLoc;
 
 	struct
 	{

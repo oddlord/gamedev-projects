@@ -1,5 +1,7 @@
 #include "stdafx.h"
 
+#include <GLM/gtc/type_ptr.hpp>
+
 #include "ShaderProgram.h"
 #include "Utils.h"
 
@@ -116,6 +118,21 @@ void ShaderProgram::SetSpotLights(SpotLight* sLights, unsigned int lightCount)
 			spotLightUnifLocs[i].positionUnifLoc, spotLightUnifLocs[i].constantUnifLoc, spotLightUnifLocs[i].linearUnifLoc, spotLightUnifLocs[i].exponentUnifLoc,
 			spotLightUnifLocs[i].directionUnifLoc, spotLightUnifLocs[i].edgeUnifLoc);
 	}
+}
+
+void ShaderProgram::SetTexture(GLuint textureUnit)
+{
+	glUniform1i(textureUnifLoc, textureUnit);
+}
+
+void ShaderProgram::SetDirectionalShadowMap(GLuint textureUnit)
+{
+	glUniform1i(directionalShadowMapUnifLoc, textureUnit);
+}
+
+void ShaderProgram::SetDirectionalLightTransform(glm::mat4 * lTransform)
+{
+	glUniformMatrix4fv(directionalLightTransformUnifLoc, 1, GL_FALSE, glm::value_ptr(*lTransform));
 }
 
 void ShaderProgram::UseShaderProgram()
@@ -247,6 +264,10 @@ void ShaderProgram::CompileShaders(std::string vertexCode, std::string fragmentC
 		snprintf(locBuff, sizeof(locBuff), "spotLights[%d].edge", i);
 		spotLightUnifLocs[i].edgeUnifLoc = glGetUniformLocation(shaderProgramID, locBuff);
 	}
+
+	textureUnifLoc = glGetUniformLocation(shaderProgramID, "textureSampler");
+	directionalLightTransformUnifLoc = glGetUniformLocation(shaderProgramID, "directionalLightTransform");
+	directionalShadowMapUnifLoc = glGetUniformLocation(shaderProgramID, "directionalShadowMap");
 }
 
 void ShaderProgram::AddShader(std::string shaderCode, GLenum shaderType)

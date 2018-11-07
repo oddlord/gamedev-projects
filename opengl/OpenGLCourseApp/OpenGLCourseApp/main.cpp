@@ -1,3 +1,5 @@
+// S5L31 1:14:16
+
 #include "stdafx.h"
 
 #define STB_IMAGE_IMPLEMENTATION
@@ -37,9 +39,13 @@ bool logEnabled = true;
 const GLint WIDTH = 1024;
 const GLint HEIGHT = 768;
 
+const GLfloat SHADOW_WIDTH = 1024;
+const GLfloat SHADOW_HEIGHT = 1024;
+
 Window mainWindow;
 
 std::vector<ShaderProgram*> shaderProgramList;
+ShaderProgram* directionalShadowShader;
 
 Camera camera;
 
@@ -47,6 +53,13 @@ GLfloat deltaTime = 0.f;
 GLfloat lastTime = 0.f;
 
 const float toRadians = 3.14159265f / 180.f;
+
+GLuint modelUnifLoc = 0;
+GLuint projectionUnifLoc = 0;
+GLuint viewUnifLoc = 0;
+GLuint eyePosUnifLoc = 0;
+GLuint specularIntensityUnifLoc = 0;
+GLuint shininessUnifLoc = 0;
 
 // Shaders
 fs::path shadersFolder("Shaders");
@@ -56,6 +69,12 @@ fs::path vShaderPath = shadersFolder / vShaderFile;
 // Fragment shader
 fs::path fShaderFile("shader.frag");
 fs::path fShaderPath = shadersFolder / fShaderFile;
+// Directional shadow map vertex shader
+fs::path vDirShadowMapShaderFile("directional_shadow_map.vert");
+fs::path vDirShadowMapShaderPath = shadersFolder / vShaderFile;
+// Directional shadow map fragment shader
+fs::path fDirShadowMapShaderFile("directional_shadow_map.frag");
+fs::path fDirShadowMapShaderPath = shadersFolder / fShaderFile;
 
 // Textures
 fs::path texturesFolder("Textures");
@@ -80,13 +99,21 @@ DirectionalLight mainLight;
 PointLight pointLights[MAX_POINT_LIGHTS];
 SpotLight spotLights[MAX_SPOT_LIGHTS];
 
+unsigned int pointLightCount = 0;
+unsigned int spotLightCount = 0;
+
 Material shinyMaterial;
 Material dullMaterial;
+
+Mesh pyramidMesh1;
+Mesh pyramidMesh2;
+Mesh pyramidMesh3;
+Mesh floorMesh;
 
 Model xwing;
 Model blackhawk;
 
-Mesh* createFloor()
+Mesh createFloor()
 {
 	GLfloat vertices[] = {
 		//x		y		z			u		v			nx		ny		nz
@@ -109,13 +136,13 @@ Mesh* createFloor()
 
 	Utils::calcAverageNormals(vertices, numOfVertices, indices, numOfIndices, vLength, normalOffset);
 
-	Mesh* floorMesh = new Mesh();
-	floorMesh->CreateMesh(numOfVertices, vertices, numOfIndices, indices, vLength, uvOffset, normalOffset);
+	Mesh floorMesh = Mesh();
+	floorMesh.CreateMesh(numOfVertices, vertices, numOfIndices, indices, vLength, uvOffset, normalOffset);
 
 	return floorMesh;
 }
 
-Mesh* CreatePyramid()
+Mesh CreatePyramid()
 {
 	GLfloat vertices[] = {
 		//x		y		z			u		v			nx		ny		nz
@@ -148,8 +175,8 @@ Mesh* CreatePyramid()
 
 	Utils::calcAverageNormals(vertices, numOfVertices, indices, numOfIndices, vLength, normalOffset);
 
-	Mesh* pyramidMesh = new Mesh();
-	pyramidMesh->CreateMesh(numOfVertices, vertices, numOfIndices, indices, vLength, uvOffset, normalOffset);
+	Mesh pyramidMesh = Mesh();
+	pyramidMesh.CreateMesh(numOfVertices, vertices, numOfIndices, indices, vLength, uvOffset, normalOffset);
 
 	return pyramidMesh;
 }
@@ -159,6 +186,109 @@ void CreateShaderProgram()
 	ShaderProgram* shaderProgram = new ShaderProgram();
 	shaderProgram->CreateFromFiles(vShaderPath, fShaderPath);
 	shaderProgramList.push_back(shaderProgram);
+
+	directionalShadowShader = new ShaderProgram();
+	directionalShadowShader->CreateFromFiles(vDirShadowMapShaderPath, fDirShadowMapShaderPath);
+}
+
+void RenderScene()
+{
+	glm::mat4 model(1.f);
+	model = glm::translate(model, glm::vec3(0.f, -0.3f, -5.f));
+	glUniformMatrix4fv(modelUnifLoc, 1, GL_FALSE, glm::value_ptr(model));
+	dirtTexture.UseTexture();
+	dullMaterial.UseMaterial(specularIntensityUnifLoc, shininessUnifLoc);
+	pyramidMesh1.RenderMesh();
+
+	model = glm::mat4(1.f);
+	model = glm::translate(model, glm::vec3(0.f, 2.f, -5.f));
+	glUniformMatrix4fv(modelUnifLoc, 1, GL_FALSE, glm::value_ptr(model));
+	brickTexture.UseTexture();
+	dullMaterial.UseMaterial(specularIntensityUnifLoc, shininessUnifLoc);
+	pyramidMesh2.RenderMesh();
+
+	model = glm::mat4(1.f);
+	model = glm::translate(model, glm::vec3(0.f, -0.3f, -8.f));
+	glUniformMatrix4fv(modelUnifLoc, 1, GL_FALSE, glm::value_ptr(model));
+	woodTexture.UseTexture();
+	shinyMaterial.UseMaterial(specularIntensityUnifLoc, shininessUnifLoc);
+	pyramidMesh3.RenderMesh();
+
+	model = glm::mat4(1.f);
+	model = glm::translate(model, glm::vec3(0.f, -2.f, -5.f));
+	glUniformMatrix4fv(modelUnifLoc, 1, GL_FALSE, glm::value_ptr(model));
+	dirtTexture.UseTexture();
+	shinyMaterial.UseMaterial(specularIntensityUnifLoc, shininessUnifLoc);
+	floorMesh.RenderMesh();
+
+	model = glm::mat4(1.f);
+	model = glm::translate(model, glm::vec3(-7.f, 0.f, 10.f));
+	model = glm::scale(model, glm::vec3(0.006f, 0.006f, 0.006f));
+	glUniformMatrix4fv(modelUnifLoc, 1, GL_FALSE, glm::value_ptr(model));
+	shinyMaterial.UseMaterial(specularIntensityUnifLoc, shininessUnifLoc);
+	xwing.RenderModel();
+
+	model = glm::mat4(1.f);
+	model = glm::translate(model, glm::vec3(-3.f, 2.f, -5.f));
+	model = glm::rotate(model, -90.f * toRadians, glm::vec3(1.f, 0.f, 0.f));
+	model = glm::scale(model, glm::vec3(0.4f, 0.4f, 0.4f));
+	glUniformMatrix4fv(modelUnifLoc, 1, GL_FALSE, glm::value_ptr(model));
+	shinyMaterial.UseMaterial(specularIntensityUnifLoc, shininessUnifLoc);
+	blackhawk.RenderModel();
+}
+
+void DirectionalShadowMapPass(DirectionalLight* light)
+{
+	directionalShadowShader->UseShaderProgram();
+
+	glViewport(0, 0, light->GetShadowMap()->GetShadowWidth(), light->GetShadowMap()->GetShadowHeight());
+
+	light->GetShadowMap()->Write();
+	glClear(GL_DEPTH_BUFFER_BIT);
+
+	modelUnifLoc = directionalShadowShader->GetModelUnifLoc();
+	directionalShadowShader->SetDirectionalLightTransform(&light->CalculateLightTransform());
+
+	RenderScene();
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
+
+void RenderPass(glm::mat4 projectionMatrix, glm::mat4 viewMatrix)
+{
+	shaderProgramList[0]->UseShaderProgram(); // bind shader program
+
+	modelUnifLoc = shaderProgramList[0]->GetModelUnifLoc();
+	projectionUnifLoc = shaderProgramList[0]->GetProjectionUnifLoc();
+	viewUnifLoc = shaderProgramList[0]->GetViewUnifLoc();
+	eyePosUnifLoc = shaderProgramList[0]->GetEyePositionUnifLoc();
+	specularIntensityUnifLoc = shaderProgramList[0]->GetSpecularIntensityUnifLoc();
+	shininessUnifLoc = shaderProgramList[0]->GetShininessUnifLoc();
+
+	glViewport(0, 0, WIDTH, HEIGHT);
+
+	// Clear window
+	glClearColor(0.f, 0.f, 0.f, 1.f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	glUniformMatrix4fv(projectionUnifLoc, 1, GL_FALSE, glm::value_ptr(projectionMatrix));
+	glUniformMatrix4fv(viewUnifLoc, 1, GL_FALSE, glm::value_ptr(viewMatrix));
+	glUniform3fv(eyePosUnifLoc, 1, glm::value_ptr(camera.getCameraPosition()));
+
+	shaderProgramList[0]->SetDirectionalLight(&mainLight);
+	shaderProgramList[0]->SetPointLights(pointLights, pointLightCount);
+	shaderProgramList[0]->SetSpotLights(spotLights, spotLightCount);
+	shaderProgramList[0]->SetDirectionalLightTransform(&mainLight.CalculateLightTransform());
+
+	mainLight.GetShadowMap()->Read(GL_TEXTURE1);
+	shaderProgramList[0]->SetTexture(0);
+	shaderProgramList[0]->SetDirectionalShadowMap(1);
+
+	glm::vec3 lowerFlashPos = camera.getCameraPosition();
+	lowerFlashPos.y -= 0.3f;
+	// spotLights[0].SetFlash(lowerFlashPos, camera.getCameraDirection());
+
+	RenderScene();
 }
 
 int main()
@@ -166,10 +296,10 @@ int main()
 	mainWindow = Window(WIDTH, HEIGHT);
 	mainWindow.Initialise();
 
-	Mesh* pyramidMesh1 = CreatePyramid();
-	Mesh* pyramidMesh2 = CreatePyramid();
-	Mesh* pyramidMesh3 = CreatePyramid();
-	Mesh* floorMesh = createFloor();
+	Mesh pyramidMesh1 = CreatePyramid();
+	Mesh pyramidMesh2 = CreatePyramid();
+	Mesh pyramidMesh3 = CreatePyramid();
+	Mesh floorMesh = createFloor();
 
 	CreateShaderProgram();
 
@@ -189,31 +319,34 @@ int main()
 	blackhawk = Model();
 	blackhawk.LoadModel("Models/uh60.obj");
 
-	mainLight = DirectionalLight(1.f, 1.f, 1.f, // color light
-		0.3f, 0.6f,								// ambient/diffuse intensity
-		2.f, -1.f, -2.f);						// direction
+	mainLight = DirectionalLight(SHADOW_WIDTH, SHADOW_HEIGHT,
+		1.f, 1.f, 1.f,		// color light
+		0.3f, 0.6f,			// ambient/diffuse intensity
+		2.f, -1.f, -2.f);	// direction
 
-	unsigned int pointLightCount = 0;
-	pointLights[0] = PointLight(0.f, 0.f, 1.f,
+	pointLights[0] = PointLight(SHADOW_WIDTH, SHADOW_HEIGHT,
+		0.f, 0.f, 1.f,
 		0.1f, 0.4f,
 		4.f, 0.f, 0.f,
 		0.3f, 0.2f, 0.1f);
 	pointLightCount++;
-	pointLights[1] = PointLight(0.f, 1.f, 0.f,
+	pointLights[1] = PointLight(SHADOW_WIDTH, SHADOW_HEIGHT,
+		0.f, 1.f, 0.f,
 		0.1f, 0.8f,
 		-4.f, 2.f, 0.f,
 		0.3f, 0.1f, 0.1f);
 	pointLightCount++;
 
-	unsigned int spotLightCount = 0;
-	spotLights[0] = SpotLight(1.f, 1.f, 1.f,
+	spotLights[0] = SpotLight(SHADOW_WIDTH, SHADOW_HEIGHT,
+		1.f, 1.f, 1.f,
 		0.1f, 2.f,
 		4.f, 2.f, -5.f,
 		0.3f, 0.1f, 0.1f,
 		0.f, -1.f, 0.f,
 		20.f);
 	spotLightCount++;
-	spotLights[1] = SpotLight(1.f, 0.f, 0.f,
+	spotLights[1] = SpotLight(SHADOW_WIDTH, SHADOW_HEIGHT,
+		1.f, 0.f, 0.f,
 		0.1f, 1.f,
 		4.f, 0.f, -5.f,
 		1.f, 0.f, 0.f,
@@ -221,36 +354,7 @@ int main()
 		20.f);
 	spotLightCount++;
 
-	ShaderProgram* shaderProgram = shaderProgramList[0];
-	GLuint modelUnifLoc = shaderProgram->GetModelUnifLoc();
-	GLuint projectionUnifLoc = shaderProgram->GetProjectionUnifLoc();
-	GLuint viewUnifLoc = shaderProgram->GetViewUnifLoc();
-	GLuint eyePosUnifLoc = shaderProgram->GetEyePositionUnifLoc();
-	GLuint specularIntensityUnifLoc = shaderProgram->GetSpecularIntensityUnifLoc();
-	GLuint shininessUnifLoc = shaderProgram->GetShininessUnifLoc();
-
 	glm::mat4 projection = glm::perspective(glm::radians(60.0f), mainWindow.getBufferWidth() / mainWindow.getBufferHeight(), 0.1f, 100.f);
-
-	glm::mat4 pyramidModel1(1.f);
-	pyramidModel1 = glm::translate(pyramidModel1, glm::vec3(0.f, -0.3f, -5.f));
-
-	glm::mat4 pyramidModel2(1.f);
-	pyramidModel2 = glm::translate(pyramidModel2, glm::vec3(0.f, 2.f, -5.f));
-
-	glm::mat4 pyramidModel3(1.f);
-	pyramidModel3 = glm::translate(pyramidModel3, glm::vec3(0.f, -0.3f, -8.f));
-
-	glm::mat4 floorModel(1.f);
-	floorModel = glm::translate(floorModel, glm::vec3(0.f, -2.f, -5.f));
-
-	glm::mat4 xwingModel(1.f);
-	xwingModel = glm::translate(xwingModel, glm::vec3(-7.f, 0.f, 10.f));
-	xwingModel = glm::scale(xwingModel, glm::vec3(0.006f, 0.006f, 0.006f));
-
-	glm::mat4 blackhawkModel(1.f);
-	blackhawkModel = glm::translate(blackhawkModel, glm::vec3(-3.f, 2.f, -5.f));
-	blackhawkModel = glm::rotate(blackhawkModel, -90.f * toRadians, glm::vec3(1.f, 0.f, 0.f));
-	blackhawkModel = glm::scale(blackhawkModel, glm::vec3(0.4f, 0.4f, 0.4f));
 
 	// Loop until window close
 	while (!mainWindow.getShouldClose())
@@ -267,53 +371,8 @@ int main()
 		camera.keyControl(mainWindow.getKeys(), deltaTime);
 		camera.mouseControl(mainWindow.getXChange(), mainWindow.getYChange());
 
-		// Clear window
-		glClearColor(0.f, 0.f, 0.f, 1.f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-		shaderProgram->UseShaderProgram(); // bind shader program
-
-		glm::vec3 lowerFlashPos = camera.getCameraPosition();
-		lowerFlashPos.y -= 0.3f;
-		// spotLights[0].SetFlash(lowerFlashPos, camera.getCameraDirection());
-
-		shaderProgram->SetDirectionalLight(&mainLight);
-		shaderProgram->SetPointLights(pointLights, pointLightCount);
-		shaderProgram->SetSpotLights(spotLights, spotLightCount);
-
-		glm::mat4 view = camera.calculateViewMatrix();
-
-		glUniformMatrix4fv(projectionUnifLoc, 1, GL_FALSE, glm::value_ptr(projection));
-		glUniformMatrix4fv(viewUnifLoc, 1, GL_FALSE, glm::value_ptr(view));
-		glUniform3fv(eyePosUnifLoc, 1, glm::value_ptr(camera.getCameraPosition()));
-
-		glUniformMatrix4fv(modelUnifLoc, 1, GL_FALSE, glm::value_ptr(pyramidModel1));
-		dirtTexture.UseTexture();
-		dullMaterial.UseMaterial(specularIntensityUnifLoc, shininessUnifLoc);
-		pyramidMesh1->RenderMesh();
-
-		glUniformMatrix4fv(modelUnifLoc, 1, GL_FALSE, glm::value_ptr(pyramidModel2));
-		brickTexture.UseTexture();
-		dullMaterial.UseMaterial(specularIntensityUnifLoc, shininessUnifLoc);
-		pyramidMesh2->RenderMesh();
-
-		glUniformMatrix4fv(modelUnifLoc, 1, GL_FALSE, glm::value_ptr(pyramidModel3));
-		woodTexture.UseTexture();
-		shinyMaterial.UseMaterial(specularIntensityUnifLoc, shininessUnifLoc);
-		pyramidMesh3->RenderMesh();
-
-		glUniformMatrix4fv(modelUnifLoc, 1, GL_FALSE, glm::value_ptr(floorModel));
-		dirtTexture.UseTexture();
-		shinyMaterial.UseMaterial(specularIntensityUnifLoc, shininessUnifLoc);
-		floorMesh->RenderMesh();
-
-		glUniformMatrix4fv(modelUnifLoc, 1, GL_FALSE, glm::value_ptr(xwingModel));
-		shinyMaterial.UseMaterial(specularIntensityUnifLoc, shininessUnifLoc);
-		xwing.RenderModel();
-
-		glUniformMatrix4fv(modelUnifLoc, 1, GL_FALSE, glm::value_ptr(blackhawkModel));
-		shinyMaterial.UseMaterial(specularIntensityUnifLoc, shininessUnifLoc);
-		blackhawk.RenderModel();
+		DirectionalShadowMapPass(&mainLight);
+		RenderPass(projection, camera.calculateViewMatrix());
 
 		ShaderProgram::UnbindShaderProgram(); // unbind shader program
 

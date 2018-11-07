@@ -7,13 +7,16 @@ class DirectionalLight :
 {
 public:
 	DirectionalLight();
-	DirectionalLight(GLfloat red, GLfloat green, GLfloat blue,
+	DirectionalLight(GLfloat shadowWidth, GLfloat shadowHeight, 
+		GLfloat red, GLfloat green, GLfloat blue,
 		GLfloat intensity, GLfloat dIntensity,
 		GLfloat xDir, GLfloat yDir, GLfloat zDir);
 
 	void UseLight(GLuint ambientColourUnifLoc, GLuint ambientIntensityUnifLoc,
 		GLuint diffuseIntensityUnifLoc, GLuint directionUnifLoc);
 	
+	glm::mat4 CalculateLightTransform();
+
 	~DirectionalLight();
 
 private:
