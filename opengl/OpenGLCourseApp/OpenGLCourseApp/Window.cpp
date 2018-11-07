@@ -41,7 +41,7 @@ int Window::Initialise()
 												   // Core profile - no backwards compatibility
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	// Allow forward compatibility
-	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLU_TRUE);
+	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
 	mainWindow = glfwCreateWindow(width, height, "Test Window", NULL, NULL);
 	if (!mainWindow)
@@ -54,23 +54,30 @@ int Window::Initialise()
 	// Get the buffer size information
 	glfwGetFramebufferSize(mainWindow, &bufferWidth, &bufferHeight);
 
-	// Set context for GLEW to use
+	// Set context for GLEW/GLAD to use
 	glfwMakeContextCurrent(mainWindow);
 
 	// Handle Key & Mouse Input
 	createCallbacks();
 	glfwSetInputMode(mainWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-	// Allow modern extension features
-	glewExperimental = GL_TRUE;
+	// Allow modern GLEW extension features
+	// glewExperimental = GL_TRUE;
 
 	// Initialise GLEW
-	if (glewInit() != GLEW_OK)
+	/*if (glewInit() != GLEW_OK)
 	{
 		LOGERROR("GLEW initialisation failed!");
 		glfwDestroyWindow(mainWindow);
 		glfwTerminate();
 		return 1;
+	}*/
+
+	// Initialise GLAD
+	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+	{
+		printf("Failed to initialise GLAD!");
+		return -1;
 	}
 
 	glEnable(GL_DEPTH_TEST);

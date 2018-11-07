@@ -1,6 +1,6 @@
 #pragma once
 
-#include <GLEW\glew.h>
+#include <GLAD\glad.h>
 
 class Material
 {

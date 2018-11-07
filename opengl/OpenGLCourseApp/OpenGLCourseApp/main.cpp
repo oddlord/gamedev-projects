@@ -23,7 +23,7 @@
 #include <string>
 #include <vector>
 
-#include <GLEW/glew.h>
+#include <GLAD\glad.h>
 #include <GLFW/glfw3.h>
 
 #include <GLM/glm.hpp>

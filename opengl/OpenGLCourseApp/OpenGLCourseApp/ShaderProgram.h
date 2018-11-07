@@ -4,7 +4,7 @@
 #include <iostream>
 #include <string>
 
-#include <GLEW/glew.h>
+#include <GLAD\glad.h>
 
 #include "common.h"
 #include "DirectionalLight.h"
