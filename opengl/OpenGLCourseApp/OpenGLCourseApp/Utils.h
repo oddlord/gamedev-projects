@@ -6,7 +6,7 @@
 #include <iostream>
 #include <string>
 
-#include <GLAD\glad.h>
+#include <GLEW/glew.h>
 
 namespace fs = std::experimental::filesystem;
 

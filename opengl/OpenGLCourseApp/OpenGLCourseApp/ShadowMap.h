@@ -1,8 +1,7 @@
 #pragma once
 
 #include <stdio.h>
-
-#include <GLAD\glad.h>
+#include<GLEW\glew.h>
 
 class ShadowMap
 {

@@ -2,7 +2,7 @@
 
 #include <filesystem>
 
-#include <GLAD\glad.h>
+#include <GLEW/glew.h>
 
 #include <stb_image.h>
 
