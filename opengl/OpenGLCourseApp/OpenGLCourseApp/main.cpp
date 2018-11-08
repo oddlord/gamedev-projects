@@ -39,8 +39,8 @@ bool logEnabled = true;
 const GLint WIDTH = 1024;
 const GLint HEIGHT = 768;
 
-const GLfloat SHADOW_WIDTH = 1024;
-const GLfloat SHADOW_HEIGHT = 1024;
+const GLfloat SHADOW_WIDTH = 1024.f;
+const GLfloat SHADOW_HEIGHT = 1024.f;
 
 Window mainWindow;
 
@@ -71,10 +71,10 @@ fs::path fShaderFile("shader.frag");
 fs::path fShaderPath = shadersFolder / fShaderFile;
 // Directional shadow map vertex shader
 fs::path vDirShadowMapShaderFile("directional_shadow_map.vert");
-fs::path vDirShadowMapShaderPath = shadersFolder / vShaderFile;
+fs::path vDirShadowMapShaderPath = shadersFolder / vDirShadowMapShaderFile;
 // Directional shadow map fragment shader
 fs::path fDirShadowMapShaderFile("directional_shadow_map.frag");
-fs::path fDirShadowMapShaderPath = shadersFolder / fShaderFile;
+fs::path fDirShadowMapShaderPath = shadersFolder / fDirShadowMapShaderFile;
 
 // Textures
 fs::path texturesFolder("Textures");
@@ -105,15 +105,15 @@ unsigned int spotLightCount = 0;
 Material shinyMaterial;
 Material dullMaterial;
 
-Mesh pyramidMesh1;
-Mesh pyramidMesh2;
-Mesh pyramidMesh3;
-Mesh floorMesh;
+Mesh* pyramidMesh1;
+Mesh* pyramidMesh2;
+Mesh* pyramidMesh3;
+Mesh* floorMesh;
 
 Model xwing;
 Model blackhawk;
 
-Mesh createFloor()
+Mesh* createFloor()
 {
 	GLfloat vertices[] = {
 		//x		y		z			u		v			nx		ny		nz
@@ -136,13 +136,13 @@ Mesh createFloor()
 
 	Utils::calcAverageNormals(vertices, numOfVertices, indices, numOfIndices, vLength, normalOffset);
 
-	Mesh floorMesh = Mesh();
-	floorMesh.CreateMesh(numOfVertices, vertices, numOfIndices, indices, vLength, uvOffset, normalOffset);
+	Mesh* floorMesh = new Mesh();
+	floorMesh->CreateMesh(numOfVertices, vertices, numOfIndices, indices, vLength, uvOffset, normalOffset);
 
 	return floorMesh;
 }
 
-Mesh CreatePyramid()
+Mesh* CreatePyramid()
 {
 	GLfloat vertices[] = {
 		//x		y		z			u		v			nx		ny		nz
@@ -175,8 +175,8 @@ Mesh CreatePyramid()
 
 	Utils::calcAverageNormals(vertices, numOfVertices, indices, numOfIndices, vLength, normalOffset);
 
-	Mesh pyramidMesh = Mesh();
-	pyramidMesh.CreateMesh(numOfVertices, vertices, numOfIndices, indices, vLength, uvOffset, normalOffset);
+	Mesh* pyramidMesh = new Mesh();
+	pyramidMesh->CreateMesh(numOfVertices, vertices, numOfIndices, indices, vLength, uvOffset, normalOffset);
 
 	return pyramidMesh;
 }
@@ -198,28 +198,28 @@ void RenderScene()
 	glUniformMatrix4fv(modelUnifLoc, 1, GL_FALSE, glm::value_ptr(model));
 	dirtTexture.UseTexture();
 	dullMaterial.UseMaterial(specularIntensityUnifLoc, shininessUnifLoc);
-	pyramidMesh1.RenderMesh();
+	pyramidMesh1->RenderMesh();
 
 	model = glm::mat4(1.f);
 	model = glm::translate(model, glm::vec3(0.f, 2.f, -5.f));
 	glUniformMatrix4fv(modelUnifLoc, 1, GL_FALSE, glm::value_ptr(model));
 	brickTexture.UseTexture();
 	dullMaterial.UseMaterial(specularIntensityUnifLoc, shininessUnifLoc);
-	pyramidMesh2.RenderMesh();
+	pyramidMesh2->RenderMesh();
 
 	model = glm::mat4(1.f);
 	model = glm::translate(model, glm::vec3(0.f, -0.3f, -8.f));
 	glUniformMatrix4fv(modelUnifLoc, 1, GL_FALSE, glm::value_ptr(model));
 	woodTexture.UseTexture();
 	shinyMaterial.UseMaterial(specularIntensityUnifLoc, shininessUnifLoc);
-	pyramidMesh3.RenderMesh();
+	pyramidMesh3->RenderMesh();
 
 	model = glm::mat4(1.f);
 	model = glm::translate(model, glm::vec3(0.f, -2.f, -5.f));
 	glUniformMatrix4fv(modelUnifLoc, 1, GL_FALSE, glm::value_ptr(model));
 	dirtTexture.UseTexture();
 	shinyMaterial.UseMaterial(specularIntensityUnifLoc, shininessUnifLoc);
-	floorMesh.RenderMesh();
+	floorMesh->RenderMesh();
 
 	model = glm::mat4(1.f);
 	model = glm::translate(model, glm::vec3(-7.f, 0.f, 10.f));
@@ -286,7 +286,7 @@ void RenderPass(glm::mat4 projectionMatrix, glm::mat4 viewMatrix)
 
 	glm::vec3 lowerFlashPos = camera.getCameraPosition();
 	lowerFlashPos.y -= 0.3f;
-	// spotLights[0].SetFlash(lowerFlashPos, camera.getCameraDirection());
+	spotLights[0].SetFlash(lowerFlashPos, camera.getCameraDirection());
 
 	RenderScene();
 }
@@ -296,10 +296,10 @@ int main()
 	mainWindow = Window(WIDTH, HEIGHT);
 	mainWindow.Initialise();
 
-	Mesh pyramidMesh1 = CreatePyramid();
-	Mesh pyramidMesh2 = CreatePyramid();
-	Mesh pyramidMesh3 = CreatePyramid();
-	Mesh floorMesh = createFloor();
+	pyramidMesh1 = CreatePyramid();
+	pyramidMesh2 = CreatePyramid();
+	pyramidMesh3 = CreatePyramid();
+	floorMesh = createFloor();
 
 	CreateShaderProgram();
 

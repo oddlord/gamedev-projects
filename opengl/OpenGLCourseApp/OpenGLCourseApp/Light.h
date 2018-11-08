@@ -10,7 +10,7 @@ class Light
 {
 public:
 	Light();
-	Light(GLfloat shadowWidth, GLfloat shadowHeight, 
+	Light(GLfloat sWidth, GLfloat sHeight,
 		GLfloat red, GLfloat green, GLfloat blue,
 		GLfloat intensity, GLfloat dIntensity);
 
@@ -19,8 +19,8 @@ public:
 	~Light();
 
 protected:
-	static constexpr GLfloat DEFAULT_SHADOW_WIDTH = 800.f;
-	static constexpr GLfloat DEFAULT_SHADOW_HEIGHT = 600.f;
+	static constexpr GLfloat DEFAULT_SHADOW_WIDTH = 1024.f;
+	static constexpr GLfloat DEFAULT_SHADOW_HEIGHT = 1024.f;
 	static constexpr GLfloat DEFAULT_RED = 1.f;
 	static constexpr GLfloat DEFAULT_GREEN = 1.f;
 	static constexpr GLfloat DEFAULT_BLUE = 1.f;
@@ -33,6 +33,12 @@ protected:
 
 	glm::mat4 lightProj;
 
+private:
 	ShadowMap* shadowMap;
+	GLfloat shadowWidth;
+	GLfloat shadowHeight;
+	bool isShadowMapInit;
+
+	void InitShadowMap();
 };
 

@@ -5,10 +5,10 @@ DirectionalLight::DirectionalLight() : DirectionalLight(DEFAULT_SHADOW_WIDTH, DE
 	DEFAULT_RED, DEFAULT_GREEN, DEFAULT_BLUE,
 	DEFAULT_INTENSITY, DEFAULT_D_INTENSITY,
 	DEFAULT_X_DIR, DEFAULT_Y_DIR, DEFAULT_Z_DIR) {}
-DirectionalLight::DirectionalLight(GLfloat shadowWidth, GLfloat shadowHeight, 
+DirectionalLight::DirectionalLight(GLfloat sWidth, GLfloat sHeight,
 	GLfloat red, GLfloat green, GLfloat blue,
 	GLfloat intensity, GLfloat dIntensity,
-	GLfloat xDir, GLfloat yDir, GLfloat zDir) : Light(shadowWidth, shadowHeight,
+	GLfloat xDir, GLfloat yDir, GLfloat zDir) : Light(sWidth, sHeight,
 		red, green, blue,
 		intensity, dIntensity)
 {

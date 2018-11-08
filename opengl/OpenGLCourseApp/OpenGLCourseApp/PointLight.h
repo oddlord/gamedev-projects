@@ -9,7 +9,7 @@ class PointLight :
 {
 public:
 	PointLight();
-	PointLight(GLfloat shadowWidth, GLfloat shadowHeight,
+	PointLight(GLfloat sWidth, GLfloat sHeight,
 		GLfloat red, GLfloat green, GLfloat blue,
 		GLfloat intensity, GLfloat dIntensity,
 		GLfloat xPos, GLfloat yPos, GLfloat zPos,
