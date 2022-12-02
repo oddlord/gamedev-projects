@@ -656,7 +656,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3463030282485517760, guid: 089419d557eb04e6794f0c27bf7882db, type: 3}
       propertyPath: m_Name
-      value: GameLoader
+      value: HeroRepositoryController
       objectReference: {fileID: 0}
     - target: {fileID: 3463030282485517774, guid: 089419d557eb04e6794f0c27bf7882db, type: 3}
       propertyPath: m_RootOrder

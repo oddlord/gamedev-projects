@@ -40,9 +40,6 @@ namespace PocketHeroes
             Level++;
         }
 
-        public override string ToString()
-        {
-            return JsonUtility.ToJson(this, true);
-        }
+        public override string ToString() => JsonUtility.ToJson(this, true);
     }
 }

@@ -44,7 +44,7 @@ namespace PocketHeroes
             string json = jsonFile.text;
             json = json.Replace("[", "");
             json = json.Replace("]", "");
-            json = json.Replace("]", "");
+            json = json.Replace("\"", "");
             json = json.Replace("\n", "");
             _names = json.Split(",");
 
