@@ -6,28 +6,28 @@ namespace PocketHeroes
     [CreateAssetMenu(menuName = ScriptableObjects.MENU_PREFIX + HeroRepository.MENU_PREFIX + "PlayerPrefs")]
     public class PlayerPrefsHeroRepository : HeroRepository
     {
-        private const string _HERO_COLLECTION_KEY = "HeroCollection";
+        private const string _COLLECTED_HEROES_KEY = "CollectedHeroes";
 
         public override List<Hero> GetHeroes()
         {
-            string heroCollectionJson = PlayerPrefs.GetString(_HERO_COLLECTION_KEY);
-            HeroCollection heroCollection;
-            if (heroCollectionJson != null && heroCollectionJson.Length > 0)
+            string heroGroupJson = PlayerPrefs.GetString(_COLLECTED_HEROES_KEY);
+            HeroGroup heroGroup;
+            if (heroGroupJson != null && heroGroupJson.Length > 0)
             {
-                heroCollection = JsonUtility.FromJson<HeroCollection>(heroCollectionJson);
+                heroGroup = JsonUtility.FromJson<HeroGroup>(heroGroupJson);
             }
             else
             {
-                heroCollection = new HeroCollection();
+                heroGroup = new HeroGroup();
             }
-            return heroCollection.Heroes;
+            return heroGroup.Heroes;
         }
 
         public override void SetHeroes(List<Hero> heroes)
         {
-            HeroCollection heroCollection = new HeroCollection() { Heroes = heroes };
-            string heroCollectionJson = JsonUtility.ToJson(heroCollection);
-            PlayerPrefs.SetString(_HERO_COLLECTION_KEY, heroCollectionJson);
+            HeroGroup heroGroup = new HeroGroup(heroes);
+            string heroGroupJson = JsonUtility.ToJson(heroGroup);
+            PlayerPrefs.SetString(_COLLECTED_HEROES_KEY, heroGroupJson);
         }
     }
 }

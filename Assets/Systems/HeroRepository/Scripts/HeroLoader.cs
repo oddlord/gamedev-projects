@@ -9,36 +9,33 @@ namespace PocketHeroes
         private const int _MIN_HERO_AMOUNT = 3;
 
         [SerializeField] private HeroRepository _repository;
-        [SerializeField] private GameState _gameState;
-
-        private string _collectedHeroesJson;
+        [SerializeField] private HeroGroupState _collectedHeroes;
 
         void Awake()
         {
             List<Hero> heroes = _repository.GetHeroes();
-
-            // Ensures we always start with at least 3 heroes
-            if (heroes.Count < _MIN_HERO_AMOUNT)
-            {
-                for (int i = heroes.Count; i < _MIN_HERO_AMOUNT; i++)
-                {
-                    Hero hero = HeroGenerator.Generate();
-                    heroes.Add(hero);
-                }
-                UpdateHeroes(heroes);
-            }
-
-            _gameState.CollectedHeroes = heroes;
+            _collectedHeroes.Initialize(heroes);
         }
 
         void Start()
         {
-            SceneManager.LoadScene(Scenes.HERO_SELECTION);
+            // Ensures we always start with at least _MIN_HERO_AMOUNT heroes
+            int collectedHeroesCount = _collectedHeroes.Heroes.Count;
+            if (collectedHeroesCount < _MIN_HERO_AMOUNT)
+            {
+                for (int i = collectedHeroesCount; i < _MIN_HERO_AMOUNT; i++)
+                {
+                    Hero hero = HeroGenerator.Generate();
+                    _collectedHeroes.AddHero(hero);
+                }
+            }
+
+            OnLoaded();
         }
 
-        private void UpdateHeroes(List<Hero> heroes)
+        private void OnLoaded()
         {
-            _repository.SetHeroes(heroes);
+            SceneManager.LoadScene(Scenes.HERO_SELECTION);
         }
     }
 }

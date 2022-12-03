@@ -4,11 +4,22 @@ namespace PocketHeroes
 {
     public class HeroSelector : MonoBehaviour
     {
-        [SerializeField] private GameState _gameState;
+        [SerializeField] private HeroGroupState _collectedHeroes;
 
         void Awake()
         {
-            Debug.Log($"Heroes: {string.Join(", ", _gameState.CollectedHeroes)}");
+            Debug.Log($"Heroes: {string.Join(", ", _collectedHeroes.Heroes)}");
+        }
+
+        public void OnAddHeroPressed()
+        {
+            _collectedHeroes.AddHero(HeroGenerator.Generate());
+        }
+
+        public void OnLevelUpHeroPressed()
+        {
+            Hero hero = _collectedHeroes.Heroes[0];
+            hero.GainExperience(6);
         }
     }
 }
