@@ -1,25 +1,36 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace PocketHeroes
 {
     public class HeroSelector : MonoBehaviour
     {
-        [SerializeField] private HeroGroupState _collectedHeroes;
-
-        void Awake()
+        [Serializable]
+        private struct _Config
         {
-            Debug.Log($"Heroes: {string.Join(", ", _collectedHeroes.Heroes)}");
+            public RectTransform Grid;
         }
 
-        public void OnAddHeroPressed()
+        [SerializeField] private HeroCard _heroCardPrefab;
+
+        [Header("Config")]
+        [SerializeField] private _Config _config;
+
+        public void SetHeroes(List<Hero> heroes)
         {
-            _collectedHeroes.AddHero(HeroGenerator.Generate());
+            ClearGrid();
+
+            foreach (Hero hero in heroes)
+            {
+                HeroCard card = Instantiate(_heroCardPrefab, _config.Grid);
+                card.Initialize(hero);
+            }
         }
 
-        public void OnLevelUpHeroPressed()
+        private void ClearGrid()
         {
-            Hero hero = _collectedHeroes.Heroes[0];
-            hero.GainExperience(6);
+            foreach (RectTransform card in _config.Grid) Destroy(card.gameObject);
         }
     }
 }

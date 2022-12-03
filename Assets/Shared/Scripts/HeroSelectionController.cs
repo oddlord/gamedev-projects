@@ -2,21 +2,20 @@ using UnityEngine;
 
 namespace PocketHeroes
 {
-    public class HeroSaver : MonoBehaviour
+    public class HeroSelectionController : MonoBehaviour
     {
-        [SerializeField] private HeroRepository _repository;
         [SerializeField] private HeroGroupState _collectedHeroes;
+        [SerializeField] private HeroSelector _heroSelector;
 
-        void Awake()
+        void Start()
         {
-            DontDestroyOnLoad(gameObject);
-
+            _heroSelector.SetHeroes(_collectedHeroes.Heroes);
             _collectedHeroes.OnChange += OnHeroesChanged;
         }
 
         private void OnHeroesChanged(HeroGroupState _)
         {
-            _repository.SetHeroes(_collectedHeroes.Heroes);
+            _heroSelector.SetHeroes(_collectedHeroes.Heroes);
         }
 
         void OnDestroy()
