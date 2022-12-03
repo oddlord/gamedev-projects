@@ -52,6 +52,26 @@ namespace PocketHeroes
             _level++;
         }
 
+        public static bool operator ==(Hero hero1, Hero hero2)
+        {
+            return hero1.Name == hero2.Name
+                && hero1.Health == hero2.Health
+                && hero1.AttackPower == hero2.AttackPower
+                && hero1.Experience == hero2.Experience
+                && hero1.Level == hero2.Level;
+        }
+
+        public static bool operator !=(Hero hero1, Hero hero2) => !(hero1 == hero2);
+
+        public override bool Equals(object obj)
+        {
+            return this == (obj as Hero);
+        }
+        public override int GetHashCode()
+        {
+            return $"{_name}{_health}{_attackPower}{_experience}{_level}".GetHashCode();
+        }
+
         public override string ToString() => JsonUtility.ToJson(this, true);
     }
 }

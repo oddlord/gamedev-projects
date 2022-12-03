@@ -115,6 +115,13 @@ MonoBehaviour:
   _config:
     Name: {fileID: 6145776422918096606}
     Level: {fileID: 8372984402865573193}
+    Background: {fileID: 77763396127863333}
+  Hero:
+    _name: 
+    _health: 0
+    _attackPower: 0
+    _experience: 0
+    _level: 0
 --- !u!1 &1675206506138428876
 GameObject:
   m_ObjectHideFlags: 0

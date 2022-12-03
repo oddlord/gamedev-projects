@@ -30,20 +30,26 @@ namespace PocketHeroes
             foreach (Hero hero in _heroes) SubscribeToHero(hero);
         }
 
-        public void AddHero(Hero hero)
+        public void AddHero(Hero hero, bool triggerChange = true)
         {
             if (_heroes.Contains(hero)) return;
             _heroes.Add(hero);
             SubscribeToHero(hero);
-            OnChange?.Invoke(this);
+            if (triggerChange) OnChange?.Invoke(this);
         }
 
-        public void RemoveHero(Hero hero)
+        public void RemoveHero(Hero hero, bool triggerChange = true)
         {
             if (!_heroes.Contains(hero)) return;
             _heroes.Remove(hero);
             UnsubscribeFromHero(hero);
-            OnChange?.Invoke(this);
+            if (triggerChange) OnChange?.Invoke(this);
+        }
+
+        public void Clear(bool triggerChange = true)
+        {
+            foreach (Hero hero in _heroes.ToArray()) RemoveHero(hero, false);
+            if (triggerChange) OnChange?.Invoke(this);
         }
 
         private void SubscribeToHero(Hero hero)

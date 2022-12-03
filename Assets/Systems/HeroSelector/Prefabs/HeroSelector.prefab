@@ -34,10 +34,10 @@ RectTransform:
   m_Father: {fileID: 2835492416315679763}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1400, y: 650}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8196748547020508543
 CanvasRenderer:
@@ -151,7 +151,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 706a8446cfc5442a88f1b56214cd577b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _collectedHeroes: {fileID: 11400000, guid: adf13ed9792954a249b88cd8651afd21, type: 2}
+  _selectedHeroes: {fileID: 0}
   _heroCardPrefab: {fileID: -4193571785668406908, guid: e8077c8a85ac340c59ec3836bc2c7c90, type: 3}
   _config:
     Grid: {fileID: 8196748547020508541}
