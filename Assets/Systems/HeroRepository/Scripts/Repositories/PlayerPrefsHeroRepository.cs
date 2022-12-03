@@ -3,11 +3,12 @@ using UnityEngine;
 
 namespace PocketHeroes
 {
+    [CreateAssetMenu(menuName = ScriptableObjects.MENU_PREFIX + HeroRepository.MENU_PREFIX + "PlayerPrefs")]
     public class PlayerPrefsHeroRepository : HeroRepository
     {
         private const string _HERO_COLLECTION_KEY = "HeroCollection";
 
-        public List<Hero> GetHeroes()
+        public override List<Hero> GetHeroes()
         {
             string heroCollectionJson = PlayerPrefs.GetString(_HERO_COLLECTION_KEY);
             HeroCollection heroCollection;
@@ -22,7 +23,7 @@ namespace PocketHeroes
             return heroCollection.Heroes;
         }
 
-        public void SetHeroes(List<Hero> heroes)
+        public override void SetHeroes(List<Hero> heroes)
         {
             HeroCollection heroCollection = new HeroCollection() { Heroes = heroes };
             string heroCollectionJson = JsonUtility.ToJson(heroCollection);

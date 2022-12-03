@@ -17,6 +17,5 @@ namespace PocketHeroes
         {
             Heroes = new List<Hero>();
         }
-
     }
 }
