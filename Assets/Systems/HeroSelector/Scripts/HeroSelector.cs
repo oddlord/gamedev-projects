@@ -10,6 +10,7 @@ namespace PocketHeroes
         private struct _Config
         {
             public RectTransform Grid;
+            public CharacterTooltip CharacterTooltip;
         }
 
         [SerializeField] private HeroGroupState _selectedHeroes;
@@ -52,21 +53,24 @@ namespace PocketHeroes
 
         private void ClearGrid()
         {
-            foreach (RectTransform card in _config.Grid) Destroy(card.gameObject);
+            foreach (HeroCard card in _cards)
+            {
+                card.OnPress -= OnCardPressed;
+                card.OnLongPress -= OnCardLongPressed;
+                Destroy(card.gameObject);
+            }
             _cards.Clear();
         }
 
         private void OnCardPressed(Hero hero)
         {
-            Debug.Log($"Pressed: {hero.Name}");
             if (_selectedHeroes.Heroes.Contains(hero)) _selectedHeroes.RemoveHero(hero);
             else if (_selectionEnabled) _selectedHeroes.AddHero(hero);
         }
 
         private void OnCardLongPressed(Hero hero)
         {
-            Debug.Log($"Long pressed: {hero.Name}");
-            // TODO show info panel
+            _config.CharacterTooltip.Initialize(Utils.GetHeroTooltipRows(hero));
         }
 
         private void OnSelectedHeroesChanged(HeroGroupState _)

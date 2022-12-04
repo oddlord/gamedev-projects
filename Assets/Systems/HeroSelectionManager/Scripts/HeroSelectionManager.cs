@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace PocketHeroes
 {
-    public class HeroSelectionController : MonoBehaviour
+    public class HeroSelectionManager : MonoBehaviour
     {
         private const int _PARTY_SIZE = 3;
 
