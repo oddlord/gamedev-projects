@@ -1,5 +1,6 @@
 namespace PocketHeroes
 {
+    // TODO rename to TooltipUtils?
     public static class Utils
     {
         // TODO this function doesn't belong with either the Hero or the tooltip classes
