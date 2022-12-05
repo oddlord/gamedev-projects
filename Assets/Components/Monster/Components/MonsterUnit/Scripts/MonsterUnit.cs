@@ -5,9 +5,7 @@ using UnityEngine;
 
 namespace PocketHeroes
 {
-    // TODO make a Unit superclass so that the MonsterUnit can extend it too
-    // TODO make it take a Controller (input / AI)
-    public class HeroUnit : MonoBehaviour
+    public class MonsterUnit : MonoBehaviour
     {
         [Serializable]
         private struct _Config
@@ -23,24 +21,21 @@ namespace PocketHeroes
         [Header("Config")]
         [SerializeField] private _Config _config;
 
-        // TODO refactor so that this functionality is shared between Units and HeroCards
-        public Action<HeroUnit> OnPress;
-
-        public Hero Hero;
+        public Monster Monster;
         public int CurrentHealth;
 
         private float _lastPressDownTime;
 
-        public void Initialize(Hero hero)
+        public void Initialize(Monster monster)
         {
-            Hero = hero;
+            Monster = monster;
             _lastPressDownTime = 0;
 
-            _config.Name.text = hero.Name;
-            SetCurrentHealth(hero.Health);
+            _config.Name.text = monster.Name;
+            SetCurrentHealth(monster.Health);
         }
 
-        public void Attack(MonsterUnit enemyUnit, Action onAttackFinished)
+        public void Attack(HeroUnit enemyUnit, Action onAttackFinished)
         {
             StartCoroutine(AttackCoroutine(enemyUnit, onAttackFinished));
         }
@@ -55,10 +50,10 @@ namespace PocketHeroes
         private void SetCurrentHealth(int health, bool animate = false)
         {
             CurrentHealth = Math.Max(0, health);
-            _config.HealthBar.SetFill(CurrentHealth, Hero.Health, !animate);
+            _config.HealthBar.SetFill(CurrentHealth, Monster.Health, !animate);
         }
 
-        private IEnumerator AttackCoroutine(MonsterUnit enemyUnit, Action onAttackFinished)
+        private IEnumerator AttackCoroutine(HeroUnit enemyUnit, Action onAttackFinished)
         {
             Vector3 initialPosition = transform.position;
 
@@ -66,13 +61,12 @@ namespace PocketHeroes
             while (t <= 1)
             {
                 t += Time.deltaTime / _ATTACK_MOVE_TIME;
-                // TODO use some nicer easing here rather than a linear one
                 Vector3 position = Vector3.Lerp(initialPosition, enemyUnit.transform.position, t);
                 transform.position = position;
                 yield return null;
             }
 
-            enemyUnit.GetDamaged(Hero.AttackPower);
+            enemyUnit.GetDamaged(Monster.AttackPower);
 
             Vector3 attackPosition = transform.position;
             t = 0;
@@ -96,8 +90,7 @@ namespace PocketHeroes
         {
             if (_lastPressDownTime == 0) return;
 
-            if (Time.time - _lastPressDownTime < _LONG_PRESS_DURATION) OnPress?.Invoke(this);
-            else _config.Tooltip.Initialize(TooltipUtils.GetHeroUnitTooltipRows(this));
+            if (Time.time - _lastPressDownTime >= _LONG_PRESS_DURATION) _config.Tooltip.Initialize(TooltipUtils.GetMonsterUnitTooltipRows(this));
         }
     }
 }

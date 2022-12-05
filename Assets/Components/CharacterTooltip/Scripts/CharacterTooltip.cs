@@ -2,6 +2,7 @@ using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 namespace PocketHeroes
 {
@@ -11,6 +12,7 @@ namespace PocketHeroes
         private struct _Config
         {
             public TextMeshProUGUI Content;
+            public VerticalLayoutGroup LayoutGroup;
         }
 
         [Header("Config")]
@@ -27,11 +29,20 @@ namespace PocketHeroes
                 _config.Content.text += row;
                 if (i < rows.Length - 1) _config.Content.text += "\n";
             }
+
+            RefreshContentSizeFitter();
         }
 
         public void OnPointerClick(PointerEventData eventData)
         {
             gameObject.SetActive(false);
+        }
+
+        private void RefreshContentSizeFitter()
+        {
+            Canvas.ForceUpdateCanvases();
+            _config.LayoutGroup.enabled = false;
+            _config.LayoutGroup.enabled = true;
         }
     }
 }

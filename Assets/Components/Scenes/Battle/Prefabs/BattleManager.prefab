@@ -44,6 +44,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 982c5672d2348451ebc98249abee642f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _collectedHeroes: {fileID: 11400000, guid: adf13ed9792954a249b88cd8651afd21, type: 2}
   _battleParty: {fileID: 11400000, guid: c13bcb038be33493c8a59752b2cc4771, type: 2}
+  _battleStats: {fileID: 11400000, guid: 5ee7d98216d8948e78665d638a088a19, type: 2}
+  _heroSpawnPointsContainer: {fileID: 0}
+  _monsterSpawnPointsContainer: {fileID: 0}
+  _resultMessage: {fileID: 0}
+  _backButton: {fileID: 0}
   _config:
     HeroUnitPrefab: {fileID: 5050157782941823633, guid: 33e94c4ca5d3d4146b1d9c3bdebee1e2, type: 3}
+    MonsterUnitPrefab: {fileID: 5910936160625291678, guid: 9f28c29ec55264e28a69d70dfc52db01, type: 3}

@@ -16,20 +16,20 @@ MonoBehaviour:
   - _name: Tracey
     _health: 133
     _attackPower: 19
-    _experience: 3
+    _experience: 4
     _level: 4
   - _name: Sherill
     _health: 140
     _attackPower: 14
-    _experience: 0
+    _experience: 1
     _level: 1
   - _name: Evey
     _health: 100
     _attackPower: 10
-    _experience: 0
+    _experience: 1
     _level: 1
-  - _name: Merry
-    _health: 100
-    _attackPower: 14
+  - _name: Kitti
+    _health: 180
+    _attackPower: 18
     _experience: 0
     _level: 1

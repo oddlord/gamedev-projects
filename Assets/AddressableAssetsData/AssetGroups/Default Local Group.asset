@@ -18,7 +18,11 @@ MonoBehaviour:
   m_GUID: 817fb512bbe754162b8c650b9760cefa
   m_SerializeEntries:
   - m_GUID: f730350df8ba94d79bcca5763aa43084
-    m_Address: Assets/Systems/Hero/Json/first-names.json
+    m_Address: Assets/Components/Hero/Json/first-names.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: b6bb8e25e89ac4a1495e1064b6df96bc
+    m_Address: Assets/Components/Monster/Json/monsters.json
     m_ReadOnly: 0
     m_SerializedLabels: []
   m_ReadOnly: 0

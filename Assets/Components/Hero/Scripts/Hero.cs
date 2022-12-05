@@ -9,14 +9,14 @@ namespace PocketHeroes
         private const int _EXPERIENCE_PER_LEVEL = 5;
         private const float _ATTRIBUTES_GROWTH_FACTOR_PER_LEVEL = 0.1f;
 
-        [SerializeField] private string _name;
-        public string Name { get => _name; private set { _name = value; } }
+        [SerializeField] protected string _name;
+        public string Name { get => _name; protected set { _name = value; } }
 
-        [SerializeField] private int _health;
-        public int Health { get => _health; private set { _health = value; } }
+        [SerializeField] protected int _health;
+        public int Health { get => _health; protected set { _health = value; } }
 
-        [SerializeField] private int _attackPower;
-        public int AttackPower { get => _attackPower; private set { _attackPower = value; } }
+        [SerializeField] protected int _attackPower;
+        public int AttackPower { get => _attackPower; protected set { _attackPower = value; } }
 
         [SerializeField] private int _experience;
         public int Experience { get => _experience; private set { _experience = value; } }

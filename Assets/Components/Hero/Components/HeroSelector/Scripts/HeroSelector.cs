@@ -70,7 +70,7 @@ namespace PocketHeroes
 
         private void OnCardLongPressed(Hero hero)
         {
-            _config.CharacterTooltip.Initialize(Utils.GetHeroTooltipRows(hero));
+            _config.CharacterTooltip.Initialize(TooltipUtils.GetHeroTooltipRows(hero));
         }
 
         private void OnSelectedHeroesChanged(HeroGroupState _)

@@ -92,6 +92,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _config:
     Content: {fileID: 7092126978454462850}
+    LayoutGroup: {fileID: 1900560930001031140}
 --- !u!1 &2820952236492319265
 GameObject:
   m_ObjectHideFlags: 0
