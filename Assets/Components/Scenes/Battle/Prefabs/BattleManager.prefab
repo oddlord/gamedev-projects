@@ -46,7 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _collectedHeroes: {fileID: 11400000, guid: adf13ed9792954a249b88cd8651afd21, type: 2}
   _battleParty: {fileID: 11400000, guid: c13bcb038be33493c8a59752b2cc4771, type: 2}
-  _battleStats: {fileID: 11400000, guid: 5ee7d98216d8948e78665d638a088a19, type: 2}
+  _battlesFought: {fileID: 11400000, guid: 5ee7d98216d8948e78665d638a088a19, type: 2}
   _heroSpawnPointsContainer: {fileID: 0}
   _monsterSpawnPointsContainer: {fileID: 0}
   _resultMessage: {fileID: 0}

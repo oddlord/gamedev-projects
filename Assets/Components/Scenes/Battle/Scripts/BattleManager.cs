@@ -20,7 +20,7 @@ namespace PocketHeroes
 
         [SerializeField] private HeroGroupState _collectedHeroes;
         [SerializeField] private HeroGroupState _battleParty;
-        [SerializeField] private BattleStatsState _battleStats;
+        [SerializeField] private BattlesFoughtState _battlesFought;
         [SerializeField] private Transform _heroSpawnPointsContainer;
         [SerializeField] private Transform _monsterSpawnPointsContainer;
         [SerializeField] private TextMeshProUGUI _resultMessage;
@@ -89,8 +89,8 @@ namespace PocketHeroes
                     _resultMessage.text = "You Lost :(";
                 }
 
-                _battleStats.IncrementBattlesFought();
-                if (_battleStats.BattlesFought % _BATTLES_PER_NEW_HERO == 0 && _collectedHeroes.Heroes.Count < _MAX_HEROES)
+                _battlesFought.Increment();
+                if (_battlesFought.Amount % _BATTLES_PER_NEW_HERO == 0 && _collectedHeroes.Heroes.Count < _MAX_HEROES)
                 {
                     Hero newHero = HeroGenerator.Generate();
                     _collectedHeroes.AddHero(newHero);

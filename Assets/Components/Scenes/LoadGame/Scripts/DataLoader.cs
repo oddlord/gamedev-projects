@@ -4,17 +4,25 @@ using UnityEngine.SceneManagement;
 
 namespace PocketHeroes
 {
-    public class HeroLoader : MonoBehaviour
+    public class DataLoader : MonoBehaviour
     {
         private const int _MIN_HERO_AMOUNT = 3;
 
-        [SerializeField] private HeroRepository _repository;
+        [Header("Repositories")]
+        [SerializeField] private HeroRepository _collectedHeroesRepository;
+        [SerializeField] private BattlesFoughtRepository _battlesFoughtRepository;
+
+        [Header("States")]
         [SerializeField] private HeroGroupState _collectedHeroes;
+        [SerializeField] private BattlesFoughtState _battlesFought;
 
         void Awake()
         {
-            List<Hero> heroes = _repository.GetHeroes();
+            List<Hero> heroes = _collectedHeroesRepository.Get();
             _collectedHeroes.Initialize(heroes);
+
+            int battlesFought = _battlesFoughtRepository.Get();
+            _battlesFought.Initialize(battlesFought);
         }
 
         void Start()

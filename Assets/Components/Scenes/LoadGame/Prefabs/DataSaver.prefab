@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 626469608981856639}
   - component: {fileID: 626469608981856636}
   m_Layer: 0
-  m_Name: HeroSaver
+  m_Name: DataSaver
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44,5 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f2e86e16032743bd8a0211d83c1dca6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _repository: {fileID: 11400000, guid: 9e126d91442d74e2ea4e9a6d5be3e49e, type: 2}
+  _collectedHeroesRepository: {fileID: 11400000, guid: 9e126d91442d74e2ea4e9a6d5be3e49e, type: 2}
+  _battlesFoughtRepository: {fileID: 11400000, guid: d6b73b82b37a64c85a324d8c87a61c98, type: 2}
   _collectedHeroes: {fileID: 11400000, guid: adf13ed9792954a249b88cd8651afd21, type: 2}
+  _battlesFought: {fileID: 11400000, guid: 5ee7d98216d8948e78665d638a088a19, type: 2}

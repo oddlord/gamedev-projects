@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,28 +7,28 @@ namespace PocketHeroes
     [CreateAssetMenu(menuName = ScriptableObjects.MENU_PREFIX + HeroRepository.MENU_PREFIX + "PlayerPrefs")]
     public class PlayerPrefsHeroRepository : HeroRepository
     {
-        private const string _COLLECTED_HEROES_KEY = "CollectedHeroes";
-
-        public override List<Hero> GetHeroes()
+        [Serializable]
+        private class _HeroList
         {
-            string heroGroupJson = PlayerPrefs.GetString(_COLLECTED_HEROES_KEY);
-            HeroGroup heroGroup;
-            if (heroGroupJson != null && heroGroupJson.Length > 0)
-            {
-                heroGroup = JsonUtility.FromJson<HeroGroup>(heroGroupJson);
-            }
-            else
-            {
-                heroGroup = new HeroGroup();
-            }
-            return heroGroup.Heroes;
+            public List<Hero> Heroes;
         }
 
-        public override void SetHeroes(List<Hero> heroes)
+        private const string _KEY = "CollectedHeroes";
+
+        public override List<Hero> Get()
         {
-            HeroGroup heroGroup = new HeroGroup(heroes);
-            string heroGroupJson = JsonUtility.ToJson(heroGroup);
-            PlayerPrefs.SetString(_COLLECTED_HEROES_KEY, heroGroupJson);
+            string heroListJson = PlayerPrefs.GetString(_KEY);
+            _HeroList heroList;
+            if (heroListJson != null && heroListJson.Length > 0) heroList = JsonUtility.FromJson<_HeroList>(heroListJson);
+            else heroList = new _HeroList();
+            return heroList.Heroes;
+        }
+
+        public override void Set(List<Hero> heroes)
+        {
+            _HeroList heroList = new _HeroList() { Heroes = heroes };
+            string heroListJson = JsonUtility.ToJson(heroList);
+            PlayerPrefs.SetString(_KEY, heroListJson);
         }
     }
 }

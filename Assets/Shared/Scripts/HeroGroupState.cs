@@ -5,7 +5,6 @@ using UnityEngine;
 namespace PocketHeroes
 {
     [CreateAssetMenu(menuName = ScriptableObjects.MENU_PREFIX + "HeroGroupState")]
-    // TODO find a way to have a class be both a ScriptableObject and Serializable and merge with HeroGroup
     public class HeroGroupState : ScriptableObject
     {
         [SerializeField] private List<Hero> _heroes;

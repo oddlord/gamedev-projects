@@ -10,6 +10,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 255b2e104310548b7a3f0da27cd4733c, type: 3}
-  m_Name: BattleStats
+  m_Name: BattlesFought
   m_EditorClassIdentifier: 
-  _battlesFought: 0
+  _amount: 0

@@ -28,7 +28,7 @@ namespace PocketHeroes
             TextAsset jsonFile = loadHandle.WaitForCompletion();
             string json = jsonFile.text;
 
-            // TODO find out why JsonUtility doesn't seem to work with Dictionary and use a more elegant deserialiser
+            // TODO find out why JsonUtility doesn't seem to work well with Dictionary and use a more elegant deserialiser than this
             json = json.Substring(1);
             while (true)
             {
@@ -52,7 +52,6 @@ namespace PocketHeroes
         {
             string name = GetRandomName();
             int health = CharacterGeneratorUtils.GetValueWithIvs(_BASE_HEALTH, _MAX_HEALTH_IVS, _EXTRA_HEALTH_PER_IV);
-            health = 1;
             int attackPower = CharacterGeneratorUtils.GetValueWithIvs(_BASE_ATTACK_POWER, _MAX_ATTACK_POWER_IVS, _EXTRA_ATTACK_POWER_PER_IV);
             return new Monster(name, health, attackPower);
         }
