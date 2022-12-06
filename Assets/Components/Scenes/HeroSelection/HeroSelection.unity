@@ -946,6 +946,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8196748547020508541, guid: ec33c8b2765eb4564b61024f1dca536e, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8196748547020508541, guid: ec33c8b2765eb4564b61024f1dca536e, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8196748547870927279, guid: ec33c8b2765eb4564b61024f1dca536e, type: 3}
       propertyPath: m_Name
       value: HeroSelector
