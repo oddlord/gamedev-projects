@@ -785,6 +785,14 @@ PrefabInstance:
       propertyPath: _heroSelector
       value: 
       objectReference: {fileID: 6240021182603130874}
+    - target: {fileID: 8348726780328061020, guid: 614f465656c5e44da8c7d0162e374fef, type: 3}
+      propertyPath: _selectedHeroes
+      value: 
+      objectReference: {fileID: 11400000, guid: c13bcb038be33493c8a59752b2cc4771, type: 2}
+    - target: {fileID: 8348726780328061020, guid: 614f465656c5e44da8c7d0162e374fef, type: 3}
+      propertyPath: _collectedHeroes
+      value: 
+      objectReference: {fileID: 11400000, guid: adf13ed9792954a249b88cd8651afd21, type: 2}
     - target: {fileID: 8348726780328061021, guid: 614f465656c5e44da8c7d0162e374fef, type: 3}
       propertyPath: m_RootOrder
       value: 3

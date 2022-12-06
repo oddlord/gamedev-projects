@@ -14,25 +14,5 @@ namespace PocketHeroes
                 $"Experience: {hero.Experience}",
             };
         }
-
-        public static string[] GetHeroUnitTooltipRows(HeroUnit heroUnit)
-        {
-            return new string[]{
-                $"Name: {heroUnit.Hero.Name}",
-                $"Health: {heroUnit.CurrentHealth}/{heroUnit.Hero.Health}",
-                $"Attack Power: {heroUnit.Hero.AttackPower}",
-                $"Level: {heroUnit.Hero.Level}",
-                $"Experience: {heroUnit.Hero.Experience}",
-            };
-        }
-
-        public static string[] GetMonsterUnitTooltipRows(MonsterUnit monsterUnit)
-        {
-            return new string[]{
-                $"Name: {monsterUnit.Monster.Name}",
-                $"Health: {monsterUnit.CurrentHealth}/{monsterUnit.Monster.Health}",
-                $"Attack Power: {monsterUnit.Monster.AttackPower}",
-            };
-        }
     }
 }

@@ -44,6 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1949c8512794d45ca98953b5cf1f4665, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _collectedHeroes: {fileID: 11400000, guid: adf13ed9792954a249b88cd8651afd21, type: 2}
-  _selectedHeroes: {fileID: 11400000, guid: c13bcb038be33493c8a59752b2cc4771, type: 2}
+  _collectedHeroes: {fileID: 0}
+  _selectedHeroes: {fileID: 0}
   _heroSelector: {fileID: 0}
+  _battleButton: {fileID: 0}
