@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using TMPro;
 using UnityEngine;
 
 namespace PocketHeroes
@@ -9,14 +11,22 @@ namespace PocketHeroes
         private struct _Config
         {
             public Transform FilledBar;
+            public TextMeshProUGUI DeltaText;
         }
 
-        private const float _ANIMATION_SPEED = 2.5f;
+        private const float _ANIMATION_SPEED = 2f;
+        private const float _DELTA_FADE_TIME = 2.5f;
+
+        private static readonly Color _NEGATIVE_DELTA_COLOR = new Color(1f, 0.3333333f, 0.3333333f, 1f);
+        private static readonly Color _POSITIVE_DELTA_COLOR = new Color(0.1316454f, 0.6698113f, 0.116901f, 1f);
 
         [Header("Config")]
         [SerializeField] private _Config _config;
 
-        private float _percentage
+        private float _max = 1;
+        private float _amount = 1;
+
+        private float _fillPercentage
         {
             get => _config.FilledBar.localScale.x;
             set
@@ -27,40 +37,79 @@ namespace PocketHeroes
             }
         }
 
-        private float _targetPercentage;
+        private float _targetFillPercentage => _amount / _max;
 
-        void Awake()
-        {
-            SetFill(1);
-        }
+        private Coroutine _deltaCoroutine;
 
         void Update()
         {
             float speed = _ANIMATION_SPEED * Time.deltaTime;
-            float newPercentage = Mathf.MoveTowards(_percentage, _targetPercentage, speed);
+            float newPercentage = Mathf.MoveTowards(_fillPercentage, _targetFillPercentage, speed);
             SetBar(newPercentage);
         }
 
-        public void SetFill(float percentage, bool instantaneous = false)
+        public void Initialize(float max)
         {
-            SetTarget(percentage);
-            if (instantaneous) SetBar(_targetPercentage);
+            _max = max;
+            SetFill(max, false);
         }
 
-        public void SetFill(float amount, float max, bool instantaneous = false)
+        public void SetFill(float amount, bool animate = true)
         {
-            float percentage = amount / max;
-            SetFill(percentage, instantaneous);
-        }
+            if (amount == _amount) return;
 
-        private void SetTarget(float percentage)
-        {
-            _targetPercentage = Mathf.Clamp01(percentage);
+            float newAmount = Mathf.Clamp(amount, 0, _max);
+            float delta = newAmount - _amount;
+            _amount = newAmount;
+
+            if (animate)
+            {
+                if (_deltaCoroutine != null) StopCoroutine(_deltaCoroutine);
+                _deltaCoroutine = StartCoroutine(ShowDeltaCoroutine(delta));
+            }
+            else SetBar(_targetFillPercentage);
         }
 
         private void SetBar(float percentage)
         {
-            _percentage = percentage;
+            _fillPercentage = percentage;
+        }
+
+        private IEnumerator ShowDeltaCoroutine(float delta)
+        {
+            string sign = delta > 0 ? "+" : "";
+            Color color = delta > 0 ? _POSITIVE_DELTA_COLOR : _NEGATIVE_DELTA_COLOR;
+
+            string deltaStr = $"{sign}{delta}";
+            _config.DeltaText.text = deltaStr;
+            _config.DeltaText.color = color;
+            SetDeltaAlpha(1);
+            SetActiveDelta(true);
+
+            float t = 0;
+            while (t <= 1)
+            {
+                t += Time.deltaTime / _DELTA_FADE_TIME;
+                // TODO use some nicer easing here rather than a linear one
+                float alpha = Mathf.Lerp(1, 0, t);
+                SetDeltaAlpha(alpha);
+
+                yield return null;
+            }
+
+            SetActiveDelta(false);
+        }
+
+        private void SetActiveDelta(bool active)
+        {
+            _config.DeltaText.gameObject.SetActive(active);
+        }
+
+        private void SetDeltaAlpha(float alpha)
+        {
+            Color deltaColor = _config.DeltaText.color;
+            deltaColor.a = alpha;
+            _config.DeltaText.color = deltaColor;
         }
     }
 }

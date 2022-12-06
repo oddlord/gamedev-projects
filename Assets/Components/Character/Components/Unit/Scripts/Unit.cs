@@ -35,7 +35,8 @@ namespace PocketHeroes
             _lastPressDownTime = 0;
 
             _config.Name.text = character.Name;
-            SetCurrentHealth(character.Health);
+            CurrentHealth = character.Health;
+            _config.HealthBar.Initialize(character.Health);
         }
 
         public void Attack(Unit enemyUnit, Action onAttackFinished)
@@ -45,7 +46,8 @@ namespace PocketHeroes
 
         public void GetDamaged(int damageAmount)
         {
-            SetCurrentHealth(CurrentHealth - damageAmount, true);
+            CurrentHealth = Math.Max(0, CurrentHealth - damageAmount);
+            _config.HealthBar.SetFill(CurrentHealth);
         }
 
         public virtual void OnBattleOver(bool won) { }
@@ -61,12 +63,6 @@ namespace PocketHeroes
                 $"Health: {CurrentHealth}/{Character.Health}",
                 $"Attack Power: {Character.AttackPower}",
             };
-        }
-
-        private void SetCurrentHealth(int health, bool animate = false)
-        {
-            CurrentHealth = Math.Max(0, health);
-            _config.HealthBar.SetFill(CurrentHealth, Character.Health, !animate);
         }
 
         private IEnumerator AttackCoroutine(Unit enemyUnit, Action onAttackFinished)
