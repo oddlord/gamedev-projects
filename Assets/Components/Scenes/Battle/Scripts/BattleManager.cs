@@ -8,95 +8,54 @@ namespace PocketHeroes
 {
     public class BattleManager : MonoBehaviour
     {
-        [Serializable]
-        private struct _Config
-        {
-            public CharacterUnit[] PlayerUnitPrefabs;
-            public CharacterUnit[] AiUnitPrefabs;
-        }
-
         private const int _BATTLES_PER_NEW_HERO = 5;
         private const int _MAX_HEROES = 10;
-        private const int _AI_UNITS = 1;
 
         [SerializeField] private HeroGroupState _collectedHeroes;
-        [SerializeField] private HeroGroupState _battleParty;
         [SerializeField] private BattlesFoughtState _battlesFought;
-        [SerializeField] private Transform _playerSpawnPointsContainer;
-        [SerializeField] private Transform _aiSpawnPointsContainer;
+        [SerializeField] private PartyController _p1Controller;
+        [SerializeField] private PartyController _p2Controller;
         [SerializeField] private TextMeshProUGUI _resultMessage;
         [SerializeField] private Button _backButton;
 
-        [Header("Config")]
-        [SerializeField] private _Config _config;
-
-        private PartyController _playerPartyController;
-        private PartyController _aiPartyController;
         private int _turn;
 
         void Start()
         {
-            Initialize();
-            StartNextTurn();
-        }
-
-        private void Initialize()
-        {
             _turn = 0;
 
-            // TODO refactor this into a UnitSpawner
-            CharacterUnit[] playerUnits = new CharacterUnit[_battleParty.Heroes.Count];
-            SpawnPoint[] playerSpawnPoints = _playerSpawnPointsContainer.GetComponentsInChildren<SpawnPoint>();
-            for (int i = 0; i < _battleParty.Heroes.Count; i++)
-            {
-                CharacterUnit playerUnitPrefab = _config.PlayerUnitPrefabs[UnityEngine.Random.Range(0, _config.PlayerUnitPrefabs.Length)];
-                SpawnPoint spawnPoint = playerSpawnPoints[i % playerSpawnPoints.Length];
+            _p1Controller.Initialize();
+            _p2Controller.Initialize();
 
-                Character playerCharacter;
-                if (playerUnitPrefab is HeroUnit) playerCharacter = _battleParty.Heroes[i];
-                else playerCharacter = MonsterGenerator.Generate();
+            _p1Controller.SetEnemyUnits(_p2Controller.Units);
+            _p1Controller.OnTurnFinished += OnTurnFinished;
 
-                CharacterUnit playerUnit = Instantiate(playerUnitPrefab, spawnPoint.Position, Quaternion.identity, transform);
-                playerUnit.Initialize(playerCharacter);
-                playerUnits[i] = playerUnit;
-            }
-
-            CharacterUnit[] aiUnits = new CharacterUnit[_AI_UNITS];
-            SpawnPoint[] aiSpawnPoints = _aiSpawnPointsContainer.GetComponentsInChildren<SpawnPoint>();
-            for (int i = 0; i < _AI_UNITS; i++)
-            {
-                CharacterUnit aiUnitPrefab = _config.AiUnitPrefabs[UnityEngine.Random.Range(0, _config.AiUnitPrefabs.Length)];
-                SpawnPoint aiSpawnPoint = aiSpawnPoints[i % _AI_UNITS];
-
-                Character aiCharacter;
-                if (aiUnitPrefab is HeroUnit) aiCharacter = HeroGenerator.Generate();
-                else aiCharacter = MonsterGenerator.Generate();
-
-                CharacterUnit aiUnit = Instantiate(aiUnitPrefab, aiSpawnPoint.Position, Quaternion.identity, transform);
-                aiUnit.Initialize(aiCharacter);
-                aiUnits[i] = aiUnit;
-            }
-
-            _playerPartyController = new PlayerPartyController(playerUnits, aiUnits);
-            _playerPartyController.OnTurnFinished += OnTurnFinished;
-
-            _aiPartyController = new AiPartyController(aiUnits, playerUnits);
-            _aiPartyController.OnTurnFinished += OnTurnFinished;
+            _p2Controller.SetEnemyUnits(_p1Controller.Units);
+            _p2Controller.OnTurnFinished += OnTurnFinished;
 
             _backButton.onClick.AddListener(OnBackPressed);
+
+            StartNextTurn();
         }
 
         private void OnTurnFinished()
         {
-            bool playerWon = !_aiPartyController.HasAliveUnits();
-            bool aiWon = !_playerPartyController.HasAliveUnits();
-            bool battleOver = playerWon || aiWon;
+            bool p1Won = !_p2Controller.HasAliveUnits();
+            bool p2Won = !_p1Controller.HasAliveUnits();
+            bool battleOver = p1Won || p2Won;
+
             if (battleOver)
             {
-                _resultMessage.text = playerWon ? "You Won!" : "You Lost :(";
+                PartyController winner = p1Won ? _p1Controller : _p2Controller;
 
-                _playerPartyController.OnBattleOver(playerWon);
-                _aiPartyController.OnBattleOver(aiWon);
+                string resultText;
+                if (winner.IsPlayer()) resultText = "You Won!";
+                else if (IsAnyPlayerInBattle) resultText = "You Lost :(";
+                else resultText = "AI Won";
+                _resultMessage.text = resultText;
+
+                _p1Controller.OnBattleOver(p1Won);
+                _p2Controller.OnBattleOver(p2Won);
 
                 _battlesFought.Increment();
                 if (_battlesFought.Amount % _BATTLES_PER_NEW_HERO == 0 && _collectedHeroes.Heroes.Count < _MAX_HEROES)
@@ -108,26 +67,23 @@ namespace PocketHeroes
                 _backButton.gameObject.SetActive(true);
                 _resultMessage.gameObject.SetActive(true);
             }
-            else
-            {
-                StartNextTurn();
-            }
+            else StartNextTurn();
         }
 
         private void StartNextTurn()
         {
             _turn++;
 
-            if (IsPlayersTurn) _playerPartyController.DoTurn();
-            else _aiPartyController.DoTurn();
+            if (_turn % 2 == 1) _p1Controller.DoTurn();
+            else _p2Controller.DoTurn();
         }
-
-        private bool IsPlayersTurn => _turn % 2 == 1;
 
         private void OnBackPressed()
         {
             SceneManager.LoadScene(Scenes.HERO_SELECTION);
         }
+
+        private bool IsAnyPlayerInBattle => _p1Controller.IsPlayer() || _p2Controller.IsPlayer();
 
         void OnDestroy()
         {

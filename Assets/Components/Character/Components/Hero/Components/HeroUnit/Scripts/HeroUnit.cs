@@ -6,7 +6,7 @@ using UnityEngine;
 namespace PocketHeroes
 {
     // TODO make a Unit superclass so that the MonsterUnit can extend it too
-    public class HeroUnit : CharacterUnit
+    public class HeroUnit : Unit
     {
         private Hero Hero => Character as Hero;
 

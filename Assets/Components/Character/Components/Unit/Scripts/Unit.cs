@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace PocketHeroes
 {
-    public class CharacterUnit : MonoBehaviour
+    public class Unit : MonoBehaviour
     {
         [Serializable]
         private struct _Config
@@ -25,7 +25,7 @@ namespace PocketHeroes
         [SerializeField] private _Config _config;
 
         // TODO refactor so that this functionality is shared between Units and HeroCards
-        public Action<CharacterUnit> OnPress;
+        public Action<Unit> OnPress;
 
         private float _lastPressDownTime;
 
@@ -38,7 +38,7 @@ namespace PocketHeroes
             SetCurrentHealth(character.Health);
         }
 
-        public void Attack(CharacterUnit enemyUnit, Action onAttackFinished)
+        public void Attack(Unit enemyUnit, Action onAttackFinished)
         {
             StartCoroutine(AttackCoroutine(enemyUnit, onAttackFinished));
         }
@@ -69,7 +69,7 @@ namespace PocketHeroes
             _config.HealthBar.SetFill(CurrentHealth, Character.Health, !animate);
         }
 
-        private IEnumerator AttackCoroutine(CharacterUnit enemyUnit, Action onAttackFinished)
+        private IEnumerator AttackCoroutine(Unit enemyUnit, Action onAttackFinished)
         {
             Vector3 initialPosition = transform.position;
 
