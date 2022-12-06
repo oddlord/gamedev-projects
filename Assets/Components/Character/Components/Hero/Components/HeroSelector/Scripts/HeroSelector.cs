@@ -70,7 +70,7 @@ namespace PocketHeroes
 
         private void OnCardLongPressed(Hero hero)
         {
-            _config.Tooltip.Initialize(TooltipUtils.GetHeroTooltipRows(hero));
+            _config.Tooltip.Initialize(GetHeroTooltipRows(hero));
         }
 
         private void OnSelectedHeroesChanged(HeroGroupState _)
@@ -85,6 +85,19 @@ namespace PocketHeroes
                 bool selected = _selectedHeroes.Heroes.Contains(card.Hero);
                 card.SetSelected(selected);
             }
+        }
+
+        // TODO this function doesn't belong with either the Hero or the tooltip classes
+        // Find the proper place for this function, same for the other functions
+        private string[] GetHeroTooltipRows(Hero hero)
+        {
+            return new string[]{
+                $"Name: {hero.Name}",
+                $"Health: {hero.Health}",
+                $"Attack Power: {hero.AttackPower}",
+                $"Level: {hero.Level}",
+                $"Experience: {hero.Experience}",
+            };
         }
 
         void OnDestroy()
