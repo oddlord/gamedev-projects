@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Oddlord.Easing;
 using TMPro;
 using UnityEngine;
 
@@ -75,8 +76,7 @@ namespace PocketHeroes
             while (t <= 1)
             {
                 t += Time.deltaTime / _ATTACK_MOVE_DURATION;
-                // TODO use some nicer easing here rather than a linear one
-                Vector3 position = Vector3.Lerp(initialPosition, enemyUnit.transform.position, t);
+                Vector3 position = Easing.Lerp(initialPosition, enemyUnit.transform.position, t, EasingCurve.EaseInCubic);
                 transform.position = position;
                 yield return null;
             }
@@ -88,7 +88,7 @@ namespace PocketHeroes
             while (t <= 1)
             {
                 t += Time.deltaTime / _ATTACK_MOVE_DURATION;
-                Vector3 position = Vector3.Lerp(attackPosition, initialPosition, t);
+                Vector3 position = Easing.Lerp(attackPosition, initialPosition, t, EasingCurve.EaseOutCubic);
                 transform.position = position;
                 yield return null;
             }

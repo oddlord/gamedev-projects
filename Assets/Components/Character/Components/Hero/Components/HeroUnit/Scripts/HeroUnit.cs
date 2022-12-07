@@ -1,4 +1,5 @@
 using System.Collections;
+using Oddlord.Easing;
 using UnityEngine;
 
 namespace PocketHeroes
@@ -59,8 +60,7 @@ namespace PocketHeroes
             while (t <= 1)
             {
                 t += Time.deltaTime / _DELTA_FADE_TIME;
-                // TODO use some nicer easing here rather than a linear one
-                float alpha = Mathf.Lerp(1, 0, t);
+                float alpha = Easing.Lerp(1, 0, t, EasingCurve.EaseInQuart);
                 SetAttributeChangeTextAlpha(alpha);
 
                 yield return null;
