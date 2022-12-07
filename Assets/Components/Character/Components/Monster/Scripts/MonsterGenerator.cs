@@ -11,12 +11,12 @@ namespace PocketHeroes
         private const string _MONSTER_NAMES_JSON_ADDRESS = "Assets/Components/Monster/Json/monsters.json";
 
         private const int _BASE_HEALTH = 200;
-        private const int _EXTRA_HEALTH_PER_IV = 50;
+        private const int _EXTRA_HEALTH_PER_IV = 30;
         private const int _MAX_HEALTH_IVS = 5;
 
         private const int _BASE_ATTACK_POWER = 15;
         private const int _EXTRA_ATTACK_POWER_PER_IV = 3;
-        private const int _MAX_ATTACK_POWER_IVS = 5;
+        private const int _MAX_ATTACK_POWER_IVS = 4;
 
         private static List<string> _names;
 
