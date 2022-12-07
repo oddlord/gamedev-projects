@@ -8,10 +8,11 @@ namespace PocketHeroes
     public class Unit : MonoBehaviour
     {
         [Serializable]
-        private struct _Config
+        protected struct _Config
         {
             public HealthBar HealthBar;
             public TextMeshPro Name;
+            public TextMeshPro AttributeChangeText;
             public Tooltip Tooltip;
         }
 
@@ -22,14 +23,14 @@ namespace PocketHeroes
         public int CurrentHealth;
 
         [Header("Config")]
-        [SerializeField] private _Config _config;
+        [SerializeField] protected _Config _config;
 
         // TODO refactor so that this functionality is shared between Units and HeroCards
         public Action<Unit> OnPress;
 
         private float _lastPressDownTime;
 
-        public void Initialize(Character character)
+        public virtual void Initialize(Character character)
         {
             Character = character;
             _lastPressDownTime = 0;

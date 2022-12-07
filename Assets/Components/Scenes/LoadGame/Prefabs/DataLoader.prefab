@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 210095899afcc42a4af2a9185f5e09f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _collectedHeroesRepository: {fileID: 11400000, guid: 9e126d91442d74e2ea4e9a6d5be3e49e, type: 2}
+  _collectedHeroesRepository: {fileID: 11400000, guid: 7357bd4194fc54b5f9db17adf8a2fedc, type: 2}
   _battlesFoughtRepository: {fileID: 11400000, guid: d6b73b82b37a64c85a324d8c87a61c98, type: 2}
   _collectedHeroes: {fileID: 11400000, guid: adf13ed9792954a249b88cd8651afd21, type: 2}
   _battlesFought: {fileID: 11400000, guid: 5ee7d98216d8948e78665d638a088a19, type: 2}

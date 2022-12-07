@@ -6,14 +6,14 @@ namespace PocketHeroes
     [Serializable]
     public class Character
     {
-        [SerializeField] protected string _name;
+        [SerializeField] private string _name;
         public string Name { get => _name; protected set { _name = value; } }
 
-        [SerializeField] protected int _health;
-        public int Health { get => _health; protected set { _health = value; } }
+        [SerializeField] private int _health;
+        public int Health { get => _health; protected set => _health = value; }
 
-        [SerializeField] protected int _attackPower;
-        public int AttackPower { get => _attackPower; protected set { _attackPower = value; } }
+        [SerializeField] private int _attackPower;
+        public int AttackPower { get => _attackPower; protected set => _attackPower = value; }
 
         public Character(string name, int health, int attackPower)
         {
@@ -37,7 +37,7 @@ namespace PocketHeroes
         }
         public override int GetHashCode()
         {
-            return $"{_name}{_health}{_attackPower}".GetHashCode();
+            return $"{Name}{Health}{AttackPower}".GetHashCode();
         }
 
         public override string ToString() => JsonUtility.ToJson(this, true);

@@ -9,7 +9,7 @@ namespace PocketHeroes
         private const int _MIN_HERO_AMOUNT = 3;
 
         [Header("Repositories")]
-        [SerializeField] private HeroRepository _collectedHeroesRepository;
+        [SerializeField] private CollectedHeroesRepository _collectedHeroesRepository;
         [SerializeField] private BattlesFoughtRepository _battlesFoughtRepository;
 
         [Header("States")]

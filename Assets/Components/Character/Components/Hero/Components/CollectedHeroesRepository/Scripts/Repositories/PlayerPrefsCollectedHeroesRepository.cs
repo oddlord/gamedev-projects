@@ -4,8 +4,8 @@ using UnityEngine;
 
 namespace PocketHeroes
 {
-    [CreateAssetMenu(menuName = ScriptableObjects.MENU_PREFIX + HeroRepository.MENU_PREFIX + "PlayerPrefs")]
-    public class PlayerPrefsHeroRepository : HeroRepository
+    [CreateAssetMenu(menuName = ScriptableObjects.MENU_PREFIX + CollectedHeroesRepository.MENU_PREFIX + "PlayerPrefs")]
+    public class PlayerPrefsCollectedHeroesRepository : CollectedHeroesRepository
     {
         [Serializable]
         private class _HeroList

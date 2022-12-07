@@ -9,11 +9,23 @@ namespace PocketHeroes
         private const int _EXPERIENCE_PER_LEVEL = 5;
         private const float _ATTRIBUTES_GROWTH_FACTOR_PER_LEVEL = 0.1f;
 
+        /// <summary>
+        ///     This event is triggered every time the Hero gains some experience points.
+        ///     Parameters:
+        ///     <list type="bullet">
+        ///         <item><c>experienceGained</c></item>
+        ///         <item><c>healthDelta</c></item>
+        ///         <item><c>attackPowerDelta</c></item>
+        ///         <item><c>levelDelta</c></item>
+        ///     </list>
+        /// </summary>
+        public Action<int, int, int, int> OnExperienceGain;
+
         [SerializeField] private int _experience;
-        public int Experience { get => _experience; private set { _experience = value; } }
+        public int Experience { get => _experience; private set => _experience = value; }
 
         [SerializeField] private int _level;
-        public int Level { get => _level; private set { _level = value; } }
+        public int Level { get => _level; private set => _level = value; }
 
         public Action<Hero> OnChange;
 
@@ -25,17 +37,23 @@ namespace PocketHeroes
 
         public void GainExperience(int experiencePoints = 1)
         {
+            int oldHealth = Health;
+            int oldAttackPower = AttackPower;
+            int oldLevel = Level;
+
             _experience += experiencePoints;
             while (CanLevelUp()) LevelUp();
+
             OnChange?.Invoke(this);
+            OnExperienceGain(experiencePoints, Health - oldHealth, AttackPower - oldAttackPower, Level - oldLevel);
         }
 
         private bool CanLevelUp() => _experience >= _EXPERIENCE_PER_LEVEL;
 
         private void LevelUp()
         {
-            _health += (int)Math.Round(_health * _ATTRIBUTES_GROWTH_FACTOR_PER_LEVEL);
-            _attackPower += (int)Math.Round(_attackPower * _ATTRIBUTES_GROWTH_FACTOR_PER_LEVEL);
+            Health += (int)Math.Round(Health * _ATTRIBUTES_GROWTH_FACTOR_PER_LEVEL);
+            AttackPower += (int)Math.Round(AttackPower * _ATTRIBUTES_GROWTH_FACTOR_PER_LEVEL);
             _experience -= _EXPERIENCE_PER_LEVEL;
             _level++;
         }
@@ -55,7 +73,7 @@ namespace PocketHeroes
         }
         public override int GetHashCode()
         {
-            return $"{_name}{_health}{_attackPower}{_experience}{_level}".GetHashCode();
+            return $"{Name}{Health}{AttackPower}{Experience}{Level}".GetHashCode();
         }
 
         public override string ToString() => JsonUtility.ToJson(this, true);

@@ -11,6 +11,17 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: a868b70bc7c4b4675b4de3b249b550bf, type: 3}
+    - target: {fileID: 4008441056457101006, guid: 33e94c4ca5d3d4146b1d9c3bdebee1e2, type: 3}
+      propertyPath: m_text
+      value: 'Experience Gained: +10
+
+        Health: +4
+
+        Attack Power: +5
+
+        Level:
+        +1'
+      objectReference: {fileID: 0}
     - target: {fileID: 5050157782450269365, guid: 33e94c4ca5d3d4146b1d9c3bdebee1e2, type: 3}
       propertyPath: m_text
       value: Prince Charming
@@ -83,6 +94,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 9159049745016341270, guid: 33e94c4ca5d3d4146b1d9c3bdebee1e2, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 4940867204646453029, guid: 33e94c4ca5d3d4146b1d9c3bdebee1e2, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 33e94c4ca5d3d4146b1d9c3bdebee1e2, type: 3}
@@ -111,6 +126,7 @@ MonoBehaviour:
   _config:
     HealthBar: {fileID: 3301302603011477389}
     Name: {fileID: 3301302601968141139}
+    AttributeChangeText: {fileID: 6657869879993606440}
     Tooltip: {fileID: 5864283157310477935}
 --- !u!114 &3301302601968141139 stripped
 MonoBehaviour:
@@ -143,5 +159,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8cd8aca0851f3493a9771adc18c821e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6657869879993606440 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4008441056457101006, guid: 33e94c4ca5d3d4146b1d9c3bdebee1e2, type: 3}
+  m_PrefabInstance: {fileID: 7765708269166604262}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9541d86e2fd84c1d9990edf0852d74ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

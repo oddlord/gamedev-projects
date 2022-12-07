@@ -14,7 +14,7 @@ namespace PocketHeroes
             public TextMeshProUGUI DeltaText;
         }
 
-        private const float _ANIMATION_SPEED = 2f;
+        private const float _ANIMATION_SPEED = 1;
         private const float _DELTA_FADE_TIME = 2.5f;
 
         private static readonly Color _NEGATIVE_DELTA_COLOR = new Color(1f, 0.3333333f, 0.3333333f, 1f);

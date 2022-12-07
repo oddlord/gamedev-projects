@@ -5,7 +5,7 @@ namespace PocketHeroes
     public class DataSaver : MonoBehaviour
     {
         [Header("Repositories")]
-        [SerializeField] private HeroRepository _collectedHeroesRepository;
+        [SerializeField] private CollectedHeroesRepository _collectedHeroesRepository;
         [SerializeField] private BattlesFoughtRepository _battlesFoughtRepository;
 
         [Header("States")]
