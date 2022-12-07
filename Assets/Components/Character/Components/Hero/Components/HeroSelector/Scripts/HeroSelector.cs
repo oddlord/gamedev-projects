@@ -10,7 +10,6 @@ namespace PocketHeroes
         private struct _Config
         {
             public RectTransform Grid;
-            public Tooltip Tooltip;
         }
 
         [SerializeField] private HeroGroupState _selectedHeroes;
@@ -39,7 +38,6 @@ namespace PocketHeroes
                 HeroCard card = Instantiate(_heroCardPrefab, _config.Grid);
                 card.Initialize(hero);
                 card.OnPress += OnCardPressed;
-                card.OnLongPress += OnCardLongPressed;
                 _cards.Add(card);
             }
 
@@ -56,7 +54,6 @@ namespace PocketHeroes
             foreach (HeroCard card in _cards)
             {
                 card.OnPress -= OnCardPressed;
-                card.OnLongPress -= OnCardLongPressed;
                 Destroy(card.gameObject);
             }
             _cards.Clear();
@@ -66,11 +63,6 @@ namespace PocketHeroes
         {
             if (_selectedHeroes.Heroes.Contains(hero)) _selectedHeroes.RemoveHero(hero);
             else if (_selectionEnabled) _selectedHeroes.AddHero(hero);
-        }
-
-        private void OnCardLongPressed(Hero hero)
-        {
-            _config.Tooltip.Initialize(GetHeroTooltipRows(hero));
         }
 
         private void OnSelectedHeroesChanged(HeroGroupState _)
@@ -85,19 +77,6 @@ namespace PocketHeroes
                 bool selected = _selectedHeroes.Heroes.Contains(card.Hero);
                 card.SetSelected(selected);
             }
-        }
-
-        // TODO this function doesn't belong with either the Hero or the tooltip classes
-        // Find the proper place for this function, same for the other functions
-        private string[] GetHeroTooltipRows(Hero hero)
-        {
-            return new string[]{
-                $"Name: {hero.Name}",
-                $"Health: {hero.Health}",
-                $"Attack Power: {hero.AttackPower}",
-                $"Level: {hero.Level}",
-                $"Experience: {hero.Experience}",
-            };
         }
 
         void OnDestroy()

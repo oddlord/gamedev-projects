@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace PocketHeroes
 {
-    public class Unit : MonoBehaviour
+    public class Unit : MonoBehaviour, ITooltipSubject
     {
         [Serializable]
         protected struct _Config
@@ -57,9 +57,7 @@ namespace PocketHeroes
 
         public bool IsDead => CurrentHealth == 0;
 
-        // TODO this function doesn't belong with either the CharacterUnit or the tooltip classes
-        // Find the proper place for this function, same for the other similar functions
-        protected virtual string[] GetTooltipRows()
+        public virtual string[] GetTooltipRows()
         {
             return new string[]{
                 $"Name: {Character.Name}",
@@ -119,7 +117,7 @@ namespace PocketHeroes
         private IEnumerator LongPressCoroutine()
         {
             yield return new WaitForSeconds(_LONG_PRESS_DURATION);
-            _config.Tooltip.Initialize(GetTooltipRows());
+            _config.Tooltip.Show();
             _longPressCoroutine = null;
         }
     }

@@ -44,3 +44,6 @@ TagManager:
   - name: HealthBar
     uniqueID: 4017295143
     locked: 0
+  - name: Tooltip
+    uniqueID: 466467349
+    locked: 0

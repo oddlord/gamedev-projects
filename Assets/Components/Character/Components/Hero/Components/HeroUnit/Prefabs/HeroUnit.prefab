@@ -7,6 +7,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1961399537995334846, guid: 33e94c4ca5d3d4146b1d9c3bdebee1e2, type: 3}
+      propertyPath: _subject
+      value: 
+      objectReference: {fileID: 9068296341432448744}
     - target: {fileID: 2455198163654539085, guid: 33e94c4ca5d3d4146b1d9c3bdebee1e2, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -22,6 +26,10 @@ PrefabInstance:
         Level:
         +1'
       objectReference: {fileID: 0}
+    - target: {fileID: 4226426973778426249, guid: 33e94c4ca5d3d4146b1d9c3bdebee1e2, type: 3}
+      propertyPath: _subject
+      value: 
+      objectReference: {fileID: 9068296341432448744}
     - target: {fileID: 5050157782450269365, guid: 33e94c4ca5d3d4146b1d9c3bdebee1e2, type: 3}
       propertyPath: m_text
       value: Prince Charming
@@ -127,7 +135,7 @@ MonoBehaviour:
     HealthBar: {fileID: 3301302603011477389}
     Name: {fileID: 3301302601968141139}
     AttributeChangeText: {fileID: 6657869879993606440}
-    Tooltip: {fileID: 5864283157310477935}
+    Tooltip: {fileID: 8141695562902596440}
 --- !u!114 &3301302601968141139 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5050157782450269365, guid: 33e94c4ca5d3d4146b1d9c3bdebee1e2, type: 3}
@@ -150,17 +158,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3302b56acd0e54c9fa7d36f08f2bea4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &5864283157310477935 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4226426973778426249, guid: 33e94c4ca5d3d4146b1d9c3bdebee1e2, type: 3}
-  m_PrefabInstance: {fileID: 7765708269166604262}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8cd8aca0851f3493a9771adc18c821e1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &6657869879993606440 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4008441056457101006, guid: 33e94c4ca5d3d4146b1d9c3bdebee1e2, type: 3}
@@ -170,5 +167,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9541d86e2fd84c1d9990edf0852d74ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8141695562902596440 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1961399537995334846, guid: 33e94c4ca5d3d4146b1d9c3bdebee1e2, type: 3}
+  m_PrefabInstance: {fileID: 7765708269166604262}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8cd8aca0851f3493a9771adc18c821e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

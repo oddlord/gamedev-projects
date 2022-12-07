@@ -26,7 +26,7 @@ namespace PocketHeroes
             if (!IsDead) _hero.GainExperience();
         }
 
-        protected override string[] GetTooltipRows()
+        public override string[] GetTooltipRows()
         {
             return new string[]{
                 $"Name: {Character.Name}",

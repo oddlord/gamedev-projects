@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 namespace PocketHeroes
 {
-    public class HeroCard : MonoBehaviour, IPointerUpHandler, IPointerDownHandler
+    public class HeroCard : MonoBehaviour, IPointerUpHandler, IPointerDownHandler, ITooltipSubject
     {
         [Serializable]
         private struct _Config
@@ -15,6 +15,7 @@ namespace PocketHeroes
             public TextMeshProUGUI Name;
             public TextMeshProUGUI Level;
             public Image Background;
+            public Tooltip Tooltip;
         }
 
         private const float _LONG_PRESS_DURATION = 3;
@@ -26,7 +27,6 @@ namespace PocketHeroes
         [SerializeField] private _Config _config;
 
         public Action<Hero> OnPress;
-        public Action<Hero> OnLongPress;
 
         [HideInInspector] public Hero Hero;
 
@@ -76,10 +76,21 @@ namespace PocketHeroes
             }
         }
 
+        public string[] GetTooltipRows()
+        {
+            return new string[]{
+                $"Name: {Hero.Name}",
+                $"Health: {Hero.Health}",
+                $"Attack Power: {Hero.AttackPower}",
+                $"Level: {Hero.Level}",
+                $"Experience: {Hero.Experience}",
+            };
+        }
+
         private IEnumerator LongPressCoroutine()
         {
             yield return new WaitForSeconds(_LONG_PRESS_DURATION);
-            OnLongPress?.Invoke(Hero);
+            _config.Tooltip.Show();
             _longPressCoroutine = null;
         }
 
