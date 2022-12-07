@@ -98,6 +98,7 @@ namespace PocketHeroes
             }
 
             SetActiveDelta(false);
+            _deltaCoroutine = null;
         }
 
         private void SetActiveDelta(bool active)

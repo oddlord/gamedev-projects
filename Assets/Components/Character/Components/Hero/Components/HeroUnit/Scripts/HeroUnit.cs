@@ -67,6 +67,7 @@ namespace PocketHeroes
             }
 
             SetActiveAttributeChangeText(false);
+            _attributeChangeCoroutine = null;
         }
 
         private void SetActiveAttributeChangeText(bool active)

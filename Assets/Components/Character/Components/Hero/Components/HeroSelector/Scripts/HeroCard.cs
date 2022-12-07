@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -30,6 +31,7 @@ namespace PocketHeroes
         [HideInInspector] public Hero Hero;
 
         private float _lastPressDownTime;
+        private Coroutine _longPressCoroutine;
         private bool _selected;
 
         public void Initialize(Hero hero, bool selected = false)
@@ -57,14 +59,28 @@ namespace PocketHeroes
         public void OnPointerDown(PointerEventData eventData)
         {
             _lastPressDownTime = Time.time;
+
+            if (_longPressCoroutine != null) StopCoroutine(_longPressCoroutine);
+            _longPressCoroutine = StartCoroutine(LongPressCoroutine());
         }
 
         public void OnPointerUp(PointerEventData eventData)
         {
             if (_lastPressDownTime == 0) return;
 
-            if (Time.time - _lastPressDownTime < _LONG_PRESS_DURATION) OnPress?.Invoke(Hero);
-            else OnLongPress?.Invoke(Hero);
+            if (_longPressCoroutine != null)
+            {
+                StopCoroutine(_longPressCoroutine);
+                _longPressCoroutine = null;
+                OnPress?.Invoke(Hero);
+            }
+        }
+
+        private IEnumerator LongPressCoroutine()
+        {
+            yield return new WaitForSeconds(_LONG_PRESS_DURATION);
+            OnLongPress?.Invoke(Hero);
+            _longPressCoroutine = null;
         }
 
         private void SetBackground()

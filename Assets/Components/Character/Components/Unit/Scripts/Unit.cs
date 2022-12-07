@@ -17,7 +17,7 @@ namespace PocketHeroes
         }
 
         private const float _LONG_PRESS_DURATION = 3;
-        private const float _ATTACK_MOVE_TIME = 0.5f;
+        private const float _ATTACK_MOVE_DURATION = 0.5f;
 
         public Character Character;
         public int CurrentHealth;
@@ -29,6 +29,7 @@ namespace PocketHeroes
         public Action<Unit> OnPress;
 
         private float _lastPressDownTime;
+        private Coroutine _longPressCoroutine;
 
         public virtual void Initialize(Character character)
         {
@@ -73,7 +74,7 @@ namespace PocketHeroes
             float t = 0;
             while (t <= 1)
             {
-                t += Time.deltaTime / _ATTACK_MOVE_TIME;
+                t += Time.deltaTime / _ATTACK_MOVE_DURATION;
                 // TODO use some nicer easing here rather than a linear one
                 Vector3 position = Vector3.Lerp(initialPosition, enemyUnit.transform.position, t);
                 transform.position = position;
@@ -86,7 +87,7 @@ namespace PocketHeroes
             t = 0;
             while (t <= 1)
             {
-                t += Time.deltaTime / _ATTACK_MOVE_TIME;
+                t += Time.deltaTime / _ATTACK_MOVE_DURATION;
                 Vector3 position = Vector3.Lerp(attackPosition, initialPosition, t);
                 transform.position = position;
                 yield return null;
@@ -98,14 +99,28 @@ namespace PocketHeroes
         public void OnMouseDown()
         {
             _lastPressDownTime = Time.time;
+
+            if (_longPressCoroutine != null) StopCoroutine(_longPressCoroutine);
+            _longPressCoroutine = StartCoroutine(LongPressCoroutine());
         }
 
         public void OnMouseUp()
         {
             if (_lastPressDownTime == 0) return;
 
-            if (Time.time - _lastPressDownTime < _LONG_PRESS_DURATION) OnPress?.Invoke(this);
-            else _config.Tooltip.Initialize(GetTooltipRows());
+            if (_longPressCoroutine != null)
+            {
+                StopCoroutine(_longPressCoroutine);
+                _longPressCoroutine = null;
+                OnPress?.Invoke(this);
+            }
+        }
+
+        private IEnumerator LongPressCoroutine()
+        {
+            yield return new WaitForSeconds(_LONG_PRESS_DURATION);
+            _config.Tooltip.Initialize(GetTooltipRows());
+            _longPressCoroutine = null;
         }
     }
 }
