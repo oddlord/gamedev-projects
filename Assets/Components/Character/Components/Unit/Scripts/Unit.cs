@@ -40,6 +40,7 @@ namespace PocketHeroes
             _config.Name.text = character.Name;
             CurrentHealth = character.Health;
             _config.HealthBar.Initialize(character.Health);
+            _config.Tooltip.Initialize(this);
         }
 
         public void Attack(Unit enemyUnit, Action onAttackFinished)

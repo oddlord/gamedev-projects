@@ -11,17 +11,19 @@ namespace PocketHeroes
             public TooltipPanel Panel;
         }
 
-        [SerializeField]
-        [RequireInterface(typeof(ITooltipSubject))]
-        private UnityEngine.Object _subject;
-        public ITooltipSubject Subject => _subject as ITooltipSubject;
-
         [Header("Config")]
         [SerializeField] private _Config _config;
 
+        private ITooltipSubject _subject;
+
+        public void Initialize(ITooltipSubject subject)
+        {
+            _subject = subject;
+        }
+
         public void Show()
         {
-            string[] rows = Subject.GetTooltipRows();
+            string[] rows = _subject.GetTooltipRows();
             _config.Panel.Show(rows);
         }
     }

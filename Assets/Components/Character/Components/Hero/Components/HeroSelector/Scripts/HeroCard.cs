@@ -43,6 +43,7 @@ namespace PocketHeroes
             _config.Name.text = hero.Name;
             // TODO replace with localized string with parameter
             _config.Level.text = $"lv. {hero.Level}";
+            _config.Tooltip.Initialize(this);
         }
 
         public void ToggleSelected()
