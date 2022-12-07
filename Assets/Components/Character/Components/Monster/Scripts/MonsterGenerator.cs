@@ -10,7 +10,7 @@ namespace PocketHeroes
     {
         private const string _MONSTER_NAMES_JSON_ADDRESS = "Assets/Components/Monster/Json/monsters.json";
 
-        private const int _BASE_HEALTH = 250;
+        private const int _BASE_HEALTH = 200;
         private const int _EXTRA_HEALTH_PER_IV = 50;
         private const int _MAX_HEALTH_IVS = 5;
 
