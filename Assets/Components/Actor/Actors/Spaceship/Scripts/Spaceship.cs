@@ -30,8 +30,12 @@ namespace SpaceMiner
 
         public override void HandleForwardInput(float amount)
         {
-            float targetSpeed = amount != 0 ? Mathf.Sign(amount) * _maxSpeed : 0;
-            float acceleration = amount != 0 ? Mathf.Abs(amount) * _acceleration : _acceleration;
+            amount = Mathf.Max(0, amount);
+
+            float targetSpeed = amount * _maxSpeed;
+            if (targetSpeed == _speed) return;
+
+            float acceleration = amount > 0 ? amount * _acceleration : _acceleration;
             _speed = Mathf.MoveTowards(_speed, targetSpeed, acceleration);
         }
 
