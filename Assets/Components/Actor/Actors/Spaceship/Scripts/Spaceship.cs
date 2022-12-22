@@ -1,9 +1,16 @@
+using System;
 using UnityEngine;
 
 namespace SpaceMiner
 {
     public class Spaceship : Actor
     {
+        [Serializable]
+        private struct _InternalSetup
+        {
+            public Transform Nozzle;
+        }
+
         private const float _MAX_SPEED_MULTIPLIER = 0.001f;
 
         [Header("Movement Parameters")]
@@ -11,14 +18,24 @@ namespace SpaceMiner
         [SerializeField] private float _acceleration = 7.5f;
         [SerializeField] private float _rotationSpeed = 3;
 
+        [Header("Shooting Parameters")]
+        [SerializeField] private Projectile _projectilePrefab;
+        [Tooltip("Fire rate expressed in shots/sec")]
+        [SerializeField] private float _fireRate = 1;
+
         [Header("Lives States")]
         [SerializeField] private IntState _maxLivesState;
         [SerializeField] private IntState _livesState;
 
+        [Header("__Internal Setup__")]
+        [SerializeField] private _InternalSetup _internalSetup;
+
         private float _speed;
+        private DateTime _lastShot;
 
         void Awake()
         {
+            _lastShot = DateTime.MinValue;
             _livesState.Set(_maxLivesState);
         }
 
@@ -50,7 +67,15 @@ namespace SpaceMiner
 
         public override void Attack()
         {
-            // TODO
+            TimeSpan timeSinceLastShot = DateTime.Now - _lastShot;
+            float secondsPerShot = 1f / _fireRate;
+            if (timeSinceLastShot.Seconds < secondsPerShot) return;
+
+            Vector3 spawnPosition = _internalSetup.Nozzle.position;
+            Projectile projectile = Instantiate(_projectilePrefab, spawnPosition, transform.rotation);
+            projectile.Fire();
+
+            _lastShot = DateTime.Now;
         }
     }
 }

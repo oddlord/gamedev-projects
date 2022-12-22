@@ -11,6 +11,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 5210353008261302369, guid: 2c1110eb0533849b1828717cda977b82, type: 3}
+    - target: {fileID: 18526460916081444, guid: db7c937b7178e415caf4081e5ba2dbeb, type: 3}
+      propertyPath: _projectilePrefab
+      value: 
+      objectReference: {fileID: 6359435771895056895, guid: c9178ba81457146bda2105cfef5e8420, type: 3}
     - target: {fileID: 18526460916081445, guid: db7c937b7178e415caf4081e5ba2dbeb, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -106,6 +110,10 @@ PrefabInstance:
     - target: {fileID: 434049715591556055, guid: db7c937b7178e415caf4081e5ba2dbeb, type: 3}
       propertyPath: m_Points.m_Paths.Array.data[0].Array.data[5].y
       value: 0.15222453
+      objectReference: {fileID: 0}
+    - target: {fileID: 7588393759643973001, guid: db7c937b7178e415caf4081e5ba2dbeb, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.164
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: db7c937b7178e415caf4081e5ba2dbeb, type: 3}

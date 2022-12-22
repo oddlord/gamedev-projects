@@ -47,3 +47,6 @@ TagManager:
   - name: Obstacle
     uniqueID: 1287885631
     locked: 0
+  - name: Projectile
+    uniqueID: 553351921
+    locked: 0
