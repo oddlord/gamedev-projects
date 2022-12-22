@@ -8,7 +8,6 @@ namespace SpaceMiner
         // TODO get rid of this with Dependency Injection
         public static Action<Obstacle> OnInitialized;
 
-        [Header("Obstacle")]
         public int PointsWorth;
 
         public Action<Obstacle> OnDestroyed;
