@@ -16,7 +16,7 @@ namespace SpaceMiner
             public Image Image;
         }
 
-        [SerializeField] private float _fadeDuration = 1.5f;
+        [SerializeField] private float _fadeDuration = 1f;
         [SerializeField] private Color _disabledColor = new Color(0.5f, 0.5f, 0.5f);
 
         [Header("__Internal Setup__")]

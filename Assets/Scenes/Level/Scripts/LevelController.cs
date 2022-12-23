@@ -15,6 +15,9 @@ namespace SpaceMiner
         [SerializeField] private ObstacleManager _obstacleManager;
         [SerializeField] private ObstacleWaveSpawner _obstacleWaveSpawner;
 
+        [Header("Player")]
+        [SerializeField] private Actor _playerActor;
+
         private int _wave;
 
         void Awake()
@@ -24,6 +27,7 @@ namespace SpaceMiner
 
             _obstacleManager.OnAllObstaclesDestroyed += OnAllObstaclesDestroyed;
             _obstacleManager.OnObstacleDestroyed += OnObstacleDestroyed;
+            _playerActor.OnDeath += OnPlayerDeath;
         }
 
         void Start()
@@ -48,10 +52,17 @@ namespace SpaceMiner
             _scoreState.Add(obstacle.PointsWorth);
         }
 
+        private void OnPlayerDeath(Actor actor)
+        {
+            Debug.Log("YOU LOST");
+            // TODO
+        }
+
         void OnDestroy()
         {
             _obstacleManager.OnAllObstaclesDestroyed -= OnAllObstaclesDestroyed;
             _obstacleManager.OnObstacleDestroyed -= OnObstacleDestroyed;
+            _playerActor.OnDeath += OnPlayerDeath;
         }
     }
 }

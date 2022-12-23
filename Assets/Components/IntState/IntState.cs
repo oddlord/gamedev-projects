@@ -27,5 +27,10 @@ namespace SpaceMiner
         {
             Set(_value + value);
         }
+
+        public void Subtract(int value)
+        {
+            Set(_value - value);
+        }
     }
 }

@@ -4,5 +4,6 @@ namespace SpaceMiner
     {
         public const string OBSTACLE = "Obstacle";
         public const string PROJECTILE = "Projectile";
+        public const string ACTOR = "Actor";
     }
 }

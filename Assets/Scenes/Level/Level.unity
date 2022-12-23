@@ -2225,6 +2225,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: c465681f023644127af33e9c496400b3, type: 2}
     - target: {fileID: 6303072558952165465, guid: c50590f663d494767840807355c44263, type: 3}
+      propertyPath: _playerActor
+      value: 
+      objectReference: {fileID: 2024143954}
+    - target: {fileID: 6303072558952165465, guid: c50590f663d494767840807355c44263, type: 3}
       propertyPath: _obstacleManager
       value: 
       objectReference: {fileID: 1274427095}

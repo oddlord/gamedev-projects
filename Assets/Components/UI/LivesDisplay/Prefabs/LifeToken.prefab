@@ -50,7 +50,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de9dec1d5f5dc4ce184c6669939fb2ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _fadeDuration: 1.5
+  _fadeDuration: 1
   _disabledColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   _internalSetup:
     Image: {fileID: 8878658411163818073}

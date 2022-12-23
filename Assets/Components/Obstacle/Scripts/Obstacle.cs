@@ -21,7 +21,9 @@ namespace SpaceMiner
 
         void OnTriggerEnter2D(Collider2D other)
         {
-            if (other.CompareTag(Tags.PROJECTILE)) OnHit();
+            bool hitByProjectile = other.CompareTag(Tags.PROJECTILE);
+            bool hitByActor = other.CompareTag(Tags.ACTOR);
+            if (hitByProjectile || hitByActor) OnHit();
         }
     }
 }
