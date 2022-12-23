@@ -27,6 +27,10 @@ MonoBehaviour:
     m_Key: FINAL_SCORE
     m_Metadata:
       m_Items: []
+  - m_Id: 8168892522496
+    m_Key: WAVE
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

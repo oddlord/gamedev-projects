@@ -16,6 +16,7 @@ namespace SpaceMiner
         [SerializeField] private ObstacleManager _obstacleManager;
         [SerializeField] private ObstacleWaveSpawner _obstacleWaveSpawner;
         [SerializeField] private GameOverScreen _gameOverScreen;
+        [SerializeField] private WaveTextController _waveTextController;
 
         [Header("Player")]
         [SerializeField] private Actor _playerActor;
@@ -44,6 +45,7 @@ namespace SpaceMiner
             _wave++;
             int obstaclesCount = _initialObstacleCount + _obstacleCountIncreasePerWave * (_wave - 1);
             _obstacleWaveSpawner.Spawn(obstaclesCount);
+            _waveTextController.Show(_wave);
         }
 
         private void OnAllObstaclesDestroyed()
