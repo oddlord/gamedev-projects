@@ -9,5 +9,10 @@ namespace SpaceMiner
         {
             SceneManager.LoadScene(Scenes.LEVEL);
         }
+
+        public void Quit()
+        {
+            Application.Quit();
+        }
     }
 }
