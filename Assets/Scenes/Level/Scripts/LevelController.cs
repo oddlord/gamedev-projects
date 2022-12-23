@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -79,7 +80,7 @@ namespace SpaceMiner
             _obstacleManager.OnObstacleDestroyed -= OnObstacleDestroyed;
             _gameOverScreen.OnPlayAgain -= OnPlayAgain;
             _gameOverScreen.OnBack -= OnBack;
-            _playerActor.OnDeath += OnPlayerDeath;
+            _playerActor.OnDeath -= OnPlayerDeath;
         }
     }
 }

@@ -1,4 +1,6 @@
 using UnityEngine;
+using System;
+using System.Collections;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -8,7 +10,21 @@ namespace SpaceMiner
 {
     public class Asteroid : Obstacle
     {
-        [Header("Asteroid")]
+        [Serializable]
+        private struct _InternalSetup
+        {
+            public SpriteRenderer SpriteRenderer;
+            public Collider2D Collider;
+            public AudioSource AudioSource;
+        }
+
+        [Header("Audio")]
+        [SerializeField] private AudioClip _destructionSound;
+
+        [Header("__Internal Setup__")]
+        [SerializeField] private _InternalSetup _internalSetup;
+
+        [Header("Asteroid Configuration")]
         [HideInInspector] public bool SplitOnHit;
         [HideInInspector] public Obstacle FragmentPrefab;
         [HideInInspector] public int FragmentsToSpawn = 2;
@@ -25,8 +41,35 @@ namespace SpaceMiner
                 }
             }
 
+            PlayAudio(_destructionSound);
+            SetColliderEnabled(false);
+            SetSpriteAlpha(0);
+            StartCoroutine(DestructionCoroutine(_destructionSound.length));
+        }
+
+        private IEnumerator DestructionCoroutine(float delay)
+        {
+            yield return new WaitForSeconds(delay);
             OnDestroyed?.Invoke(this);
             Destroy(this.gameObject);
+        }
+
+        private void SetColliderEnabled(bool enabled)
+        {
+            _internalSetup.Collider.enabled = enabled;
+        }
+
+        private void SetSpriteAlpha(float alpha)
+        {
+            Color color = _internalSetup.SpriteRenderer.color;
+            color.a = alpha;
+            _internalSetup.SpriteRenderer.color = color;
+        }
+
+        private void PlayAudio(AudioClip clip)
+        {
+            _internalSetup.AudioSource.clip = clip;
+            _internalSetup.AudioSource.Play();
         }
     }
 

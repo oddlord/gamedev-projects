@@ -11,6 +11,8 @@ namespace SpaceMiner
         {
             public SpriteRenderer SpriteRenderer;
             public Collider2D Collider;
+            public AudioSource AudioSource;
+            public ParticleSystem ParticleSystem;
             public Transform Nozzle;
         }
 
@@ -30,6 +32,10 @@ namespace SpaceMiner
         [SerializeField] private float _invulnerabilityDuration = 4;
         [SerializeField] private float _invulnerabilityBlinkDuration = 0.5f;
         [SerializeField] private float _invulnerabilityAlpha = 0.75f;
+
+        [Header("Audio")]
+        [SerializeField] private AudioClip _hitSound;
+        [SerializeField] private AudioClip _destructionSound;
 
         [Header("__Internal Setup__")]
         [SerializeField] private _InternalSetup _internalSetup;
@@ -52,7 +58,7 @@ namespace SpaceMiner
 
         public override void HandleForwardInput(float amount)
         {
-            if (IsDead) return;
+            if (IsDead) amount = 0;
 
             amount = Mathf.Max(0, amount);
             float targetSpeed = amount * _maxSpeed;
@@ -90,6 +96,7 @@ namespace SpaceMiner
         protected override void OnHit()
         {
             if (IsDead) return;
+            PlayAudio(_hitSound);
             _livesState.Subtract(1);
         }
 
@@ -97,7 +104,7 @@ namespace SpaceMiner
         {
             if (delta > 0) return;
 
-            _internalSetup.Collider.enabled = false;
+            SetColliderEnabled(false);
             if (!IsDead)
             {
                 if (_invulnerabilityCoroutine != null) StopCoroutine(_invulnerabilityCoroutine);
@@ -105,8 +112,10 @@ namespace SpaceMiner
             }
             else
             {
-                SetSpriteAlpha(0);
-                // TODO replace sprite with some debris
+                if (_invulnerabilityCoroutine != null) StopCoroutine(_invulnerabilityCoroutine);
+                SetSpriteAlpha(1);
+                PlayAudio(_destructionSound);
+                _internalSetup.ParticleSystem.Play();
             }
         }
 
@@ -124,8 +133,13 @@ namespace SpaceMiner
             }
 
             SetSpriteAlpha(1);
-            _internalSetup.Collider.enabled = true;
+            SetColliderEnabled(true);
             _invulnerabilityCoroutine = null;
+        }
+
+        private void SetColliderEnabled(bool enabled)
+        {
+            _internalSetup.Collider.enabled = enabled;
         }
 
         private void SetSpriteAlpha(float alpha)
@@ -133,6 +147,12 @@ namespace SpaceMiner
             Color color = _internalSetup.SpriteRenderer.color;
             color.a = alpha;
             _internalSetup.SpriteRenderer.color = color;
+        }
+
+        private void PlayAudio(AudioClip clip)
+        {
+            _internalSetup.AudioSource.clip = clip;
+            _internalSetup.AudioSource.Play();
         }
     }
 }
