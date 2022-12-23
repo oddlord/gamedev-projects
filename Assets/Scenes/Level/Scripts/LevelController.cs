@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace SpaceMiner
 {
@@ -14,6 +15,7 @@ namespace SpaceMiner
         [Header("Services")]
         [SerializeField] private ObstacleManager _obstacleManager;
         [SerializeField] private ObstacleWaveSpawner _obstacleWaveSpawner;
+        [SerializeField] private GameOverScreen _gameOverScreen;
 
         [Header("Player")]
         [SerializeField] private Actor _playerActor;
@@ -27,6 +29,8 @@ namespace SpaceMiner
 
             _obstacleManager.OnAllObstaclesDestroyed += OnAllObstaclesDestroyed;
             _obstacleManager.OnObstacleDestroyed += OnObstacleDestroyed;
+            _gameOverScreen.OnPlayAgain += OnPlayAgain;
+            _gameOverScreen.OnBack += OnBack;
             _playerActor.OnDeath += OnPlayerDeath;
         }
 
@@ -52,16 +56,27 @@ namespace SpaceMiner
             _scoreState.Add(obstacle.PointsWorth);
         }
 
+        private void OnPlayAgain()
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+
+        private void OnBack()
+        {
+            SceneManager.LoadScene(Scenes.START_SCREEN);
+        }
+
         private void OnPlayerDeath(Actor actor)
         {
-            Debug.Log("YOU LOST");
-            // TODO
+            _gameOverScreen.Show();
         }
 
         void OnDestroy()
         {
             _obstacleManager.OnAllObstaclesDestroyed -= OnAllObstaclesDestroyed;
             _obstacleManager.OnObstacleDestroyed -= OnObstacleDestroyed;
+            _gameOverScreen.OnPlayAgain -= OnPlayAgain;
+            _gameOverScreen.OnBack -= OnBack;
             _playerActor.OnDeath += OnPlayerDeath;
         }
     }
