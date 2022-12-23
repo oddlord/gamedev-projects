@@ -23,7 +23,7 @@ namespace SpaceMiner
         public void Show()
         {
             // TODO replace with localisation with parameter
-            _internalSetup.ScoreText.text = $"Score: {_scoreState.Value}";
+            _internalSetup.ScoreText.text = $"Final Score: {_scoreState.Value}";
             gameObject.SetActive(true);
         }
 
