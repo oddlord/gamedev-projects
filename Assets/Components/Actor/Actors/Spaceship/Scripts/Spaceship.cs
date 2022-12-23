@@ -36,6 +36,10 @@ namespace SpaceMiner
         void Awake()
         {
             _lastShot = DateTime.MinValue;
+        }
+
+        void Start()
+        {
             _livesState.Set(_maxLivesState);
         }
 
