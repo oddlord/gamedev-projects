@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Localization.Components;
+using UnityEngine.UI;
 
 namespace SpaceMiner
 {
@@ -21,6 +23,14 @@ namespace SpaceMiner
         {
             float z = UnityEngine.Random.Range(0, 360);
             return Quaternion.Euler(0, 0, z);
+        }
+
+        public static void SetLocalizedString(LocalizeStringEvent localizeString, string key, Dictionary<string, object> args = null, string table = null)
+        {
+            localizeString.StringReference.Arguments = new List<object> { args };
+            if (!string.IsNullOrEmpty(table)) localizeString.SetTable(table);
+            localizeString.SetEntry(key);
+            localizeString.StringReference.RefreshString();
         }
     }
 }

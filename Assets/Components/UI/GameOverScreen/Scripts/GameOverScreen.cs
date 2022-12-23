@@ -1,6 +1,8 @@
 using System;
 using UnityEngine;
-using TMPro;
+using System.Collections.Generic;
+using SpaceMiner.Localization;
+using UnityEngine.Localization.Components;
 
 namespace SpaceMiner
 {
@@ -9,7 +11,7 @@ namespace SpaceMiner
         [Serializable]
         private struct _InternalSetup
         {
-            public TextMeshProUGUI ScoreText;
+            public LocalizeStringEvent ScoreLocalizedText;
         }
 
         [SerializeField] private IntState _scoreState;
@@ -22,8 +24,12 @@ namespace SpaceMiner
 
         public void Show()
         {
-            // TODO replace with localisation with parameter
-            _internalSetup.ScoreText.text = $"Final Score: {_scoreState.Value}";
+            Dictionary<string, object> arguments = new Dictionary<string, object>
+            {
+                { SentencesLocalization.Arguments.SCORE, _scoreState.Value }
+            };
+            Utils.SetLocalizedString(_internalSetup.ScoreLocalizedText, SentencesLocalization.Keys.FINAL_SCORE, arguments);
+
             gameObject.SetActive(true);
         }
 
