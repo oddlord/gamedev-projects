@@ -19,6 +19,7 @@ namespace SpaceMiner
             _wave = 0;
 
             _obstacleManager.OnAllObstaclesDestroyed += OnAllObstaclesDestroyed;
+            _obstacleManager.OnObstacleDestroyed += OnObstacleDestroyed;
         }
 
         void Start()
@@ -36,12 +37,19 @@ namespace SpaceMiner
 
         private void OnAllObstaclesDestroyed()
         {
-            // TODO
+            StartNextWave();
+        }
+
+        private void OnObstacleDestroyed(Obstacle obstacle)
+        {
+            Debug.Log($"OnObstacleDestroyed {obstacle.name}");
+            // TODO award points
         }
 
         void OnDestroy()
         {
             _obstacleManager.OnAllObstaclesDestroyed -= OnAllObstaclesDestroyed;
+            _obstacleManager.OnObstacleDestroyed -= OnObstacleDestroyed;
         }
     }
 }

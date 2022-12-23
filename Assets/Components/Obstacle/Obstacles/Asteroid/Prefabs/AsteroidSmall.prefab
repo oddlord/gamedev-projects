@@ -19,6 +19,10 @@ PrefabInstance:
       propertyPath: FragmentPrefab
       value: 
       objectReference: {fileID: 4978597233783689588, guid: bc6762a874870492d8d56924db562270, type: 3}
+    - target: {fileID: 507773506999901453, guid: 0929fa922cfc84e498306d73152c7944, type: 3}
+      propertyPath: FragmentsToSpawn
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 507773506999901454, guid: 0929fa922cfc84e498306d73152c7944, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -187,5 +191,13 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 1335499673870057088, guid: e330184a37241438783ad0769aff437f, type: 3}
+    - target: {fileID: 5621934142258081306, guid: 0929fa922cfc84e498306d73152c7944, type: 3}
+      propertyPath: _speed
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5621934142258081306, guid: 0929fa922cfc84e498306d73152c7944, type: 3}
+      propertyPath: _rotationSpeed
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0929fa922cfc84e498306d73152c7944, type: 3}

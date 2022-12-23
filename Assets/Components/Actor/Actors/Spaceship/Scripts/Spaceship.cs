@@ -69,7 +69,7 @@ namespace SpaceMiner
         {
             TimeSpan timeSinceLastShot = DateTime.Now - _lastShot;
             float secondsPerShot = 1f / _fireRate;
-            if (timeSinceLastShot.Seconds < secondsPerShot) return;
+            if (timeSinceLastShot.TotalSeconds < secondsPerShot) return;
 
             Vector3 spawnPosition = _internalSetup.Nozzle.position;
             Projectile projectile = Instantiate(_projectilePrefab, spawnPosition, transform.rotation);

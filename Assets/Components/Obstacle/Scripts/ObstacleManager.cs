@@ -6,6 +6,7 @@ namespace SpaceMiner
 {
     public class ObstacleManager : MonoBehaviour
     {
+        public Action<Obstacle> OnObstacleDestroyed;
         public Action OnAllObstaclesDestroyed;
 
         private List<Obstacle> _obstacles;
@@ -19,18 +20,23 @@ namespace SpaceMiner
 
         private void OnObstacleInitialized(Obstacle obstacle)
         {
-            obstacle.OnDestroyed += OnObstacleDestroyed;
+            _obstacles.Add(obstacle);
+            obstacle.OnDestroyed += OnObstacleDestroyedHandler;
         }
 
-        private void OnObstacleDestroyed(Obstacle obstacle)
+        private void OnObstacleDestroyedHandler(Obstacle obstacle)
         {
-            obstacle.OnDestroyed -= OnObstacleDestroyed;
+            _obstacles.Remove(obstacle);
+            obstacle.OnDestroyed -= OnObstacleDestroyedHandler;
+
+            OnObstacleDestroyed?.Invoke(obstacle);
+            if (_obstacles.Count == 0) OnAllObstaclesDestroyed?.Invoke();
         }
 
         void OnDestroy()
         {
             foreach (Obstacle obstacle in _obstacles)
-                obstacle.OnDestroyed -= OnObstacleDestroyed;
+                obstacle.OnDestroyed -= OnObstacleDestroyedHandler;
             Obstacle.OnInitialized -= OnObstacleInitialized;
         }
     }

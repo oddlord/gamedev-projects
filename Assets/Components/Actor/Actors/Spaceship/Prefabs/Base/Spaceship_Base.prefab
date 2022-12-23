@@ -51,7 +51,7 @@ MonoBehaviour:
   _acceleration: 7.5
   _rotationSpeed: 3
   _projectilePrefab: {fileID: 5952432379191659178, guid: 7c688e45ccf3141488e8985b5af2ba2c, type: 3}
-  _fireRate: 1
+  _fireRate: 2
   _maxLivesState: {fileID: 0}
   _livesState: {fileID: 0}
   _internalSetup:

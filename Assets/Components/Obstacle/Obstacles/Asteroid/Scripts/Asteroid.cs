@@ -11,6 +11,23 @@ namespace SpaceMiner
         [Header("Asteroid")]
         [HideInInspector] public bool SplitOnHit;
         [HideInInspector] public Obstacle FragmentPrefab;
+        [HideInInspector] public int FragmentsToSpawn = 2;
+
+        protected override void OnHit()
+        {
+            if (SplitOnHit)
+            {
+                for (int i = 0; i < FragmentsToSpawn; i++)
+                {
+                    Quaternion spawnRotation = Utils.GetRandom2DRotation();
+                    Obstacle obstacle = Instantiate(FragmentPrefab, transform.position, spawnRotation, transform.parent);
+                    obstacle.Initialize();
+                }
+            }
+
+            OnDestroyed?.Invoke(this);
+            Destroy(this.gameObject);
+        }
     }
 
 #if UNITY_EDITOR
@@ -21,6 +38,7 @@ namespace SpaceMiner
 
         private SerializedProperty _splitOnHit;
         private SerializedProperty _fragmentPrefab;
+        private SerializedProperty _fragmentsToSpawn;
 
         void OnEnable()
         {
@@ -28,6 +46,7 @@ namespace SpaceMiner
 
             _splitOnHit = this.serializedObject.FindProperty("SplitOnHit");
             _fragmentPrefab = this.serializedObject.FindProperty("FragmentPrefab");
+            _fragmentsToSpawn = this.serializedObject.FindProperty("FragmentsToSpawn");
         }
 
         public override void OnInspectorGUI()
@@ -39,8 +58,10 @@ namespace SpaceMiner
             EditorGUILayout.LabelField("Asteroid", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(_splitOnHit);
             if (_splitOnHit.boolValue)
+            {
                 EditorGUILayout.PropertyField(_fragmentPrefab);
-
+                EditorGUILayout.PropertyField(_fragmentsToSpawn);
+            }
             serializedObject.ApplyModifiedProperties();
         }
     }

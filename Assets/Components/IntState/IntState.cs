@@ -9,13 +9,16 @@ namespace SpaceMiner
         [SerializeField] private int _value;
         public int Value { get => _value; private set => _value = value; }
 
-        public Action<int> OnChange;
+        /// <summary>
+        /// Parameters are the new value and the delta between the new and old values.
+        /// </summary>
+        public Action<int, int> OnChange;
 
         public void Set(int value)
         {
-            bool changed = value != _value;
+            int delta = value - _value;
             _value = value;
-            if (changed) OnChange?.Invoke(value);
+            if (delta != 0) OnChange?.Invoke(value, delta);
         }
 
         public void Set(IntState otherState)

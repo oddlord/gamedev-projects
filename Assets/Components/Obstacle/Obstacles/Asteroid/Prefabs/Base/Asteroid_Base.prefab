@@ -14,9 +14,10 @@ GameObject:
   - component: {fileID: 1471347598928713024}
   - component: {fileID: 4364576347603211396}
   - component: {fileID: 2601369495343081973}
+  - component: {fileID: -3523517467703958986}
   m_Layer: 0
   m_Name: Asteroid_Base
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -50,6 +51,7 @@ MonoBehaviour:
   PointsWorth: 1
   SplitOnHit: 0
   FragmentPrefab: {fileID: 0}
+  FragmentsToSpawn: 2
 --- !u!114 &5621934142258081306
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -114,7 +116,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1287885631
-  m_SortingLayer: 1
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: -2244543243340742949, guid: e330184a37241438783ad0769aff437f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -137,7 +139,7 @@ PolygonCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -160,3 +162,24 @@ PolygonCollider2D:
       - {x: 0.295897, y: -0.1276911}
       - {x: 0.29999998, y: 0.17}
       - {x: 0.24, y: 0.29}
+--- !u!50 &-3523517467703958986
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 507773506999901455}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0

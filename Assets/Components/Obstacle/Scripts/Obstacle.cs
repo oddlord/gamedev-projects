@@ -16,5 +16,12 @@ namespace SpaceMiner
         {
             OnInitialized?.Invoke(this);
         }
+
+        protected abstract void OnHit();
+
+        void OnTriggerEnter2D(Collider2D other)
+        {
+            if (other.CompareTag(Tags.PROJECTILE)) OnHit();
+        }
     }
 }
