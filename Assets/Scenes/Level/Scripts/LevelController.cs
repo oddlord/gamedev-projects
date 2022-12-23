@@ -5,8 +5,11 @@ namespace SpaceMiner
     public class LevelController : MonoBehaviour
     {
         [Header("Level Parameters")]
-        [SerializeField] private int _initialObstacleCount = 4;
+        [SerializeField] private int _initialObstacleCount = 2;
         [SerializeField] private int _obstacleCountIncreasePerWave = 1;
+
+        [Header("States")]
+        [SerializeField] private IntState _scoreState;
 
         [Header("Services")]
         [SerializeField] private ObstacleManager _obstacleManager;
@@ -17,6 +20,7 @@ namespace SpaceMiner
         void Awake()
         {
             _wave = 0;
+            _scoreState.Set(0);
 
             _obstacleManager.OnAllObstaclesDestroyed += OnAllObstaclesDestroyed;
             _obstacleManager.OnObstacleDestroyed += OnObstacleDestroyed;
@@ -30,7 +34,6 @@ namespace SpaceMiner
         private void StartNextWave()
         {
             _wave++;
-
             int obstaclesCount = _initialObstacleCount + _obstacleCountIncreasePerWave * (_wave - 1);
             _obstacleWaveSpawner.Spawn(obstaclesCount);
         }
@@ -42,8 +45,7 @@ namespace SpaceMiner
 
         private void OnObstacleDestroyed(Obstacle obstacle)
         {
-            Debug.Log($"OnObstacleDestroyed {obstacle.name}");
-            // TODO award points
+            _scoreState.Add(obstacle.PointsWorth);
         }
 
         void OnDestroy()

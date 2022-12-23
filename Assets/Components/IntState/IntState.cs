@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace SpaceMiner
@@ -9,10 +8,8 @@ namespace SpaceMiner
         [SerializeField] private int _value;
         public int Value { get => _value; private set => _value = value; }
 
-        /// <summary>
-        /// Parameters are the new value and the delta between the new and old values.
-        /// </summary>
-        public Action<int, int> OnChange;
+        public delegate void ChangeEvent(int newValue, int delta);
+        public ChangeEvent OnChange;
 
         public void Set(int value)
         {
@@ -24,6 +21,11 @@ namespace SpaceMiner
         public void Set(IntState otherState)
         {
             Set(otherState.Value);
+        }
+
+        public void Add(int value)
+        {
+            Set(_value + value);
         }
     }
 }

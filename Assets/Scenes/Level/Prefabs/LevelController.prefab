@@ -43,7 +43,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00d19f818e1314b7f8d7810c536c1ecf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _initialObstacleCount: 1
+  _initialObstacleCount: 2
   _obstacleCountIncreasePerWave: 1
+  _scoreState: {fileID: 0}
   _obstacleManager: {fileID: 0}
   _obstacleWaveSpawner: {fileID: 0}
