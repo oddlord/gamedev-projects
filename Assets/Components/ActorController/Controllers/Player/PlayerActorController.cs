@@ -6,6 +6,8 @@ namespace SpaceMiner
     {
         void FixedUpdate()
         {
+            if (_actor == null) return;
+
             float verticalInput = Input.GetAxis("Vertical");
             _actor.HandleForwardInput(verticalInput);
 

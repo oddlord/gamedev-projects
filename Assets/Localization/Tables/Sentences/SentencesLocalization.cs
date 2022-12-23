@@ -10,6 +10,7 @@ namespace SpaceMiner.Localization
             public const string GAME_OVER = "GAME_OVER";
             public const string FINAL_SCORE = "FINAL_SCORE";
             public const string WAVE = "WAVE";
+            public const string CHOOSE_YOUR_SHIP = "CHOOSE_YOUR_SHIP";
         }
 
         public class Arguments

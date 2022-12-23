@@ -5,19 +5,17 @@ namespace SpaceMiner
 {
     public abstract class Actor : MonoBehaviour
     {
-        [Header("Lives States")]
-        [SerializeField] private IntState _maxLivesState;
-        [SerializeField] protected IntState _livesState;
+        private IntState _maxLivesState;
+        protected IntState _livesState;
 
         public Action<Actor> OnDeath;
 
-        protected virtual void Awake()
+        public void Initialize(IntState maxLivesState, IntState livesState)
         {
-            _livesState.OnChange += HandleLivesChanged;
-        }
+            _maxLivesState = maxLivesState;
+            _livesState = livesState;
 
-        void Start()
-        {
+            _livesState.OnChange += HandleLivesChanged;
             _livesState.Set(_maxLivesState);
         }
 

@@ -51,7 +51,11 @@ MonoBehaviour:
   _obstacleWaveSpawner: {fileID: 0}
   _gameOverScreen: {fileID: 0}
   _waveTextController: {fileID: 0}
+  _actorSelector: {fileID: 0}
+  _actorController: {fileID: 0}
   _playerActor: {fileID: 0}
+  _internalSetup:
+    AudioSource: {fileID: -6147038020885596095}
 --- !u!82 &-6147038020885596095
 AudioSource:
   m_ObjectHideFlags: 0
@@ -63,7 +67,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 28dc2794d84464d019621ac545391b10, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 0.5
   m_Pitch: 1
   Loop: 0

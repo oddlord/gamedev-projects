@@ -6,11 +6,19 @@ namespace SpaceMiner
 {
     public class LevelController : MonoBehaviour
     {
+        [Serializable]
+        private struct _InternalSetup
+        {
+            public AudioSource AudioSource;
+        }
+
         [Header("Level Parameters")]
         [SerializeField] private int _initialObstacleCount = 2;
         [SerializeField] private int _obstacleCountIncreasePerWave = 1;
 
         [Header("States")]
+        [SerializeField] private IntState _maxLivesState;
+        [SerializeField] protected IntState _livesState;
         [SerializeField] private IntState _scoreState;
 
         [Header("Services")]
@@ -18,11 +26,14 @@ namespace SpaceMiner
         [SerializeField] private ObstacleWaveSpawner _obstacleWaveSpawner;
         [SerializeField] private GameOverScreen _gameOverScreen;
         [SerializeField] private WaveTextController _waveTextController;
+        [SerializeField] private ActorSelector _actorSelector;
+        [SerializeField] private ActorController _actorController;
 
-        [Header("Player")]
-        [SerializeField] private Actor _playerActor;
+        [Header("__Internal Setup__")]
+        [SerializeField] private _InternalSetup _internalSetup;
 
         private int _wave;
+        private Actor _playerActor;
 
         void Awake()
         {
@@ -33,11 +44,22 @@ namespace SpaceMiner
             _obstacleManager.OnObstacleDestroyed += OnObstacleDestroyed;
             _gameOverScreen.OnPlayAgain += OnPlayAgain;
             _gameOverScreen.OnBack += OnBack;
-            _playerActor.OnDeath += OnPlayerDeath;
         }
 
         void Start()
         {
+            _actorSelector.Show(OnActorSelected);
+        }
+
+        private void OnActorSelected(Actor actorPrefab)
+        {
+            _playerActor = Instantiate(actorPrefab, Vector3.zero, Quaternion.Euler(0, 0, 90));
+            _playerActor.Initialize(_maxLivesState, _livesState);
+            _playerActor.OnDeath += OnPlayerDeath;
+            _actorController.SetActor(_playerActor);
+
+            _internalSetup.AudioSource.Play();
+            _actorSelector.Hide();
             StartNextWave();
         }
 
@@ -80,7 +102,7 @@ namespace SpaceMiner
             _obstacleManager.OnObstacleDestroyed -= OnObstacleDestroyed;
             _gameOverScreen.OnPlayAgain -= OnPlayAgain;
             _gameOverScreen.OnBack -= OnBack;
-            _playerActor.OnDeath -= OnPlayerDeath;
+            if (_playerActor != null) _playerActor.OnDeath -= OnPlayerDeath;
         }
     }
 }

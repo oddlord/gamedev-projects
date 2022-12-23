@@ -44,9 +44,8 @@ namespace SpaceMiner
         private DateTime _lastShot;
         private Coroutine _invulnerabilityCoroutine;
 
-        protected override void Awake()
+        void Awake()
         {
-            base.Awake();
             _lastShot = DateTime.MinValue;
         }
 

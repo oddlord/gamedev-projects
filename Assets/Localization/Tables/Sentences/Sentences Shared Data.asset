@@ -31,6 +31,10 @@ MonoBehaviour:
     m_Key: WAVE
     m_Metadata:
       m_Items: []
+  - m_Id: 60506424467456
+    m_Key: CHOOSE_YOUR_SHIP
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
