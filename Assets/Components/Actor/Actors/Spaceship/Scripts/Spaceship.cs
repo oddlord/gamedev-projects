@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace SpaceMiner
 {
+    // TODO this class is too big, split into multiple sub-components
     public class Spaceship : Actor
     {
         [Serializable]

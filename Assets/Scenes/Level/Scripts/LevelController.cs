@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 
 namespace SpaceMiner
 {
+    // TODO this class is too big, split into multiple sub-components
     public class LevelController : MonoBehaviour
     {
         [Serializable]
