@@ -1,20 +1,30 @@
 using System;
 using UnityEngine;
+using Zenject;
 
 namespace SpaceMiner
 {
     public abstract class Actor : MonoBehaviour
     {
+        public class Factory : PlaceholderFactory<UnityEngine.Object, Actor> { }
+
         private IntState _maxLivesState;
         protected IntState _livesState;
 
         public Action<Actor> OnDeath;
 
-        public void Initialize(IntState maxLivesState, IntState livesState)
+        [Inject]
+        public void Inject(
+            [Inject(Id = LevelInjectIds.MAX_LIVES_STATE)] IntState maxLivesState,
+            [Inject(Id = LevelInjectIds.LIVES_STATE)] IntState livesState
+        )
         {
             _maxLivesState = maxLivesState;
             _livesState = livesState;
+        }
 
+        public virtual void Start()
+        {
             _livesState.OnChange += HandleLivesChanged;
             _livesState.Set(_maxLivesState);
         }

@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Zenject;
 
 namespace SpaceMiner
 {
@@ -36,6 +37,14 @@ namespace SpaceMiner
         private int _wave;
         private Actor _playerActor;
 
+        private Actor.Factory _actorFactory;
+
+        [Inject]
+        public void Inject(Actor.Factory actorFactory)
+        {
+            _actorFactory = actorFactory;
+        }
+
         void Awake()
         {
             _wave = 0;
@@ -54,8 +63,10 @@ namespace SpaceMiner
 
         private void OnActorSelected(Actor actorPrefab)
         {
-            _playerActor = Instantiate(actorPrefab, Vector3.zero, Quaternion.Euler(0, 0, 90));
-            _playerActor.Initialize(_maxLivesState, _livesState);
+            _playerActor = _actorFactory.Create(actorPrefab);
+            _playerActor.transform.SetPositionAndRotation(Vector3.zero, Quaternion.Euler(0, 0, 90));
+            // _playerActor = Instantiate(actorPrefab, Vector3.zero, Quaternion.Euler(0, 0, 90));
+            // _playerActor.Initialize(_maxLivesState, _livesState);
             _playerActor.OnDeath += OnPlayerDeath;
             _actorController.SetActor(_playerActor);
 
