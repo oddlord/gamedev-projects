@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using SpaceMiner.Localization;
 using UnityEngine.Localization.Components;
+using Zenject;
 
 namespace SpaceMiner
 {
@@ -14,13 +15,21 @@ namespace SpaceMiner
             public LocalizeStringEvent ScoreLocalizedText;
         }
 
-        [SerializeField] private IntState _scoreState;
-
         [Header("__Internal Setup__")]
         [SerializeField] private _InternalSetup _internalSetup;
 
         public Action OnPlayAgain;
         public Action OnBack;
+
+        private IntState _scoreState;
+
+        [Inject]
+        public void Inject(
+            [Inject(Id = LevelInjectIds.SCORE_STATE)] IntState scoreState
+        )
+        {
+            _scoreState = scoreState;
+        }
 
         public void Show()
         {

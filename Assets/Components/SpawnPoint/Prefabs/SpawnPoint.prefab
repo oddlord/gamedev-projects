@@ -43,4 +43,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e443bbc2b63948dbbf273691ebacbd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gizmoIcon: {fileID: 2800000, guid: cbf28622e46c04777b433b351243e571, type: 3}
+  _gizmoIcon: {fileID: 2800000, guid: 959cba35d491940a79e52abcdb77e4f7, type: 3}

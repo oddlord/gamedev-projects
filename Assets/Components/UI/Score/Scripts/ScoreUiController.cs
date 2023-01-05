@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using TMPro;
+using Zenject;
 
 namespace SpaceMiner
 {
@@ -12,10 +13,18 @@ namespace SpaceMiner
             public TextMeshProUGUI Text;
         }
 
-        [SerializeField] private IntState _scoreState;
-
         [Header("__Internal Setup__")]
         [SerializeField] private _InternalSetup _internalSetup;
+
+        private IntState _scoreState;
+
+        [Inject]
+        public void Inject(
+            [Inject(Id = LevelInjectIds.SCORE_STATE)] IntState scoreState
+        )
+        {
+            _scoreState = scoreState;
+        }
 
         void Awake()
         {

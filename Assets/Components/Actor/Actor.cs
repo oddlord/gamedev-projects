@@ -8,10 +8,10 @@ namespace SpaceMiner
     {
         public class Factory : PlaceholderFactory<UnityEngine.Object, Actor> { }
 
+        public Action<Actor> OnDeath;
+
         private IntState _maxLivesState;
         protected IntState _livesState;
-
-        public Action<Actor> OnDeath;
 
         [Inject]
         public void Inject(

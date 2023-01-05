@@ -45,12 +45,12 @@ namespace SpaceMiner
             SetColliderEnabled(false);
             SetSpriteAlpha(0);
             StartCoroutine(DestructionCoroutine(_destructionSound.length));
+            OnDestroyed?.Invoke(this);
         }
 
         private IEnumerator DestructionCoroutine(float delay)
         {
             yield return new WaitForSeconds(delay);
-            OnDestroyed?.Invoke(this);
             Destroy(this.gameObject);
         }
 

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 namespace SpaceMiner
 {
@@ -7,11 +8,20 @@ namespace SpaceMiner
     {
         [SerializeField] private LifeToken _lifeTokenPrefab;
 
-        [Header("States")]
-        [SerializeField] private IntState _maxLivesState;
-        [SerializeField] private IntState _livesState;
-
         private List<LifeToken> _tokens;
+
+        private IntState _maxLivesState;
+        private IntState _livesState;
+
+        [Inject]
+        public void Inject(
+            [Inject(Id = LevelInjectIds.MAX_LIVES_STATE)] IntState maxLivesState,
+            [Inject(Id = LevelInjectIds.LIVES_STATE)] IntState livesState
+        )
+        {
+            _maxLivesState = maxLivesState;
+            _livesState = livesState;
+        }
 
         void Awake()
         {

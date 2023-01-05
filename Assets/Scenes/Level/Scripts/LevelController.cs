@@ -18,18 +18,12 @@ namespace SpaceMiner
         [SerializeField] private int _initialObstacleCount = 2;
         [SerializeField] private int _obstacleCountIncreasePerWave = 1;
 
-        [Header("States")]
-        [SerializeField] private IntState _maxLivesState;
-        [SerializeField] protected IntState _livesState;
-        [SerializeField] private IntState _scoreState;
-
         [Header("Services")]
         [SerializeField] private ObstacleManager _obstacleManager;
         [SerializeField] private ObstacleWaveSpawner _obstacleWaveSpawner;
         [SerializeField] private GameOverScreen _gameOverScreen;
         [SerializeField] private WaveTextController _waveTextController;
         [SerializeField] private ActorSelector _actorSelector;
-        [SerializeField] private ActorController _actorController;
 
         [Header("__Internal Setup__")]
         [SerializeField] private _InternalSetup _internalSetup;
@@ -37,12 +31,19 @@ namespace SpaceMiner
         private int _wave;
         private Actor _playerActor;
 
+        private ActorController _actorController;
         private Actor.Factory _actorFactory;
+        private IntState _scoreState;
 
         [Inject]
-        public void Inject(Actor.Factory actorFactory)
+        public void Inject(
+            ActorController actorController, Actor.Factory actorFactory,
+            [Inject(Id = LevelInjectIds.SCORE_STATE)] IntState scoreState
+        )
         {
+            _actorController = actorController;
             _actorFactory = actorFactory;
+            _scoreState = scoreState;
         }
 
         void Awake()
