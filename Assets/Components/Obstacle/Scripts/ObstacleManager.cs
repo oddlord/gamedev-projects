@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 namespace SpaceMiner
 {
@@ -11,14 +12,22 @@ namespace SpaceMiner
 
         private List<Obstacle> _obstacles;
 
+        private ObstacleSpawner _obstacleSpawner;
+
+        [Inject]
+        public void Inject(ObstacleSpawner obstacleSpawner)
+        {
+            _obstacleSpawner = obstacleSpawner;
+        }
+
         void Awake()
         {
             _obstacles = new List<Obstacle>();
 
-            Obstacle.OnInitialized += OnObstacleInitialized;
+            _obstacleSpawner.OnObstacleSpawned += OnObstacleSpawned;
         }
 
-        private void OnObstacleInitialized(Obstacle obstacle)
+        private void OnObstacleSpawned(Obstacle obstacle)
         {
             _obstacles.Add(obstacle);
             obstacle.OnDestroyed += OnObstacleDestroyedHandler;
@@ -37,7 +46,7 @@ namespace SpaceMiner
         {
             foreach (Obstacle obstacle in _obstacles)
                 obstacle.OnDestroyed -= OnObstacleDestroyedHandler;
-            Obstacle.OnInitialized -= OnObstacleInitialized;
+            _obstacleSpawner.OnObstacleSpawned -= OnObstacleSpawned;
         }
     }
 }

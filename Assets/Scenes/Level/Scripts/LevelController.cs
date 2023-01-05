@@ -19,8 +19,6 @@ namespace SpaceMiner
         [SerializeField] private int _obstacleCountIncreasePerWave = 1;
 
         [Header("Services")]
-        [SerializeField] private ObstacleManager _obstacleManager;
-        [SerializeField] private ObstacleWaveSpawner _obstacleWaveSpawner;
         [SerializeField] private GameOverScreen _gameOverScreen;
         [SerializeField] private WaveTextController _waveTextController;
         [SerializeField] private ActorSelector _actorSelector;
@@ -33,16 +31,21 @@ namespace SpaceMiner
 
         private ActorController _actorController;
         private Actor.Factory _actorFactory;
+        private ObstacleManager _obstacleManager;
+        private ObstacleSpawner _obstacleSpawner;
         private IntState _scoreState;
 
         [Inject]
         public void Inject(
             ActorController actorController, Actor.Factory actorFactory,
+            ObstacleManager obstacleManager, ObstacleSpawner obstacleSpawner,
             [Inject(Id = LevelInjectIds.SCORE_STATE)] IntState scoreState
         )
         {
             _actorController = actorController;
             _actorFactory = actorFactory;
+            _obstacleManager = obstacleManager;
+            _obstacleSpawner = obstacleSpawner;
             _scoreState = scoreState;
         }
 
@@ -66,8 +69,6 @@ namespace SpaceMiner
         {
             _playerActor = _actorFactory.Create(actorPrefab);
             _playerActor.transform.SetPositionAndRotation(Vector3.zero, Quaternion.Euler(0, 0, 90));
-            // _playerActor = Instantiate(actorPrefab, Vector3.zero, Quaternion.Euler(0, 0, 90));
-            // _playerActor.Initialize(_maxLivesState, _livesState);
             _playerActor.OnDeath += OnPlayerDeath;
             _actorController.SetActor(_playerActor);
 
@@ -80,7 +81,7 @@ namespace SpaceMiner
         {
             _wave++;
             int obstaclesCount = _initialObstacleCount + _obstacleCountIncreasePerWave * (_wave - 1);
-            _obstacleWaveSpawner.Spawn(obstaclesCount);
+            _obstacleSpawner.SpawnWave(obstaclesCount);
             _waveTextController.Show(_wave);
         }
 

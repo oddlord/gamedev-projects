@@ -34,11 +34,7 @@ namespace SpaceMiner
             if (SplitOnHit)
             {
                 for (int i = 0; i < FragmentsToSpawn; i++)
-                {
-                    Quaternion spawnRotation = Utils.GetRandom2DRotation();
-                    Obstacle obstacle = Instantiate(FragmentPrefab, transform.position, spawnRotation, transform.parent);
-                    obstacle.Initialize();
-                }
+                    _obstacleSpawner.SpawnObstacle(FragmentPrefab, transform.position);
             }
 
             PlayAudio(_destructionSound);

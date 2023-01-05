@@ -1,20 +1,23 @@
 using System;
 using UnityEngine;
+using Zenject;
 
 namespace SpaceMiner
 {
     public abstract class Obstacle : MonoBehaviour
     {
-        // TODO get rid of this with Dependency Injection
-        public static Action<Obstacle> OnInitialized;
+        public class Factory : PlaceholderFactory<UnityEngine.Object, Obstacle> { }
 
         public int PointsWorth;
 
         public Action<Obstacle> OnDestroyed;
 
-        public void Initialize()
+        protected ObstacleSpawner _obstacleSpawner;
+
+        [Inject]
+        public void Inject(ObstacleSpawner obstacleSpawner)
         {
-            OnInitialized?.Invoke(this);
+            _obstacleSpawner = obstacleSpawner;
         }
 
         protected abstract void OnHit();
