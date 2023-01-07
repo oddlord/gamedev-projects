@@ -243,7 +243,7 @@ TextureImporter:
       213: 2371762424515021416
     second: SpaceShooterAssetPack_Miscellaneous_79
   externalObjects: {}
-  serializedVersion: 11
+  serializedVersion: 12
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -264,6 +264,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -302,6 +303,7 @@ TextureImporter:
   textureFormatSet: 0
   ignorePngGamma: 0
   applyGammaDecoding: 0
+  cookieLightType: 1
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -341,6 +343,18 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
     buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -2044,6 +2058,87 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      SpaceShooterAssetPack_Miscellaneous_15: -8481609203585259902
+      SpaceShooterAssetPack_Miscellaneous_73: -8534578131105350327
+      SpaceShooterAssetPack_Miscellaneous_69: -1454848456665156986
+      SpaceShooterAssetPack_Miscellaneous_47: -1492501702676718485
+      SpaceShooterAssetPack_Miscellaneous_22: 5866337453907145995
+      SpaceShooterAssetPack_Miscellaneous_70: -6744913666623026217
+      SpaceShooterAssetPack_Miscellaneous_37: 6681145739147391178
+      SpaceShooterAssetPack_Miscellaneous_78: 2227774602036441900
+      SpaceShooterAssetPack_Miscellaneous_13: -2098234290902927331
+      SpaceShooterAssetPack_Miscellaneous_27: -6561034215165761139
+      SpaceShooterAssetPack_Miscellaneous_59: 7413757524493593926
+      SpaceShooterAssetPack_Miscellaneous_23: -229237807593876182
+      SpaceShooterAssetPack_Miscellaneous_24: -563976802474955051
+      SpaceShooterAssetPack_Miscellaneous_3: 810865556278172725
+      SpaceShooterAssetPack_Miscellaneous_8: 3831499370416197816
+      SpaceShooterAssetPack_Miscellaneous_2: 2932051303476988985
+      SpaceShooterAssetPack_Miscellaneous_49: -6155506203172868325
+      SpaceShooterAssetPack_Miscellaneous_53: -5013909465133225022
+      SpaceShooterAssetPack_Miscellaneous_54: -6795303013386597874
+      SpaceShooterAssetPack_Miscellaneous_41: -527809977926689809
+      SpaceShooterAssetPack_Miscellaneous_5: 6933587369445508384
+      SpaceShooterAssetPack_Miscellaneous_21: -8085032501208905695
+      SpaceShooterAssetPack_Miscellaneous_12: 2420995915047738047
+      SpaceShooterAssetPack_Miscellaneous_31: 235094828510637829
+      SpaceShooterAssetPack_Miscellaneous_40: 2697761683340650436
+      SpaceShooterAssetPack_Miscellaneous_79: 2371762424515021416
+      SpaceShooterAssetPack_Miscellaneous_11: -765323723098368738
+      SpaceShooterAssetPack_Miscellaneous_28: 4011711661528782158
+      SpaceShooterAssetPack_Miscellaneous_62: -757835410978407696
+      SpaceShooterAssetPack_Miscellaneous_42: -1710894508762332737
+      SpaceShooterAssetPack_Miscellaneous_46: -7841437805360053503
+      SpaceShooterAssetPack_Miscellaneous_6: -79717898379710900
+      SpaceShooterAssetPack_Miscellaneous_65: 4692822693577058296
+      SpaceShooterAssetPack_Miscellaneous_43: 7403212014742046367
+      SpaceShooterAssetPack_Miscellaneous_34: -3271345230255722492
+      SpaceShooterAssetPack_Miscellaneous_44: -3959671249420106013
+      SpaceShooterAssetPack_Miscellaneous_61: 8597375253342731225
+      SpaceShooterAssetPack_Miscellaneous_25: 5635554347137617404
+      SpaceShooterAssetPack_Miscellaneous_1: 5840930754681166438
+      SpaceShooterAssetPack_Miscellaneous_64: -2054701482582019915
+      SpaceShooterAssetPack_Miscellaneous_51: -4841273169419288023
+      SpaceShooterAssetPack_Miscellaneous_52: 170846027447224062
+      SpaceShooterAssetPack_Miscellaneous_67: -8444279568929361378
+      SpaceShooterAssetPack_Miscellaneous_68: -3240057546130458950
+      SpaceShooterAssetPack_Miscellaneous_38: -7654310532295533959
+      SpaceShooterAssetPack_Miscellaneous_30: 2931457237460121488
+      SpaceShooterAssetPack_Miscellaneous_48: -6294665358875607925
+      SpaceShooterAssetPack_Miscellaneous_76: 5644395648384070820
+      SpaceShooterAssetPack_Miscellaneous_56: 5920419087191403847
+      SpaceShooterAssetPack_Miscellaneous_17: 2487812184065979120
+      SpaceShooterAssetPack_Miscellaneous_32: -8955835223621717958
+      SpaceShooterAssetPack_Miscellaneous_7: -1974148178516586906
+      SpaceShooterAssetPack_Miscellaneous_35: 1738709462175100263
+      SpaceShooterAssetPack_Miscellaneous_19: 4644236800638856933
+      SpaceShooterAssetPack_Miscellaneous_77: 8912963819807400267
+      SpaceShooterAssetPack_Miscellaneous_75: -8659239949950029998
+      SpaceShooterAssetPack_Miscellaneous_50: 5198208495617807317
+      SpaceShooterAssetPack_Miscellaneous_55: -169360817897941932
+      SpaceShooterAssetPack_Miscellaneous_20: 2703825915951635434
+      SpaceShooterAssetPack_Miscellaneous_9: 5182099672970138797
+      SpaceShooterAssetPack_Miscellaneous_57: -2898064032229802402
+      SpaceShooterAssetPack_Miscellaneous_18: -2127590456799046267
+      SpaceShooterAssetPack_Miscellaneous_29: 9191591375893174212
+      SpaceShooterAssetPack_Miscellaneous_0: 749336644954136105
+      SpaceShooterAssetPack_Miscellaneous_33: -5179773217252514779
+      SpaceShooterAssetPack_Miscellaneous_74: -8958107883980456343
+      SpaceShooterAssetPack_Miscellaneous_10: 1304386192058496432
+      SpaceShooterAssetPack_Miscellaneous_72: 8546776594866199358
+      SpaceShooterAssetPack_Miscellaneous_66: 3656974225711634605
+      SpaceShooterAssetPack_Miscellaneous_63: 5205404089270520782
+      SpaceShooterAssetPack_Miscellaneous_71: 5209479906590236769
+      SpaceShooterAssetPack_Miscellaneous_16: -6834455526537436410
+      SpaceShooterAssetPack_Miscellaneous_45: 1561968262810347327
+      SpaceShooterAssetPack_Miscellaneous_4: -3173528827444466201
+      SpaceShooterAssetPack_Miscellaneous_58: 1720066009101831420
+      SpaceShooterAssetPack_Miscellaneous_14: 4207061275628567317
+      SpaceShooterAssetPack_Miscellaneous_26: -3355764853135383722
+      SpaceShooterAssetPack_Miscellaneous_39: -5082197339678633319
+      SpaceShooterAssetPack_Miscellaneous_60: -8498806424312213140
+      SpaceShooterAssetPack_Miscellaneous_36: 5888712950217988558
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
