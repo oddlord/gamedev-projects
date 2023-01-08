@@ -19,7 +19,7 @@ namespace SpaceMiner
         private IntState _scoreState;
 
         [Inject]
-        public void Inject(
+        public void Init(
             [Inject(Id = LevelInjectIds.SCORE_STATE)] IntState scoreState
         )
         {

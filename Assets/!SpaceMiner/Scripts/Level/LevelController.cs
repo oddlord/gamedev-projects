@@ -31,14 +31,14 @@ namespace SpaceMiner
 
         private ActorController _actorController;
         private Actor.Factory _actorFactory;
-        private ObstacleManager _obstacleManager;
-        private ObstacleSpawner _obstacleSpawner;
+        private IObstacleManager _obstacleManager;
+        private IObstacleSpawner _obstacleSpawner;
         private IntState _scoreState;
 
         [Inject]
-        public void Inject(
+        public void Init(
             ActorController actorController, Actor.Factory actorFactory,
-            ObstacleManager obstacleManager, ObstacleSpawner obstacleSpawner,
+            IObstacleManager obstacleManager, IObstacleSpawner obstacleSpawner,
             [Inject(Id = LevelInjectIds.SCORE_STATE)] IntState scoreState
         )
         {

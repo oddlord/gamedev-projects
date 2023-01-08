@@ -12,10 +12,10 @@ namespace SpaceMiner
 
         public Action<Obstacle> OnDestroyed;
 
-        protected ObstacleSpawner _obstacleSpawner;
+        protected IObstacleSpawner _obstacleSpawner;
 
         [Inject]
-        public void Inject(ObstacleSpawner obstacleSpawner)
+        public void Init(IObstacleSpawner obstacleSpawner)
         {
             _obstacleSpawner = obstacleSpawner;
         }

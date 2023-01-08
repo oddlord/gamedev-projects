@@ -14,7 +14,7 @@ namespace SpaceMiner
         protected IntState _livesState;
 
         [Inject]
-        public void Inject(
+        public void Init(
             [Inject(Id = LevelInjectIds.MAX_LIVES_STATE)] IntState maxLivesState,
             [Inject(Id = LevelInjectIds.LIVES_STATE)] IntState livesState
         )

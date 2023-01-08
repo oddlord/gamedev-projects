@@ -1,29 +1,24 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 using Zenject;
 
 namespace SpaceMiner
 {
-    public class ObstacleManager : MonoBehaviour
+    public class SimpleObstacleManager : IObstacleManager
     {
-        public Action<Obstacle> OnObstacleDestroyed;
-        public Action OnAllObstaclesDestroyed;
+        public Action<Obstacle> OnObstacleDestroyed { get; set; }
+        public Action OnAllObstaclesDestroyed { get; set; }
 
         private List<Obstacle> _obstacles;
 
-        private ObstacleSpawner _obstacleSpawner;
+        private IObstacleSpawner _obstacleSpawner;
 
         [Inject]
-        public void Inject(ObstacleSpawner obstacleSpawner)
+        public void Init(IObstacleSpawner obstacleSpawner)
         {
             _obstacleSpawner = obstacleSpawner;
-        }
 
-        void Awake()
-        {
             _obstacles = new List<Obstacle>();
-
             _obstacleSpawner.OnObstacleSpawned += OnObstacleSpawned;
         }
 
@@ -40,13 +35,6 @@ namespace SpaceMiner
 
             OnObstacleDestroyed?.Invoke(obstacle);
             if (_obstacles.Count == 0) OnAllObstaclesDestroyed?.Invoke();
-        }
-
-        void OnDestroy()
-        {
-            foreach (Obstacle obstacle in _obstacles)
-                obstacle.OnDestroyed -= OnObstacleDestroyedHandler;
-            _obstacleSpawner.OnObstacleSpawned -= OnObstacleSpawned;
         }
     }
 }
