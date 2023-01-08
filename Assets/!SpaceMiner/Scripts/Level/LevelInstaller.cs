@@ -6,9 +6,6 @@ namespace SpaceMiner
 {
     public class LevelInstaller : MonoInstaller
     {
-        [Header("Services")]
-        [SerializeField] private ActorController _actorControllerPrefab;
-
         [Header("States")]
         [SerializeField] private IntState _maxLivesState;
         [SerializeField] private IntState _livesState;
@@ -23,7 +20,7 @@ namespace SpaceMiner
             Container.BindFactory<UnityEngine.Object, Actor, Actor.Factory>().FromFactory<PrefabFactory<Actor>>();
             Container.BindFactory<UnityEngine.Object, Obstacle, Obstacle.Factory>().FromFactory<PrefabFactory<Obstacle>>();
 
-            Container.Bind<ActorController>().FromComponentInNewPrefab(_actorControllerPrefab).AsSingle();
+            Container.Bind<IActorController>().To<PlayerActorController>().FromNewComponentOnNewGameObject().AsSingle();
 
             Container.Bind<IObstacleManager>().To<SimpleObstacleManager>().AsSingle();
             Container.Bind<IObstacleSpawner>().To<SimpleObstacleSpawner>().AsSingle();

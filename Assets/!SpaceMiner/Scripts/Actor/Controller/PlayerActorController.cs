@@ -2,20 +2,22 @@ using UnityEngine;
 
 namespace SpaceMiner
 {
-    public class PlayerActorController : ActorController
+    public class PlayerActorController : MonoBehaviour, IActorController
     {
+        public Actor Actor { get; set; }
+
         void FixedUpdate()
         {
-            if (_actor == null) return;
+            if (Actor == null) return;
 
             float verticalInput = Input.GetAxis("Vertical");
-            _actor.HandleForwardInput(verticalInput);
+            Actor.HandleForwardInput(verticalInput);
 
             float horizontalInput = Input.GetAxis("Horizontal");
-            _actor.HandleSideInput(horizontalInput);
+            Actor.HandleSideInput(horizontalInput);
 
             float fireInput = Input.GetAxis("Fire1");
-            if (fireInput > 0) _actor.Attack();
+            if (fireInput > 0) Actor.Attack();
         }
     }
 }

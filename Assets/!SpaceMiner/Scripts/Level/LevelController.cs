@@ -29,7 +29,7 @@ namespace SpaceMiner
         private int _wave;
         private Actor _playerActor;
 
-        private ActorController _actorController;
+        private IActorController _actorController;
         private Actor.Factory _actorFactory;
         private IObstacleManager _obstacleManager;
         private IObstacleSpawner _obstacleSpawner;
@@ -37,7 +37,7 @@ namespace SpaceMiner
 
         [Inject]
         public void Init(
-            ActorController actorController, Actor.Factory actorFactory,
+            IActorController actorController, Actor.Factory actorFactory,
             IObstacleManager obstacleManager, IObstacleSpawner obstacleSpawner,
             [Inject(Id = LevelInjectIds.SCORE_STATE)] IntState scoreState
         )
