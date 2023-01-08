@@ -6,10 +6,10 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/!SpaceMiner/Scenes/StartScreen.unity
+    path: Assets/_/Scenes/StartScreen.unity
     guid: 892dc7b5797524258af3b2a439f77ac3
   - enabled: 1
-    path: Assets/!SpaceMiner/Scenes/Level.unity
+    path: Assets/_/Scenes/Level.unity
     guid: fecb13ce5599348e0b857dd004eec298
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: f7408e8e209d941f885721185242b8d7, type: 2}
