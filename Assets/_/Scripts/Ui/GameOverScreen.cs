@@ -21,21 +21,19 @@ namespace SpaceMiner
         public Action OnPlayAgain;
         public Action OnBack;
 
-        private IntState _scoreState;
+        private Score _score;
 
         [Inject]
-        public void Init(
-            [Inject(Id = LevelInjectIds.SCORE_STATE)] IntState scoreState
-        )
+        public void Init(Score score)
         {
-            _scoreState = scoreState;
+            _score = score;
         }
 
         public void Show()
         {
             Dictionary<string, object> arguments = new Dictionary<string, object>
             {
-                { SentencesLocalization.Arguments.SCORE, _scoreState.Value }
+                { SentencesLocalization.Arguments.SCORE, _score.Value }
             };
             Utils.SetLocalizedString(_internalSetup.ScoreLocalizedText, SentencesLocalization.Keys.FINAL_SCORE, arguments);
 

@@ -8,32 +8,31 @@ namespace SpaceMiner
     {
         public class Factory : PlaceholderFactory<UnityEngine.Object, Actor> { }
 
+        [SerializeField] private int _initialMaxLives = 3;
+
+        [SerializeField] protected ActorState _state;
+
         public Action<Actor> OnDeath;
 
-        private IntState _maxLivesState;
-        protected IntState _livesState;
-
         [Inject]
-        public void Init(
-            [Inject(Id = LevelInjectIds.MAX_LIVES_STATE)] IntState maxLivesState,
-            [Inject(Id = LevelInjectIds.LIVES_STATE)] IntState livesState
-        )
+        public void Init(ActorState state)
         {
-            _maxLivesState = maxLivesState;
-            _livesState = livesState;
+            _state = state;
         }
 
-        public virtual void Start()
+        public virtual void Awake()
         {
-            _livesState.OnChange += HandleLivesChanged;
-            _livesState.Set(_maxLivesState);
+            _state.Init(_initialMaxLives);
+            _state.SetFullLives();
+
+            _state.OnLivesChange += HandleLivesChanged;
         }
 
         public abstract void HandleForwardInput(float amount);
         public abstract void HandleSideInput(float amount);
         public abstract void Attack();
 
-        public bool IsDead => _livesState.Value <= 0;
+        public bool IsDead => _state.Lives <= 0;
 
         protected abstract void OnHit();
         protected abstract void OnLivesChanged(int newValue, int delta);
@@ -51,7 +50,7 @@ namespace SpaceMiner
 
         void OnDestroy()
         {
-            _livesState.OnChange -= HandleLivesChanged;
+            _state.OnLivesChange -= HandleLivesChanged;
         }
     }
 }

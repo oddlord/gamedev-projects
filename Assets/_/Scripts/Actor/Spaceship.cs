@@ -46,8 +46,9 @@ namespace SpaceMiner
         private DateTime _lastShot;
         private Coroutine _invulnerabilityCoroutine;
 
-        void Awake()
+        public override void Awake()
         {
+            base.Awake();
             _lastShot = DateTime.MinValue;
         }
 
@@ -98,7 +99,7 @@ namespace SpaceMiner
         {
             if (IsDead) return;
             PlayAudio(_hitSound);
-            _livesState.Subtract(1);
+            _state.Lives--;
         }
 
         protected override void OnLivesChanged(int newValue, int delta)

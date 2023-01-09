@@ -12,6 +12,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 4958709792872695805, guid: 2c1110eb0533849b1828717cda977b82, type: 3}
     - target: {fileID: 18526460916081444, guid: db7c937b7178e415caf4081e5ba2dbeb, type: 3}
+      propertyPath: _maxSpeed
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 18526460916081444, guid: db7c937b7178e415caf4081e5ba2dbeb, type: 3}
+      propertyPath: _initialMaxLives
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 18526460916081444, guid: db7c937b7178e415caf4081e5ba2dbeb, type: 3}
       propertyPath: _projectilePrefab
       value: 
       objectReference: {fileID: 6359435771895056895, guid: de9524165749b46d7a23add690e2ce81, type: 3}

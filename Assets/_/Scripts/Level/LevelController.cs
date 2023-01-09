@@ -33,26 +33,26 @@ namespace SpaceMiner
         private Actor.Factory _actorFactory;
         private IObstacleManager _obstacleManager;
         private IObstacleSpawner _obstacleSpawner;
-        private IntState _scoreState;
+        private Score _score;
 
         [Inject]
         public void Init(
             IActorController actorController, Actor.Factory actorFactory,
             IObstacleManager obstacleManager, IObstacleSpawner obstacleSpawner,
-            [Inject(Id = LevelInjectIds.SCORE_STATE)] IntState scoreState
+            Score score
         )
         {
             _actorController = actorController;
             _actorFactory = actorFactory;
             _obstacleManager = obstacleManager;
             _obstacleSpawner = obstacleSpawner;
-            _scoreState = scoreState;
+            _score = score;
         }
 
         void Awake()
         {
             _wave = 0;
-            _scoreState.Set(0);
+            _score.Value = 0;
 
             _obstacleManager.OnAllObstaclesDestroyed += OnAllObstaclesDestroyed;
             _obstacleManager.OnObstacleDestroyed += OnObstacleDestroyed;
@@ -92,7 +92,7 @@ namespace SpaceMiner
 
         private void OnObstacleDestroyed(Obstacle obstacle)
         {
-            _scoreState.Add(obstacle.PointsWorth);
+            _score.Value += obstacle.PointsWorth;
         }
 
         private void OnPlayAgain()

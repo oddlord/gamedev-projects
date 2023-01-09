@@ -16,24 +16,22 @@ namespace SpaceMiner
         [Header("__Internal Setup__")]
         [SerializeField] private _InternalSetup _internalSetup;
 
-        private IntState _scoreState;
+        private Score _score;
 
         [Inject]
-        public void Init(
-            [Inject(Id = LevelInjectIds.SCORE_STATE)] IntState scoreState
-        )
+        public void Init(Score score)
         {
-            _scoreState = scoreState;
+            _score = score;
         }
 
         void Awake()
         {
-            _scoreState.OnChange += OnScoreChanged;
+            _score.OnChange += OnScoreChanged;
         }
 
         void Start()
         {
-            SetScoreText(_scoreState.Value);
+            SetScoreText(_score.Value);
         }
 
         private void OnScoreChanged(int newValue, int delta)
@@ -48,7 +46,7 @@ namespace SpaceMiner
 
         void OnDestroy()
         {
-            _scoreState.OnChange -= OnScoreChanged;
+            _score.OnChange -= OnScoreChanged;
         }
     }
 }

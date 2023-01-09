@@ -6,11 +6,6 @@ namespace SpaceMiner
 {
     public class LevelInstaller : MonoInstaller
     {
-        [Header("States")]
-        [SerializeField] private IntState _maxLivesState;
-        [SerializeField] private IntState _livesState;
-        [SerializeField] private IntState _scoreState;
-
         [Header("Obstacles")]
         [SerializeField] private List<Obstacle> _waveObstaclePrefabs;
         [SerializeField] private SpawnPointsContainer _spawnPointsContainer;
@@ -25,9 +20,8 @@ namespace SpaceMiner
             Container.Bind<IObstacleManager>().To<SimpleObstacleManager>().AsSingle();
             Container.Bind<IObstacleSpawner>().To<SimpleObstacleSpawner>().AsSingle();
 
-            Container.BindInstance(_maxLivesState).WithId(LevelInjectIds.MAX_LIVES_STATE);
-            Container.BindInstance(_livesState).WithId(LevelInjectIds.LIVES_STATE);
-            Container.BindInstance(_scoreState).WithId(LevelInjectIds.SCORE_STATE);
+            Container.Bind<ActorState>().AsSingle();
+            Container.Bind<Score>().AsSingle();
 
             Container.BindInstance(_waveObstaclePrefabs);
             Container.BindInstance(_spawnPointsContainer);

@@ -10,38 +10,32 @@ namespace SpaceMiner
 
         private List<LifeToken> _tokens;
 
-        private IntState _maxLivesState;
-        private IntState _livesState;
+        private ActorState _state;
 
         [Inject]
-        public void Init(
-            [Inject(Id = LevelInjectIds.MAX_LIVES_STATE)] IntState maxLivesState,
-            [Inject(Id = LevelInjectIds.LIVES_STATE)] IntState livesState
-        )
+        public void Init(ActorState state)
         {
-            _maxLivesState = maxLivesState;
-            _livesState = livesState;
+            _state = state;
         }
 
         void Awake()
         {
             _tokens = new List<LifeToken>();
-
-            InstantiateTokens(_maxLivesState.Value);
-
-            _maxLivesState.OnChange += OnMaxLivesChanged;
-            _livesState.OnChange += OnLivesChanged;
         }
 
         void Start()
         {
-            SetTokensEnabled(_livesState.Value);
+            InstantiateTokens(_state.MaxLives);
+            SetTokensEnabled(_state.Lives);
+
+            _state.OnMaxLivesChange += OnMaxLivesChanged;
+            _state.OnLivesChange += OnLivesChanged;
         }
 
         private void OnMaxLivesChanged(int newValue, int delta)
         {
             InstantiateTokens(newValue);
-            SetTokensEnabled(_livesState.Value);
+            SetTokensEnabled(_state.Lives);
         }
 
         private void OnLivesChanged(int newValue, int delta)
@@ -61,7 +55,7 @@ namespace SpaceMiner
 
         private void SetTokensEnabled(int enabledCount)
         {
-            enabledCount = Mathf.Min(enabledCount, _maxLivesState.Value);
+            enabledCount = Mathf.Min(enabledCount, _state.MaxLives);
             for (int i = 0; i < _tokens.Count; i++)
             {
                 bool tokenEnabled = i < enabledCount;
@@ -78,8 +72,8 @@ namespace SpaceMiner
 
         void OnDestroy()
         {
-            _maxLivesState.OnChange -= OnMaxLivesChanged;
-            _livesState.OnChange -= OnLivesChanged;
+            _state.OnMaxLivesChange -= OnMaxLivesChanged;
+            _state.OnLivesChange -= OnLivesChanged;
         }
     }
 }
