@@ -99,7 +99,7 @@ namespace SpaceMiner
         {
             if (IsDead) return;
             PlayAudio(_hitSound);
-            _state.Lives--;
+            Lives.Subtract(1);
         }
 
         protected override void OnLivesChanged(int newValue, int delta)

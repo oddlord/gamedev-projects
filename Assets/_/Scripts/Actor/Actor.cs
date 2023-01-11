@@ -10,29 +10,24 @@ namespace SpaceMiner
 
         [SerializeField] private int _initialMaxLives = 3;
 
-        [SerializeField] protected ActorState _state;
+        public ObservableInt Lives;
+        public ObservableInt MaxLives;
 
         public Action<Actor> OnDeath;
 
-        [Inject]
-        public void Init(ActorState state)
-        {
-            _state = state;
-        }
-
         public virtual void Awake()
         {
-            _state.Init(_initialMaxLives);
-            _state.SetFullLives();
+            Lives = new ObservableInt(_initialMaxLives);
+            MaxLives = new ObservableInt(_initialMaxLives);
 
-            _state.OnLivesChange += HandleLivesChanged;
+            Lives.OnChange += HandleLivesChanged;
         }
 
         public abstract void HandleForwardInput(float amount);
         public abstract void HandleSideInput(float amount);
         public abstract void Attack();
 
-        public bool IsDead => _state.Lives <= 0;
+        public bool IsDead => Lives.Value <= 0;
 
         protected abstract void OnHit();
         protected abstract void OnLivesChanged(int newValue, int delta);
@@ -50,7 +45,7 @@ namespace SpaceMiner
 
         void OnDestroy()
         {
-            _state.OnLivesChange -= HandleLivesChanged;
+            Lives.OnChange -= HandleLivesChanged;
         }
     }
 }

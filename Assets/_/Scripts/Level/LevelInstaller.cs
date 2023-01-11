@@ -6,9 +6,10 @@ namespace SpaceMiner
 {
     public class LevelInstaller : MonoInstaller
     {
-        [Header("Obstacles")]
+        [Header("Instances")]
         [SerializeField] private List<Obstacle> _waveObstaclePrefabs;
         [SerializeField] private SpawnPointsContainer _spawnPointsContainer;
+        [SerializeField] private LivesDisplay _livesDisplay;
 
         public override void InstallBindings()
         {
@@ -20,11 +21,11 @@ namespace SpaceMiner
             Container.Bind<IObstacleManager>().To<SimpleObstacleManager>().AsSingle();
             Container.Bind<IObstacleSpawner>().To<SimpleObstacleSpawner>().AsSingle();
 
-            Container.Bind<ActorState>().AsSingle();
-            Container.Bind<Score>().AsSingle();
+            Container.Bind<ObservableInt>().AsSingle();
 
             Container.BindInstance(_waveObstaclePrefabs);
             Container.BindInstance(_spawnPointsContainer);
+            Container.BindInstance(_livesDisplay);
         }
     }
 }

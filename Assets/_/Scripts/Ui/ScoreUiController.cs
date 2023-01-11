@@ -16,10 +16,10 @@ namespace SpaceMiner
         [Header("__Internal Setup__")]
         [SerializeField] private _InternalSetup _internalSetup;
 
-        private Score _score;
+        private ObservableInt _score;
 
         [Inject]
-        public void Init(Score score)
+        public void Init(ObservableInt score)
         {
             _score = score;
         }

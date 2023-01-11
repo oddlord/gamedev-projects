@@ -21,10 +21,10 @@ namespace SpaceMiner
         public Action OnPlayAgain;
         public Action OnBack;
 
-        private Score _score;
+        private ObservableInt _score;
 
         [Inject]
-        public void Init(Score score)
+        public void Init(ObservableInt score)
         {
             _score = score;
         }

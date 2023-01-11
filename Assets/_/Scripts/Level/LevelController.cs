@@ -33,13 +33,14 @@ namespace SpaceMiner
         private Actor.Factory _actorFactory;
         private IObstacleManager _obstacleManager;
         private IObstacleSpawner _obstacleSpawner;
-        private Score _score;
+        private ObservableInt _score;
+        private LivesDisplay _livesDisplay;
 
         [Inject]
         public void Init(
             IActorController actorController, Actor.Factory actorFactory,
             IObstacleManager obstacleManager, IObstacleSpawner obstacleSpawner,
-            Score score
+            ObservableInt score, LivesDisplay livesDisplay
         )
         {
             _actorController = actorController;
@@ -47,6 +48,7 @@ namespace SpaceMiner
             _obstacleManager = obstacleManager;
             _obstacleSpawner = obstacleSpawner;
             _score = score;
+            _livesDisplay = livesDisplay;
         }
 
         void Awake()
@@ -70,7 +72,9 @@ namespace SpaceMiner
             _playerActor = _actorFactory.Create(actorPrefab);
             _playerActor.transform.SetPositionAndRotation(Vector3.zero, Quaternion.Euler(0, 0, 90));
             _playerActor.OnDeath += OnPlayerDeath;
+
             _actorController.SetActor(_playerActor);
+            _livesDisplay.Init(_playerActor.Lives, _playerActor.MaxLives);
 
             _internalSetup.AudioSource.Play();
             _actorSelector.Hide();

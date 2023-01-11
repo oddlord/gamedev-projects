@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using Zenject;
 
 namespace SpaceMiner
 {
@@ -10,32 +9,30 @@ namespace SpaceMiner
 
         private List<LifeToken> _tokens;
 
-        private ActorState _state;
-
-        [Inject]
-        public void Init(ActorState state)
-        {
-            _state = state;
-        }
+        public ObservableInt _lives;
+        public ObservableInt _maxLives;
 
         void Awake()
         {
             _tokens = new List<LifeToken>();
         }
 
-        void Start()
+        public void Init(ObservableInt lives, ObservableInt maxLives)
         {
-            InstantiateTokens(_state.MaxLives);
-            SetTokensEnabled(_state.Lives);
+            _lives = lives;
+            _maxLives = maxLives;
 
-            _state.OnMaxLivesChange += OnMaxLivesChanged;
-            _state.OnLivesChange += OnLivesChanged;
+            InstantiateTokens(_maxLives.Value);
+            SetTokensEnabled(_lives.Value);
+
+            _maxLives.OnChange += OnMaxLivesChanged;
+            _lives.OnChange += OnLivesChanged;
         }
 
         private void OnMaxLivesChanged(int newValue, int delta)
         {
             InstantiateTokens(newValue);
-            SetTokensEnabled(_state.Lives);
+            SetTokensEnabled(_lives.Value);
         }
 
         private void OnLivesChanged(int newValue, int delta)
@@ -55,7 +52,7 @@ namespace SpaceMiner
 
         private void SetTokensEnabled(int enabledCount)
         {
-            enabledCount = Mathf.Min(enabledCount, _state.MaxLives);
+            enabledCount = Mathf.Min(enabledCount, _maxLives.Value);
             for (int i = 0; i < _tokens.Count; i++)
             {
                 bool tokenEnabled = i < enabledCount;
@@ -72,8 +69,8 @@ namespace SpaceMiner
 
         void OnDestroy()
         {
-            _state.OnMaxLivesChange -= OnMaxLivesChanged;
-            _state.OnLivesChange -= OnLivesChanged;
+            _maxLives.OnChange -= OnMaxLivesChanged;
+            _lives.OnChange -= OnLivesChanged;
         }
     }
 }

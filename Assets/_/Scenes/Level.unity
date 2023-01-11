@@ -243,6 +243,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 631991652277082429, guid: 953328622c70743b3b985a972b9c4a9a, type: 3}
   m_PrefabInstance: {fileID: 631991652420821894}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &426965693 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 631991652277082427, guid: 953328622c70743b3b985a972b9c4a9a, type: 3}
+  m_PrefabInstance: {fileID: 631991652420821894}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20ea9cfd47947415b85f560233a1b0a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &460824953
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -501,15 +512,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bec3987afbf14e7098734dafdfc31ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _actorControllerPrefab: {fileID: 3213268080406904191, guid: 8f62ba3dc3ad140e394c9a8e5aa293fb, type: 3}
-  _obstacleManagerPrefab: {fileID: 3501317164124208412, guid: c9af87033d5444267baaf39399c98675, type: 3}
-  _obstacleSpawnerPrefab: {fileID: 7732779865984823173, guid: 833f1283106aa4510b21bed425deaead, type: 3}
-  _maxLivesState: {fileID: 11400000, guid: e03e65bc9ffb64dc2b2099494ee7b3d6, type: 2}
-  _livesState: {fileID: 11400000, guid: d040f43e1628644c1aa01cc2d599e3c4, type: 2}
-  _scoreState: {fileID: 11400000, guid: c465681f023644127af33e9c496400b3, type: 2}
   _waveObstaclePrefabs:
   - {fileID: 4978597233783689588, guid: 4d4c0d5bef1c446e18d0466492437f6e, type: 3}
   _spawnPointsContainer: {fileID: 3479010953975094671}
+  _livesDisplay: {fileID: 426965693}
 --- !u!114 &630626551
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -552,6 +558,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 6
@@ -760,6 +767,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1026890757}
   - {fileID: 426965691}
@@ -939,6 +947,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_SendPointerHoverToParent: 1
   m_HorizontalAxis: Horizontal
   m_VerticalAxis: Vertical
   m_SubmitButton: Submit
@@ -971,6 +980,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
@@ -1474,6 +1484,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
