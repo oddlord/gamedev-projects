@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace SpaceMiner
 {
+    // TODO make into an interface
     public abstract class Projectile : MonoBehaviour
     {
         [Serializable]

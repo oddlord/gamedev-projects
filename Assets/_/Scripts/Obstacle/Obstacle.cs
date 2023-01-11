@@ -4,6 +4,7 @@ using Zenject;
 
 namespace SpaceMiner
 {
+    // TODO make into an interface
     public abstract class Obstacle : MonoBehaviour
     {
         public class Factory : PlaceholderFactory<UnityEngine.Object, Obstacle> { }
