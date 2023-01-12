@@ -13,7 +13,7 @@ namespace SpaceMiner
 
         public override void InstallBindings()
         {
-            Container.BindFactory<UnityEngine.Object, Actor, Actor.Factory>().FromFactory<PrefabFactory<Actor>>();
+            Container.BindFactory<UnityEngine.Object, IActor, IActor.Factory>().FromFactory<PrefabFactory<IActor>>();
             Container.BindFactory<UnityEngine.Object, Obstacle, Obstacle.Factory>().FromFactory<PrefabFactory<Obstacle>>();
 
             Container.Bind<IActorController>().To<PlayerActorController>().FromNewComponentOnNewGameObject().AsSingle();

@@ -1,39 +1,44 @@
 using System;
+using System.Linq;
+using Oddlord.RequireInterface;
 using UnityEngine;
-
 namespace SpaceMiner
 {
     public class ActorSelector : MonoBehaviour
     {
-        [Serializable]
-        private struct _ActorSelectionEntry
-        {
-            public Sprite Sprite;
-            public Actor Prefab;
-        }
-
         [Serializable]
         private struct _InternalSetup
         {
             public Transform ActorEntriesContainer;
         }
 
-        [SerializeField] ActorEntry _actorEntryPrefab;
-        [SerializeField] _ActorSelectionEntry[] _actors;
+        [Serializable]
+        private struct _IActorListElement
+        {
+            [SerializeField]
+            [RequireInterface(typeof(IActor))]
+            private UnityEngine.Object _actor;
+            public IActor Actor => _actor as IActor;
+        }
+
+        [SerializeField] private ActorEntry _actorEntryPrefab;
+
+        [SerializeField] private _IActorListElement[] _actors;
+        private IActor[] _iActors => _actors.Select(a => a.Actor).ToArray();
 
         [Header("__Internal Setup__")]
         [SerializeField] private _InternalSetup _internalSetup;
 
-        private Action<Actor> _onSelected;
+        private Action<IActor> _onSelected;
 
-        public void Show(Action<Actor> onSelected)
+        public void Show(Action<IActor> onSelected)
         {
             gameObject.SetActive(true);
             _onSelected = onSelected;
-            foreach (_ActorSelectionEntry shipSelectionEntry in _actors)
+            foreach (IActor actor in _iActors)
             {
                 ActorEntry shipEntry = Instantiate(_actorEntryPrefab, _internalSetup.ActorEntriesContainer);
-                shipEntry.Initialize(shipSelectionEntry.Sprite, () => OnActorSelected(shipSelectionEntry.Prefab));
+                shipEntry.Initialize(actor.GetSprite(), () => OnActorSelected(actor));
             }
         }
 
@@ -42,7 +47,7 @@ namespace SpaceMiner
             gameObject.SetActive(false);
         }
 
-        private void OnActorSelected(Actor actorPrefab)
+        private void OnActorSelected(IActor actorPrefab)
         {
             _onSelected(actorPrefab);
         }

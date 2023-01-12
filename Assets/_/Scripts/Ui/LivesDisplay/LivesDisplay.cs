@@ -7,18 +7,22 @@ namespace SpaceMiner
     {
         [SerializeField] private LifeToken _lifeTokenPrefab;
 
+        private bool _initialized;
         private List<LifeToken> _tokens;
 
-        public ObservableInt _lives;
-        public ObservableInt _maxLives;
+        private ObservableInt _lives;
+        private ObservableInt _maxLives;
 
         void Awake()
         {
+            _initialized = false;
             _tokens = new List<LifeToken>();
         }
 
         public void Init(ObservableInt lives, ObservableInt maxLives)
         {
+            if (_initialized) Unsubscribe();
+
             _lives = lives;
             _maxLives = maxLives;
 
@@ -27,6 +31,8 @@ namespace SpaceMiner
 
             _maxLives.OnChange += OnMaxLivesChanged;
             _lives.OnChange += OnLivesChanged;
+
+            _initialized = true;
         }
 
         private void OnMaxLivesChanged(int newValue, int delta)
@@ -67,10 +73,15 @@ namespace SpaceMiner
             _tokens.Clear();
         }
 
-        void OnDestroy()
+        private void Unsubscribe()
         {
             _maxLives.OnChange -= OnMaxLivesChanged;
             _lives.OnChange -= OnLivesChanged;
+        }
+
+        void OnDestroy()
+        {
+            if (_initialized) Unsubscribe();
         }
     }
 }

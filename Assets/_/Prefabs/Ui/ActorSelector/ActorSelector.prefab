@@ -29,6 +29,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 979662059712833391}
   - {fileID: 1668465259428944969}
@@ -54,16 +55,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _actorEntryPrefab: {fileID: 6326301705323014228, guid: f6c906d6dff5a43dd827800615f91264, type: 3}
   _actors:
-  - Sprite: {fileID: 4958473694988434409, guid: 2c1110eb0533849b1828717cda977b82, type: 3}
-    Prefab: {fileID: 2113509039234838645, guid: 15414c88e8e5b42f3be260df1feaefb7, type: 3}
-  - Sprite: {fileID: 1132206095249792208, guid: 2c1110eb0533849b1828717cda977b82, type: 3}
-    Prefab: {fileID: 5995578377934191249, guid: 02783be092c9d45e48d3a1c8620df2bf, type: 3}
-  - Sprite: {fileID: -5481986502742383148, guid: 2c1110eb0533849b1828717cda977b82, type: 3}
-    Prefab: {fileID: 8625290076574385079, guid: 1b013fa94d1bb47d9ac0a53333d0d1ec, type: 3}
-  - Sprite: {fileID: -7396095203662698337, guid: 2c1110eb0533849b1828717cda977b82, type: 3}
-    Prefab: {fileID: 5021503705253294668, guid: 9a4015ca81c07462fba737bb93678f84, type: 3}
-  - Sprite: {fileID: 4958709792872695805, guid: 2c1110eb0533849b1828717cda977b82, type: 3}
-    Prefab: {fileID: 5074849368571688913, guid: b47efe5fec8874211959687029ff8143, type: 3}
+  - _actor: {fileID: 2113509039234838645, guid: 15414c88e8e5b42f3be260df1feaefb7, type: 3}
+  - _actor: {fileID: 5995578377934191249, guid: 02783be092c9d45e48d3a1c8620df2bf, type: 3}
+  - _actor: {fileID: 8625290076574385079, guid: 1b013fa94d1bb47d9ac0a53333d0d1ec, type: 3}
+  - _actor: {fileID: 5021503705253294668, guid: 9a4015ca81c07462fba737bb93678f84, type: 3}
+  - _actor: {fileID: 5074849368571688913, guid: b47efe5fec8874211959687029ff8143, type: 3}
   _internalSetup:
     ActorEntriesContainer: {fileID: 1668465259428944969}
 --- !u!222 &979662058362919738
@@ -133,6 +129,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 979662058362919736}
   m_RootOrder: 0
@@ -277,7 +274,8 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 1
   references:
-    version: 1
+    version: 2
+    RefIds: []
 --- !u!1 &8787170052037107133
 GameObject:
   m_ObjectHideFlags: 0
@@ -305,6 +303,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 979662058362919736}
   m_RootOrder: 1

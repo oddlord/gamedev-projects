@@ -2,9 +2,9 @@ namespace SpaceMiner
 {
     public interface IActorController
     {
-        public Actor Actor { get; set; }
+        public IActor Actor { get; set; }
 
-        public void SetActor(Actor actor)
+        public void SetActor(IActor actor)
         {
             Actor = actor;
         }

@@ -27,10 +27,10 @@ namespace SpaceMiner
         [SerializeField] private _InternalSetup _internalSetup;
 
         private int _wave;
-        private Actor _playerActor;
+        private IActor _playerActor;
 
         private IActorController _actorController;
-        private Actor.Factory _actorFactory;
+        private IActor.Factory _actorFactory;
         private IObstacleManager _obstacleManager;
         private IObstacleSpawner _obstacleSpawner;
         private ObservableInt _score;
@@ -38,7 +38,7 @@ namespace SpaceMiner
 
         [Inject]
         public void Init(
-            IActorController actorController, Actor.Factory actorFactory,
+            IActorController actorController, IActor.Factory actorFactory,
             IObstacleManager obstacleManager, IObstacleSpawner obstacleSpawner,
             ObservableInt score, LivesDisplay livesDisplay
         )
@@ -67,10 +67,10 @@ namespace SpaceMiner
             _actorSelector.Show(OnActorSelected);
         }
 
-        private void OnActorSelected(Actor actorPrefab)
+        private void OnActorSelected(IActor actorPrefab)
         {
-            _playerActor = _actorFactory.Create(actorPrefab);
-            _playerActor.transform.SetPositionAndRotation(Vector3.zero, Quaternion.Euler(0, 0, 90));
+            _playerActor = _actorFactory.Create(actorPrefab.GetGO());
+            _playerActor.GetGO().transform.SetPositionAndRotation(Vector3.zero, Quaternion.Euler(0, 0, 90));
             _playerActor.OnDeath += OnPlayerDeath;
 
             _actorController.SetActor(_playerActor);
@@ -109,7 +109,7 @@ namespace SpaceMiner
             SceneManager.LoadScene(Scenes.START_SCREEN);
         }
 
-        private void OnPlayerDeath(Actor actor)
+        private void OnPlayerDeath(IActor actor)
         {
             _gameOverScreen.Show();
         }

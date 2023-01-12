@@ -2035,6 +2035,18 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2721118817373419752, guid: 2e831a4293a34427d93397bb8cc7e937, type: 3}
+      propertyPath: Actors.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2721118817373419752, guid: 2e831a4293a34427d93397bb8cc7e937, type: 3}
+      propertyPath: Actors.Array.data[0]._actor
+      value: 
+      objectReference: {fileID: 5021503705253294668, guid: 84bf71dc98acd4e2bb5f948a82243a03, type: 3}
+    - target: {fileID: 2721118817373419752, guid: 2e831a4293a34427d93397bb8cc7e937, type: 3}
+      propertyPath: Actors.Array.data[1]._actor
+      value: 
+      objectReference: {fileID: 5021503705253294668, guid: 08234c357a3a5445b956f7c1d8f12295, type: 3}
     - target: {fileID: 2842420168298870154, guid: 2e831a4293a34427d93397bb8cc7e937, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
