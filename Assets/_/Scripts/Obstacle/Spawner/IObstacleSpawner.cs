@@ -5,9 +5,9 @@ namespace SpaceMiner
 {
     public interface IObstacleSpawner
     {
-        public Action<Obstacle> OnObstacleSpawned { get; set; }
+        public Action<IObstacle> OnObstacleSpawned { get; set; }
 
-        public Obstacle[] SpawnWave(int amount);
-        public Obstacle SpawnObstacle(Obstacle obstaclePrefab, Vector3 spawnPosition);
+        public IObstacle[] SpawnWave(int amount);
+        public IObstacle SpawnObstacle(IObstacle obstaclePrefab, Vector3 spawnPosition);
     }
 }

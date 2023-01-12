@@ -15,9 +15,8 @@ namespace SpaceMiner
         [Serializable]
         private struct _IActorListElement
         {
-            [SerializeField]
             [RequireInterface(typeof(IActor))]
-            private UnityEngine.Object _actor;
+            [SerializeField] private UnityEngine.Object _actor;
             public IActor Actor => _actor as IActor;
         }
 

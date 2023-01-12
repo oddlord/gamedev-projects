@@ -94,7 +94,7 @@ namespace SpaceMiner
             StartNextWave();
         }
 
-        private void OnObstacleDestroyed(Obstacle obstacle)
+        private void OnObstacleDestroyed(IObstacle obstacle)
         {
             _score.Value += obstacle.PointsWorth;
         }

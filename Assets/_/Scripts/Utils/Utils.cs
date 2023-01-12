@@ -3,15 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Localization.Components;
-using UnityEngine.UI;
 
 namespace SpaceMiner
 {
     public static class Utils
     {
-        public static T GetRandomListElement<T>(List<T> elements)
+        public static T GetRandomArrayElement<T>(T[] elements)
         {
-            return elements[UnityEngine.Random.Range(0, elements.Count)];
+            return elements[UnityEngine.Random.Range(0, elements.Length)];
         }
 
         public static T[] ShuffleArray<T>(T[] elements)

@@ -1,6 +1,8 @@
 using UnityEngine;
 using System;
 using System.Collections;
+using Zenject;
+using Oddlord.RequireInterface;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -8,7 +10,7 @@ using UnityEditor;
 
 namespace SpaceMiner
 {
-    public class Asteroid : Obstacle
+    public class Asteroid : MonoBehaviour, IObstacle
     {
         [Serializable]
         private struct _InternalSetup
@@ -18,6 +20,8 @@ namespace SpaceMiner
             public AudioSource AudioSource;
         }
 
+        public int PointsWorth { get; set; }
+
         [Header("Audio")]
         [SerializeField] private AudioClip _destructionSound;
 
@@ -26,15 +30,29 @@ namespace SpaceMiner
 
         [Header("Asteroid Configuration")]
         [HideInInspector] public bool SplitOnHit;
-        [HideInInspector] public Obstacle FragmentPrefab;
+        [RequireInterface(typeof(IObstacle))]
+        [HideInInspector] public UnityEngine.Object FragmentPrefab;
+        private IObstacle _iFragmentPrefab => FragmentPrefab as IObstacle;
         [HideInInspector] public int FragmentsToSpawn = 2;
 
-        protected override void OnHit()
+        public Action<IObstacle> OnDestroyed { get; set; }
+
+        private IObstacleSpawner _obstacleSpawner;
+
+        [Inject]
+        public void Init(IObstacleSpawner obstacleSpawner)
+        {
+            _obstacleSpawner = obstacleSpawner;
+        }
+
+        public GameObject GetGO() => gameObject;
+
+        private void OnHit()
         {
             if (SplitOnHit)
             {
                 for (int i = 0; i < FragmentsToSpawn; i++)
-                    _obstacleSpawner.SpawnObstacle(FragmentPrefab, transform.position);
+                    _obstacleSpawner.SpawnObstacle(_iFragmentPrefab, transform.position);
             }
 
             PlayAudio(_destructionSound);
@@ -66,6 +84,13 @@ namespace SpaceMiner
         {
             _internalSetup.AudioSource.clip = clip;
             _internalSetup.AudioSource.Play();
+        }
+
+        void OnTriggerEnter2D(Collider2D other)
+        {
+            bool hitByProjectile = other.CompareTag(Tags.PROJECTILE);
+            bool hitByActor = other.CompareTag(Tags.ACTOR);
+            if (hitByProjectile || hitByActor) OnHit();
         }
     }
 

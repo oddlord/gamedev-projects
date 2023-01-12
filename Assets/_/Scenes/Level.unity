@@ -513,7 +513,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _waveObstaclePrefabs:
-  - {fileID: 4978597233783689588, guid: 4d4c0d5bef1c446e18d0466492437f6e, type: 3}
+  - _obstacle: {fileID: 4978597233783689588, guid: 4d4c0d5bef1c446e18d0466492437f6e, type: 3}
   _spawnPointsContainer: {fileID: 3479010953975094671}
   _livesDisplay: {fileID: 426965693}
 --- !u!114 &630626551
