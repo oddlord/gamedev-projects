@@ -6,10 +6,10 @@ namespace SpaceMiner
 {
     public class SimpleObstacleManager : IObstacleManager
     {
-        public Action<IObstacle> OnObstacleDestroyed { get; set; }
+        public Action<Obstacle> OnObstacleDestroyed { get; set; }
         public Action OnAllObstaclesDestroyed { get; set; }
 
-        private List<IObstacle> _obstacles;
+        private List<Obstacle> _obstacles;
 
         private IObstacleSpawner _obstacleSpawner;
 
@@ -18,17 +18,17 @@ namespace SpaceMiner
         {
             _obstacleSpawner = obstacleSpawner;
 
-            _obstacles = new List<IObstacle>();
+            _obstacles = new List<Obstacle>();
             _obstacleSpawner.OnObstacleSpawned += OnObstacleSpawned;
         }
 
-        private void OnObstacleSpawned(IObstacle obstacle)
+        private void OnObstacleSpawned(Obstacle obstacle)
         {
             _obstacles.Add(obstacle);
             obstacle.OnDestroyed += OnObstacleDestroyedHandler;
         }
 
-        private void OnObstacleDestroyedHandler(IObstacle obstacle)
+        private void OnObstacleDestroyedHandler(Obstacle obstacle)
         {
             _obstacles.Remove(obstacle);
             obstacle.OnDestroyed -= OnObstacleDestroyedHandler;

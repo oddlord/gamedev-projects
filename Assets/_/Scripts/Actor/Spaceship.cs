@@ -5,7 +5,7 @@ using UnityEngine;
 namespace SpaceMiner
 {
     // TODO this class is too big, split into multiple sub-components
-    public class Spaceship : MonoBehaviour, IActor
+    public class Spaceship : Actor
     {
         [Serializable]
         private struct _InternalSetup
@@ -18,9 +18,6 @@ namespace SpaceMiner
         }
 
         private const float _MAX_SPEED_MULTIPLIER = 0.001f;
-
-        [Header("Lives Parameters")]
-        [SerializeField] private int _initialMaxLives = 3;
 
         [Header("Movement Parameters")]
         [SerializeField] private float _maxSpeed = 100;
@@ -44,22 +41,13 @@ namespace SpaceMiner
         [Header("__Internal Setup__")]
         [SerializeField] private _InternalSetup _internalSetup;
 
-        public ObservableInt Lives { get; set; }
-        public ObservableInt MaxLives { get; set; }
-
-        public Action<IActor> OnDeath { get; set; }
-
         private float _speed;
         private DateTime _lastShot;
         private Coroutine _invulnerabilityCoroutine;
 
-        void Awake()
+        protected override void Awake()
         {
-            Lives = new ObservableInt(_initialMaxLives);
-            MaxLives = new ObservableInt(_initialMaxLives);
-
-            Lives.OnChange += OnLivesChanged;
-
+            base.Awake();
             _lastShot = DateTime.MinValue;
         }
 
@@ -69,9 +57,9 @@ namespace SpaceMiner
             transform.position += translation;
         }
 
-        public void HandleForwardInput(float amount)
+        public override void HandleForwardInput(float amount)
         {
-            if (_asIActor.IsDead) amount = 0;
+            if (IsDead) amount = 0;
 
             amount = Mathf.Max(0, amount);
             float targetSpeed = amount * _maxSpeed;
@@ -81,9 +69,9 @@ namespace SpaceMiner
             _speed = Mathf.MoveTowards(_speed, targetSpeed, acceleration);
         }
 
-        public void HandleSideInput(float amount)
+        public override void HandleSideInput(float amount)
         {
-            if (_asIActor.IsDead) return;
+            if (IsDead) return;
             if (amount == 0) return;
 
             float zRotation = -amount * _rotationSpeed;
@@ -91,9 +79,9 @@ namespace SpaceMiner
             transform.rotation *= rotation;
         }
 
-        public void Attack()
+        public override void Attack()
         {
-            if (_asIActor.IsDead) return;
+            if (IsDead) return;
 
             TimeSpan timeSinceLastShot = DateTime.Now - _lastShot;
             float secondsPerShot = 1f / _fireRate;
@@ -106,15 +94,11 @@ namespace SpaceMiner
             _lastShot = DateTime.Now;
         }
 
-        public Sprite GetSprite() => _internalSetup.SpriteRenderer.sprite;
+        public override Sprite GetSprite() => _internalSetup.SpriteRenderer.sprite;
 
-        public GameObject GetGO() => gameObject;
-
-        private IActor _asIActor => (IActor)this;
-
-        private void OnHit()
+        protected override void OnHit()
         {
-            if (_asIActor.IsDead) return;
+            if (IsDead) return;
 
             PlayAudio(_hitSound);
             SetColliderEnabled(false);
@@ -125,9 +109,9 @@ namespace SpaceMiner
             Lives.Subtract(1);
         }
 
-        private void OnLivesChanged(int newValue, int delta)
+        protected override void OnLivesChanged(int newValue, int delta)
         {
-            if (!_asIActor.IsDead) return;
+            if (!IsDead) return;
 
             if (_invulnerabilityCoroutine != null) StopCoroutine(_invulnerabilityCoroutine);
             SetSpriteAlpha(1);
@@ -170,16 +154,6 @@ namespace SpaceMiner
         {
             _internalSetup.AudioSource.clip = clip;
             _internalSetup.AudioSource.Play();
-        }
-
-        void OnTriggerEnter2D(Collider2D other)
-        {
-            if (other.CompareTag(Tags.OBSTACLE)) OnHit();
-        }
-
-        void OnDestroy()
-        {
-            Lives.OnChange -= OnLivesChanged;
         }
     }
 }

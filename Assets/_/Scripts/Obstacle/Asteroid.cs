@@ -10,7 +10,7 @@ using UnityEditor;
 
 namespace SpaceMiner
 {
-    public class Asteroid : MonoBehaviour, IObstacle
+    public class Asteroid : Obstacle
     {
         [Serializable]
         private struct _InternalSetup
@@ -20,8 +20,6 @@ namespace SpaceMiner
             public AudioSource AudioSource;
         }
 
-        public int PointsWorth { get; set; }
-
         [Header("Audio")]
         [SerializeField] private AudioClip _destructionSound;
 
@@ -30,12 +28,8 @@ namespace SpaceMiner
 
         [Header("Asteroid Configuration")]
         [HideInInspector] public bool SplitOnHit;
-        [RequireInterface(typeof(IObstacle))]
-        [HideInInspector] public UnityEngine.Object FragmentPrefab;
-        private IObstacle _iFragmentPrefab => FragmentPrefab as IObstacle;
+        [HideInInspector] public Obstacle FragmentPrefab;
         [HideInInspector] public int FragmentsToSpawn = 2;
-
-        public Action<IObstacle> OnDestroyed { get; set; }
 
         private IObstacleSpawner _obstacleSpawner;
 
@@ -47,12 +41,12 @@ namespace SpaceMiner
 
         public GameObject GetGO() => gameObject;
 
-        private void OnHit()
+        protected override void OnHit()
         {
             if (SplitOnHit)
             {
                 for (int i = 0; i < FragmentsToSpawn; i++)
-                    _obstacleSpawner.SpawnObstacle(_iFragmentPrefab, transform.position);
+                    _obstacleSpawner.SpawnObstacle(FragmentPrefab, transform.position);
             }
 
             PlayAudio(_destructionSound);
@@ -84,13 +78,6 @@ namespace SpaceMiner
         {
             _internalSetup.AudioSource.clip = clip;
             _internalSetup.AudioSource.Play();
-        }
-
-        void OnTriggerEnter2D(Collider2D other)
-        {
-            bool hitByProjectile = other.CompareTag(Tags.PROJECTILE);
-            bool hitByActor = other.CompareTag(Tags.ACTOR);
-            if (hitByProjectile || hitByActor) OnHit();
         }
     }
 

@@ -12,29 +12,19 @@ namespace SpaceMiner
             public Transform ActorEntriesContainer;
         }
 
-        [Serializable]
-        private struct _IActorListElement
-        {
-            [RequireInterface(typeof(IActor))]
-            [SerializeField] private UnityEngine.Object _actor;
-            public IActor Actor => _actor as IActor;
-        }
-
         [SerializeField] private ActorEntry _actorEntryPrefab;
-
-        [SerializeField] private _IActorListElement[] _actors;
-        private IActor[] _iActors => _actors.Select(a => a.Actor).ToArray();
+        [SerializeField] private Actor[] _actors;
 
         [Header("__Internal Setup__")]
         [SerializeField] private _InternalSetup _internalSetup;
 
-        private Action<IActor> _onSelected;
+        private Action<Actor> _onSelected;
 
-        public void Show(Action<IActor> onSelected)
+        public void Show(Action<Actor> onSelected)
         {
             gameObject.SetActive(true);
             _onSelected = onSelected;
-            foreach (IActor actor in _iActors)
+            foreach (Actor actor in _actors)
             {
                 ActorEntry shipEntry = Instantiate(_actorEntryPrefab, _internalSetup.ActorEntriesContainer);
                 shipEntry.Initialize(actor.GetSprite(), () => OnActorSelected(actor));
@@ -46,7 +36,7 @@ namespace SpaceMiner
             gameObject.SetActive(false);
         }
 
-        private void OnActorSelected(IActor actorPrefab)
+        private void OnActorSelected(Actor actorPrefab)
         {
             _onSelected(actorPrefab);
         }

@@ -4,7 +4,7 @@ namespace SpaceMiner
 {
     public class PlayerActorController : MonoBehaviour, IActorController
     {
-        public IActor Actor { get; set; }
+        public Actor Actor { get; set; }
 
         void FixedUpdate()
         {

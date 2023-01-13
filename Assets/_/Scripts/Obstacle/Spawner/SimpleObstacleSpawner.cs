@@ -6,41 +6,41 @@ namespace SpaceMiner
 {
     public class SimpleObstacleSpawner : IObstacleSpawner
     {
-        public Action<IObstacle> OnObstacleSpawned { get; set; }
+        public Action<Obstacle> OnObstacleSpawned { get; set; }
 
-        private IObstacle.Factory _obstacleFactory;
-        private IObstacle[] _waveObstaclePrefabs;
+        private Obstacle.Factory _obstacleFactory;
+        private Obstacle[] _waveObstaclePrefabs;
         private SpawnPointsContainer _spawnPointsContainer;
 
         [Inject]
-        public void Init(IObstacle.Factory obstacleFactory, IObstacle[] waveObstaclePrefabs, SpawnPointsContainer spawnPointsContainer)
+        public void Init(Obstacle.Factory obstacleFactory, Obstacle[] waveObstaclePrefabs, SpawnPointsContainer spawnPointsContainer)
         {
             _obstacleFactory = obstacleFactory;
             _waveObstaclePrefabs = waveObstaclePrefabs;
             _spawnPointsContainer = spawnPointsContainer;
         }
 
-        public IObstacle[] SpawnWave(int amount)
+        public Obstacle[] SpawnWave(int amount)
         {
             SpawnPoint[] spawnPoints = Utils.ShuffleArray(_spawnPointsContainer.SpawnPoints);
 
-            IObstacle[] obstacles = new IObstacle[amount];
+            Obstacle[] obstacles = new Obstacle[amount];
             for (int i = 0; i < amount; i++)
             {
-                IObstacle obstaclePrefab = Utils.GetRandomArrayElement(_waveObstaclePrefabs);
+                Obstacle obstaclePrefab = Utils.GetRandomArrayElement(_waveObstaclePrefabs);
                 SpawnPoint spawnPoint = spawnPoints[i % spawnPoints.Length];
-                IObstacle obstacle = SpawnObstacle(obstaclePrefab, spawnPoint.Position);
+                Obstacle obstacle = SpawnObstacle(obstaclePrefab, spawnPoint.Position);
                 obstacles[i] = obstacle;
             }
 
             return obstacles;
         }
 
-        public IObstacle SpawnObstacle(IObstacle obstaclePrefab, Vector3 spawnPosition)
+        public Obstacle SpawnObstacle(Obstacle obstaclePrefab, Vector3 spawnPosition)
         {
             Quaternion spawnRotation = Utils.GetRandom2DRotation();
-            IObstacle obstacle = _obstacleFactory.Create(obstaclePrefab.GetGO());
-            obstacle.GetGO().transform.SetPositionAndRotation(spawnPosition, spawnRotation);
+            Obstacle obstacle = _obstacleFactory.Create(obstaclePrefab);
+            obstacle.transform.SetPositionAndRotation(spawnPosition, spawnRotation);
             OnObstacleSpawned?.Invoke(obstacle);
             return obstacle;
         }
