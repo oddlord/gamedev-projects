@@ -29,14 +29,11 @@ namespace SpaceMiner
             _score = score;
         }
 
+        public int Score => _score.Value;
+
         public void Show()
         {
-            Dictionary<string, object> arguments = new Dictionary<string, object>
-            {
-                { SentencesLocalization.Arguments.SCORE, _score.Value }
-            };
-            Utils.SetLocalizedString(_internalSetup.ScoreLocalizedText, SentencesLocalization.Keys.FINAL_SCORE, arguments);
-
+            Utils.RefreshLocalizeStringEvent(_internalSetup.ScoreLocalizedText);
             gameObject.SetActive(true);
         }
 

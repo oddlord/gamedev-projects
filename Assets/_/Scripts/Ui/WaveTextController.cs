@@ -3,8 +3,6 @@ using UnityEngine;
 using UnityEngine.Localization.Components;
 using TMPro;
 using System.Collections;
-using System.Collections.Generic;
-using SpaceMiner.Localization;
 using Oddlord.Easing;
 
 namespace SpaceMiner
@@ -25,6 +23,8 @@ namespace SpaceMiner
         [Header("__Internal Setup__")]
         [SerializeField] private _InternalSetup _internalSetup;
 
+        [HideInInspector] public int WaveNumber = 0;
+
         private Coroutine _fadeCoroutine;
 
         void Awake()
@@ -34,11 +34,8 @@ namespace SpaceMiner
 
         public void Show(int waveNum)
         {
-            Dictionary<string, object> arguments = new Dictionary<string, object>
-            {
-                { SentencesLocalization.Arguments.WAVE, waveNum }
-            };
-            Utils.SetLocalizedString(_internalSetup.WaveLocalizedText, SentencesLocalization.Keys.WAVE, arguments);
+            WaveNumber = waveNum;
+            Utils.RefreshLocalizeStringEvent(_internalSetup.WaveLocalizedText);
 
             if (_fadeCoroutine != null) StopCoroutine(_fadeCoroutine);
             StartCoroutine(FadeCoroutine());

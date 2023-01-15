@@ -28,6 +28,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -50,8 +51,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _lifeTokenPrefab: {fileID: 8878658411163818079, guid: f6e8fb888fa944bbfb9767cbd31ab159, type: 3}
-  _maxLivesState: {fileID: 0}
-  _livesState: {fileID: 0}
 --- !u!114 &631991652277082426
 MonoBehaviour:
   m_ObjectHideFlags: 0

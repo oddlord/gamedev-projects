@@ -513,7 +513,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _waveTargetPrefabs:
-  - {fileID: 4978597233783689588, guid: 4d4c0d5bef1c446e18d0466492437f6e, type: 3}
+  - {fileID: 4978597233783689588, guid: bc6762a874870492d8d56924db562270, type: 3}
   _spawnPointsContainer: {fileID: 3479010953975094671}
   _livesDisplay: {fileID: 426965693}
 --- !u!114 &630626551
@@ -1781,14 +1781,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 673032167}
     m_Modifications:
-    - target: {fileID: 631991652277082427, guid: 953328622c70743b3b985a972b9c4a9a, type: 3}
-      propertyPath: _livesState
-      value: 
-      objectReference: {fileID: 11400000, guid: d040f43e1628644c1aa01cc2d599e3c4, type: 2}
-    - target: {fileID: 631991652277082427, guid: 953328622c70743b3b985a972b9c4a9a, type: 3}
-      propertyPath: _maxLivesState
-      value: 
-      objectReference: {fileID: 11400000, guid: e03e65bc9ffb64dc2b2099494ee7b3d6, type: 2}
     - target: {fileID: 631991652277082428, guid: 953328622c70743b3b985a972b9c4a9a, type: 3}
       propertyPath: m_Name
       value: LivesDisplay
@@ -2131,14 +2123,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 673032167}
     m_Modifications:
-    - target: {fileID: 1327638979966134361, guid: 4f325ba5ea549410a823339735950e93, type: 3}
-      propertyPath: m_fontColor.a
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1327638979966134361, guid: 4f325ba5ea549410a823339735950e93, type: 3}
-      propertyPath: m_fontColor32.rgba
-      value: 16777215
-      objectReference: {fileID: 0}
     - target: {fileID: 1327638979966134362, guid: 4f325ba5ea549410a823339735950e93, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -2320,10 +2304,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2475348123547627074, guid: 18269f8c1b75941199a14d234d8ac04a, type: 3}
-      propertyPath: _scoreState
-      value: 
-      objectReference: {fileID: 11400000, guid: c465681f023644127af33e9c496400b3, type: 2}
     - target: {fileID: 2475348123547627078, guid: 18269f8c1b75941199a14d234d8ac04a, type: 3}
       propertyPath: m_Name
       value: ScoreUiController
@@ -2502,46 +2482,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 673032167}
     m_Modifications:
-    - target: {fileID: 7731747955328126356, guid: 946b4dd0cc4154a0ca9137a20b43d024, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7731747955328126356, guid: 946b4dd0cc4154a0ca9137a20b43d024, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7731747955328126356, guid: 946b4dd0cc4154a0ca9137a20b43d024, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7731747955328126356, guid: 946b4dd0cc4154a0ca9137a20b43d024, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7731747955502267387, guid: 946b4dd0cc4154a0ca9137a20b43d024, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7731747955502267387, guid: 946b4dd0cc4154a0ca9137a20b43d024, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7731747955502267387, guid: 946b4dd0cc4154a0ca9137a20b43d024, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7731747955502267387, guid: 946b4dd0cc4154a0ca9137a20b43d024, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 7731747955598582192, guid: 946b4dd0cc4154a0ca9137a20b43d024, type: 3}
       propertyPath: m_Name
       value: GameOverScreen
       objectReference: {fileID: 0}
-    - target: {fileID: 7731747955598582196, guid: 946b4dd0cc4154a0ca9137a20b43d024, type: 3}
-      propertyPath: _scoreState
-      value: 
-      objectReference: {fileID: 11400000, guid: c465681f023644127af33e9c496400b3, type: 2}
     - target: {fileID: 7731747955598582199, guid: 946b4dd0cc4154a0ca9137a20b43d024, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
