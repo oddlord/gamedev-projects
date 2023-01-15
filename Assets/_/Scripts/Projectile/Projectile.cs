@@ -12,6 +12,8 @@ namespace SpaceMiner
             public AudioSource AudioSource;
         }
 
+        public Hittable Hittable;
+
         [Header("Audio")]
         [SerializeField] private AudioClip _fireSound;
 
@@ -23,6 +25,8 @@ namespace SpaceMiner
         protected virtual void Awake()
         {
             _fired = false;
+
+            Hittable.OnHit += OnHit;
         }
 
         public virtual void Fire()
@@ -31,15 +35,25 @@ namespace SpaceMiner
             PlayAudio(_fireSound);
         }
 
+        public virtual void SetTag(string tag)
+        {
+            gameObject.tag = tag;
+        }
+
         private void PlayAudio(AudioClip clip)
         {
             _internalSetup.AudioSource.clip = clip;
             _internalSetup.AudioSource.Play();
         }
 
-        void OnTriggerEnter2D(Collider2D other)
+        private void OnHit()
         {
-            if (other.CompareTag(Tags.OBSTACLE)) Destroy(this.gameObject);
+            Destroy(this.gameObject);
+        }
+
+        void OnDestroy()
+        {
+            Hittable.OnHit -= OnHit;
         }
     }
 }

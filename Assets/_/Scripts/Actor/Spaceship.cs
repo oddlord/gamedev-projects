@@ -89,6 +89,8 @@ namespace SpaceMiner
 
             Vector3 spawnPosition = _internalSetup.Nozzle.position;
             Projectile projectile = Instantiate(_projectilePrefab, spawnPosition, transform.rotation);
+            projectile.SetTag(gameObject.tag);
+            projectile.Hittable.HitTags = Hittable.HitTags;
             projectile.Fire();
 
             _lastShot = DateTime.Now;

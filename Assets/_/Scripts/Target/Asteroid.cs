@@ -2,7 +2,6 @@ using UnityEngine;
 using System;
 using System.Collections;
 using Zenject;
-using Oddlord.RequireInterface;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -10,7 +9,7 @@ using UnityEditor;
 
 namespace SpaceMiner
 {
-    public class Asteroid : Obstacle
+    public class Asteroid : Target
     {
         [Serializable]
         private struct _InternalSetup
@@ -28,25 +27,23 @@ namespace SpaceMiner
 
         [Header("Asteroid Configuration")]
         [HideInInspector] public bool SplitOnHit;
-        [HideInInspector] public Obstacle FragmentPrefab;
+        [HideInInspector] public Target FragmentPrefab;
         [HideInInspector] public int FragmentsToSpawn = 2;
 
-        private IObstacleSpawner _obstacleSpawner;
+        private ITargetSpawner _targetSpawner;
 
         [Inject]
-        public void Init(IObstacleSpawner obstacleSpawner)
+        public void Init(ITargetSpawner targetSpawner)
         {
-            _obstacleSpawner = obstacleSpawner;
+            _targetSpawner = targetSpawner;
         }
-
-        public GameObject GetGO() => gameObject;
 
         protected override void OnHit()
         {
             if (SplitOnHit)
             {
                 for (int i = 0; i < FragmentsToSpawn; i++)
-                    _obstacleSpawner.SpawnObstacle(FragmentPrefab, transform.position);
+                    _targetSpawner.SpawnTarget(FragmentPrefab, transform.position);
             }
 
             PlayAudio(_destructionSound);

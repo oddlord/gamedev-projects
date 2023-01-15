@@ -11,6 +11,9 @@ namespace SpaceMiner
         [Header("Lives Parameters")]
         [SerializeField] private int _initialMaxLives = 3;
 
+        [Header("Misc")]
+        public Hittable Hittable;
+
         public ObservableInt Lives;
         public ObservableInt MaxLives;
 
@@ -20,6 +23,8 @@ namespace SpaceMiner
         {
             Lives = new ObservableInt(_initialMaxLives);
             MaxLives = new ObservableInt(_initialMaxLives);
+
+            Hittable.OnHit += OnHit;
 
             Lives.OnChange += OnLivesChanged;
         }
@@ -32,17 +37,18 @@ namespace SpaceMiner
 
         public bool IsDead => Lives.Value <= 0;
 
+        public virtual void SetTag(string tag)
+        {
+            gameObject.tag = tag;
+        }
+
         protected abstract void OnLivesChanged(int newValue, int delta);
 
         protected abstract void OnHit();
 
-        void OnTriggerEnter2D(Collider2D other)
-        {
-            if (other.CompareTag(Tags.OBSTACLE)) OnHit();
-        }
-
         void OnDestroy()
         {
+            Hittable.OnHit -= OnHit;
             Lives.OnChange -= OnLivesChanged;
         }
     }

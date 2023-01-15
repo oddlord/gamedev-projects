@@ -512,7 +512,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bec3987afbf14e7098734dafdfc31ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _waveObstaclePrefabs:
+  _waveTargetPrefabs:
   - {fileID: 4978597233783689588, guid: 4d4c0d5bef1c446e18d0466492437f6e, type: 3}
   _spawnPointsContainer: {fileID: 3479010953975094671}
   _livesDisplay: {fileID: 426965693}
@@ -2339,7 +2339,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3479010953604570561, guid: 1b800eb6be17341f59a611862cdcf35d, type: 3}
       propertyPath: m_Name
-      value: ObstacleSpawnPointsContainer
+      value: TargetSpawnPointsContainer
       objectReference: {fileID: 0}
     - target: {fileID: 3479010953604570590, guid: 1b800eb6be17341f59a611862cdcf35d, type: 3}
       propertyPath: m_RootOrder

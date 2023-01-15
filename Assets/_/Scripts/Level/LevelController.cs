@@ -15,8 +15,8 @@ namespace SpaceMiner
         }
 
         [Header("Level Parameters")]
-        [SerializeField] private int _initialObstacleCount = 2;
-        [SerializeField] private int _obstacleCountIncreasePerWave = 1;
+        [SerializeField] private int _initialTargetCount = 2;
+        [SerializeField] private int _targetIncreasePerWave = 1;
 
         [Header("Services")]
         [SerializeField] private GameOverScreen _gameOverScreen;
@@ -31,22 +31,22 @@ namespace SpaceMiner
 
         private IActorController _actorController;
         private Actor.Factory _actorFactory;
-        private IObstacleManager _obstacleManager;
-        private IObstacleSpawner _obstacleSpawner;
+        private ITargetManager _targetManager;
+        private ITargetSpawner _targetSpawner;
         private ObservableInt _score;
         private LivesDisplay _livesDisplay;
 
         [Inject]
         public void Init(
             IActorController actorController, Actor.Factory actorFactory,
-            IObstacleManager obstacleManager, IObstacleSpawner obstacleSpawner,
+            ITargetManager targetManager, ITargetSpawner targetSpawner,
             ObservableInt score, LivesDisplay livesDisplay
         )
         {
             _actorController = actorController;
             _actorFactory = actorFactory;
-            _obstacleManager = obstacleManager;
-            _obstacleSpawner = obstacleSpawner;
+            _targetManager = targetManager;
+            _targetSpawner = targetSpawner;
             _score = score;
             _livesDisplay = livesDisplay;
         }
@@ -56,8 +56,8 @@ namespace SpaceMiner
             _wave = 0;
             _score.Value = 0;
 
-            _obstacleManager.OnAllObstaclesDestroyed += OnAllObstaclesDestroyed;
-            _obstacleManager.OnObstacleDestroyed += OnObstacleDestroyed;
+            _targetManager.OnAllTargetsDestroyed += OnAllTargetsDestroyed;
+            _targetManager.OnTargetDestroyed += OnTargetDestroyed;
             _gameOverScreen.OnPlayAgain += OnPlayAgain;
             _gameOverScreen.OnBack += OnBack;
         }
@@ -71,6 +71,7 @@ namespace SpaceMiner
         {
             _playerActor = _actorFactory.Create(actorPrefab);
             _playerActor.transform.SetPositionAndRotation(Vector3.zero, Quaternion.Euler(0, 0, 90));
+            _playerActor.Hittable.HitTags = new string[] { Tags.TARGET };
             _playerActor.OnDeath += OnPlayerDeath;
 
             _actorController.SetActor(_playerActor);
@@ -84,19 +85,19 @@ namespace SpaceMiner
         private void StartNextWave()
         {
             _wave++;
-            int obstaclesCount = _initialObstacleCount + _obstacleCountIncreasePerWave * (_wave - 1);
-            _obstacleSpawner.SpawnWave(obstaclesCount);
+            int targetCount = _initialTargetCount + _targetIncreasePerWave * (_wave - 1);
+            _targetSpawner.SpawnWave(targetCount);
             _waveTextController.Show(_wave);
         }
 
-        private void OnAllObstaclesDestroyed()
+        private void OnAllTargetsDestroyed()
         {
             StartNextWave();
         }
 
-        private void OnObstacleDestroyed(Obstacle obstacle)
+        private void OnTargetDestroyed(Target target)
         {
-            _score.Value += obstacle.PointsWorth;
+            _score.Value += target.PointsWorth;
         }
 
         private void OnPlayAgain()
@@ -116,8 +117,8 @@ namespace SpaceMiner
 
         void OnDestroy()
         {
-            _obstacleManager.OnAllObstaclesDestroyed -= OnAllObstaclesDestroyed;
-            _obstacleManager.OnObstacleDestroyed -= OnObstacleDestroyed;
+            _targetManager.OnAllTargetsDestroyed -= OnAllTargetsDestroyed;
+            _targetManager.OnTargetDestroyed -= OnTargetDestroyed;
             _gameOverScreen.OnPlayAgain -= OnPlayAgain;
             _gameOverScreen.OnBack -= OnBack;
             if (_playerActor != null) _playerActor.OnDeath -= OnPlayerDeath;
