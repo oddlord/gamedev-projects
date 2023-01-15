@@ -71,6 +71,7 @@ namespace SpaceMiner
         {
             _playerActor = _actorFactory.Create(actorPrefab);
             _playerActor.transform.SetPositionAndRotation(Vector3.zero, Quaternion.Euler(0, 0, 90));
+            _playerActor.SetTag(Tags.PLAYER);
             _playerActor.Hittable.HitTags = new string[] { Tags.TARGET };
             _playerActor.OnDeath += OnPlayerDeath;
 

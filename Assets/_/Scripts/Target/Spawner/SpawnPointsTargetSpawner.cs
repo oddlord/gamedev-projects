@@ -41,6 +41,7 @@ namespace SpaceMiner
             Quaternion spawnRotation = Utils.GetRandom2DRotation();
             Target target = _targetFactory.Create(targetPrefab);
             target.transform.SetPositionAndRotation(spawnPosition, spawnRotation);
+            target.SetTag(Tags.TARGET);
             target.Hittable.HitTags = new string[] { Tags.PLAYER };
             OnTargetSpawned?.Invoke(target);
             return target;

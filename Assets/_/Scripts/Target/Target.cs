@@ -12,12 +12,17 @@ namespace SpaceMiner
 
         public Hittable Hittable;
 
+        public Action<Target> OnDestroyed;
+
         protected virtual void Awake()
         {
             Hittable.OnHit += OnHit;
         }
 
-        public Action<Target> OnDestroyed;
+        public virtual void SetTag(string tag)
+        {
+            gameObject.tag = tag;
+        }
 
         protected abstract void OnHit();
 
