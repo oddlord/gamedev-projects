@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8780445438205948312
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8780445438205948311}
+  - component: {fileID: 8780445438205948310}
+  m_Layer: 0
+  m_Name: BattleManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8780445438205948311
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8780445438205948312}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8780445438205948310
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8780445438205948312}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 982c5672d2348451ebc98249abee642f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _collectedHeroes: {fileID: 0}
+  _battleParty: {fileID: 0}
+  _battlesFought: {fileID: 0}
+  _playerSpawnPointsContainer: {fileID: 0}
+  _aiSpawnPointsContainer: {fileID: 0}
+  _resultMessage: {fileID: 0}
+  _backButton: {fileID: 0}
+  _config:
+    PlayerUnitPrefabs:
+    - {fileID: 9068296341432448744, guid: 61b975a9f98334d35a69df21472b4de0, type: 3}
+    AiUnitPrefabs:
+    - {fileID: 7151740748051983564, guid: 91638e2e259ad432e822e0696e64c0ad, type: 3}
+    - {fileID: 8322462253623869816, guid: 0bf29a4f161064153a744a1ca443d807, type: 3}
