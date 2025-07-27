@@ -4,9 +4,7 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Projectile
-  - Obstacle
-  - Actor
+  - Target
   layers:
   - Default
   - TransparentFX
@@ -47,7 +45,7 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Obstacle
+  - name: Target
     uniqueID: 1287885631
     locked: 0
   - name: Spaceship
